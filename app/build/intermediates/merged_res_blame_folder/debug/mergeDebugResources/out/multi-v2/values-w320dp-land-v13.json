@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.sbsj.dreamwing_android.app-mergeDebugResources-55:/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+            "map": [
+                {
+                    "source": "/Users/jaeseong/.gradle/caches/transforms-4/97069da4248ac017a3172ff79249dc86/transformed/material-1.4.0/res/values-w320dp-land-v13/values-w320dp-land-v13.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,110",
+                        "endColumns": "54,61",
+                        "endOffsets": "105,167"
+                    }
+                }
+            ]
+        }
+    ]
+}
