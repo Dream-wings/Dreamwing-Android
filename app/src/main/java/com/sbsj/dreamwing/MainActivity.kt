@@ -44,18 +44,18 @@
 //        })
 //    }
 //}
-package com.sbsj.dreamwing_android
+package com.sbsj.dreamwing
 
 
 
-import com.sbsj.dreamwing_android.data.api.RetrofitClient;
-import com.sbsj.dreamwing_android.data.model.UserInfo;
+import com.sbsj.dreamwing.data.api.RetrofitClient;
+import com.sbsj.dreamwing.data.model.UserInfo;
 
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.sbsj.dreamwing_android.R
+import com.sbsj.dreamwing.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing_android
+package com.sbsj.dreamwing
 
 import org.junit.Test
 

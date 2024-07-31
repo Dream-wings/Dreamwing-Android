@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing_android.ui.theme
+package com.sbsj.dreamwing.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

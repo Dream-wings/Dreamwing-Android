@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing_android.data.api
+package com.sbsj.dreamwing.data.api
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

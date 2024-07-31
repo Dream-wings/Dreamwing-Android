@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing_android.data.model
+package com.sbsj.dreamwing.data.model
 
 import com.google.gson.annotations.SerializedName
 
