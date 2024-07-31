@@ -95,4 +95,10 @@ dependencies {
 
     // splash screen
     implementation "androidx.core:core-splashscreen:1.0.0"
+
+    //0731 recyclerview 관련 추가
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+
 }
