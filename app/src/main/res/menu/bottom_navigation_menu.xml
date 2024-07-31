@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_home"
+        android:title="홈"
+        android:icon="@drawable/selector_home" />
+    <item
+        android:id="@+id/navigation_volunteer"
+        android:title="봉사"
+        android:icon="@drawable/selector_volunteer" />
+    <item
+        android:id="@+id/navigation_support"
+        android:title="후원"
+        android:icon="@drawable/selector_support" />
+    <item
+        android:id="@+id/navigation_mission"
+        android:title="미션"
+        android:icon="@drawable/selector_mission" />
+    <item
+        android:id="@+id/navigation_mypage"
+        android:title="내 정보"
+        android:icon="@drawable/selector_mypage" />
+</menu>

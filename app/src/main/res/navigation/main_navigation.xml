@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.sbsj.dreamwing.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_missionFragment"
+            app:destination="@id/navigation_mission" />
+        <action
+            android:id="@+id/action_homeFragment_to_myPageFragment"
+            app:destination="@id/navigation_mypage" />
+        <action
+            android:id="@+id/action_homeFragment_to_supportFragment"
+            app:destination="@id/navigation_support" />
+        <action
+            android:id="@+id/action_homeFragment_to_volunteerFragment"
+            app:destination="@id/navigation_volunteer" />
+        <action
+            android:id="@+id/action_homeFragment_self"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_volunteer"
+        android:name="com.sbsj.dreamwing.volunteer.ui.VolunteerFragment"
+        android:label="fragment_volunteer"
+        tools:layout="@layout/fragment_volunteer" >
+        <action
+            android:id="@+id/action_volunteerFragment_to_supportFragment"
+            app:destination="@id/navigation_support" />
+        <action
+            android:id="@+id/action_volunteerFragment_to_myPageFragment"
+            app:destination="@id/navigation_mypage" />
+        <action
+            android:id="@+id/action_volunteerFragment_to_homeFragment"
+            app:destination="@id/navigation_home" />
+        <action
+            android:id="@+id/action_volunteerFragment_to_missionFragment"
+            app:destination="@id/navigation_mission" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_support"
+        android:name="com.sbsj.dreamwing.support.ui.SupportFragment"
+        android:label="fragment_support"
+        tools:layout="@layout/fragment_support">
+        <action
+            android:id="@+id/action_supportFragment_to_missionFragment"
+            app:destination="@id/navigation_mission" />
+        <action
+            android:id="@+id/action_supportFragment_to_myPageFragment"
+            app:destination="@id/navigation_mypage" />
+        <action
+            android:id="@+id/action_supportFragment_to_volunteerFragment"
+            app:destination="@id/navigation_volunteer" />
+        <action
+            android:id="@+id/action_supportFragment_to_homeFragment"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mypage"
+        android:name="com.sbsj.dreamwing.user.ui.MyPageFragment"
+        android:label="fragment_mypage"
+        tools:layout="@layout/fragment_mypage">
+        <action
+            android:id="@+id/action_mypageFragment_to_missionFragment"
+            app:destination="@id/navigation_mission" />
+        <action
+            android:id="@+id/action_mypageFragment_to_supportFragment"
+            app:destination="@id/navigation_support" />
+        <action
+            android:id="@+id/action_mypageFragment_to_volunteerFragment"
+            app:destination="@id/navigation_volunteer" />
+        <action
+            android:id="@+id/action_mypageFragment_to_homeFragment"
+            app:destination="@id/navigation_home" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mission"
+        android:name="com.sbsj.dreamwing.mission.ui.MissionFragment"
+        android:label="fragment_mission"
+        tools:layout="@layout/fragment_mission" >
+        <action
+            android:id="@+id/action_missionFragment_to_myPageFragment"
+            app:destination="@id/navigation_mypage" />
+        <action
+            android:id="@+id/action_missionFragment_to_supportFragment"
+            app:destination="@id/navigation_support" />
+        <action
+            android:id="@+id/action_missionFragment_to_volunteerFragment"
+            app:destination="@id/navigation_volunteer" />
+        <action
+            android:id="@+id/action_missionFragment_to_homeFragment"
+            app:destination="@id/navigation_home" />
+    </fragment>
+</navigation>

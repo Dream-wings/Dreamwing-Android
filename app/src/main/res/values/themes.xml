@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.Dreamwing" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:fontFamily">@font/happiness_sans_title</item>
+    </style>
 
-    <style name="Theme.Dreamwing" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="BottomNavigationActive" parent="Widget.Design.BottomNavigationView">
+        <item name="android:fontFamily">@font/happiness_sans_title</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/main</item>
+    </style>
+    <style name="BottomNavigationInactive" parent="Widget.Design.BottomNavigationView">
+        <item name="android:fontFamily">@font/happiness_sans_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/nav_off</item>
+    </style>
 </resources>
