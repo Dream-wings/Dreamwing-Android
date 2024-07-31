@@ -3,11 +3,18 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 }
 
+Properties properties = new Properties()
+rootProject.file('local.properties').withInputStream { stream ->
+    properties.load(stream)
+}
+
 android {
     namespace 'com.sbsj.dreamwing'
     compileSdk 34
 
     defaultConfig {
+
+        buildConfigField "String", "BASE_URL", "\"${properties['BASE_URL']}\""
         applicationId "com.sbsj.dreamwing"
         minSdk 26
         targetSdk 34
@@ -19,7 +26,9 @@ android {
             useSupportLibrary true
         }
     }
-
+    viewBinding {
+        enabled = true
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +44,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
