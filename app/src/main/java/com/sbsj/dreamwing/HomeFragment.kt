@@ -1,15 +1,21 @@
 package com.sbsj.dreamwing
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.data.api.RetrofitClient
+import com.sbsj.dreamwing.databinding.FragmentHomeBinding
+import com.sbsj.dreamwing.support.model.response.SupportListResponse
+import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
+import com.sbsj.dreamwing.support.ui.SupportRecyclerViewAdapter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * 홈 프래그먼트
@@ -24,43 +30,87 @@ private const val ARG_PARAM2 = "param2"
  * </pre>
  */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var supportRecyclerViewAdapter: SupportRecyclerViewAdapter
+    private lateinit var supportList: ArrayList<SupportListResponse>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    private fun fetchSupportList() {
+        RetrofitClient.supportService.getSupportList().enqueue(object : Callback<ApiResponse<List<SupportListResponse>>> {
+            override fun onResponse(
+                call: Call<ApiResponse<List<SupportListResponse>>>,
+                response: Response<ApiResponse<List<SupportListResponse>>>
+            ) {
+                if (response.isSuccessful) {
+                    val supportData = response.body()?.data
+                    Log.d("HomeFragment", "SupportList: $supportData")
+                    supportData?.let {
+                        supportList.addAll(it)
+                        supportRecyclerViewAdapter.notifyDataSetChanged()
+                    }
+                } else {
+                    Log.e("HomeFragment", "Response not successful")
                 }
             }
+
+            override fun onFailure(call: Call<ApiResponse<List<SupportListResponse>>>, t: Throwable) {
+                Log.e("HomeFragment", "Error: ${t.message}")
+            }
+        })
+    }
+
+    private fun fetchTotalSupport() {
+        RetrofitClient.supportService.getTotalSupport().enqueue(object : Callback<ApiResponse<TotalSupportResponse>> {
+            override fun onResponse(
+                call: Call<ApiResponse<TotalSupportResponse>>,
+                response: Response<ApiResponse<TotalSupportResponse>>
+            ) {
+                if (response.isSuccessful) {
+                    val support = response.body()?.data
+                    Log.d("HomeFragment", "TotalSupport: $support")
+                    support?.let {
+                        binding.supportPoint.text = it.totalPoints.toString() + " 원"
+                        binding.supportCount.text = it.totalCount.toString() + " 건"
+                    }
+                } else {
+                    Log.e("HomeFragment", "Response not successful")
+                    binding.supportPoint.text= "0"
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<TotalSupportResponse>>, t: Throwable) {
+                Log.e("HomeFragment", "Error: ${t.message}")
+                binding.supportPoint.text = "0"
+            }
+        })
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        supportList = ArrayList()
+        supportRecyclerViewAdapter = SupportRecyclerViewAdapter(supportList, requireContext())
+        binding.recyclerView.adapter = supportRecyclerViewAdapter
+
+        fetchSupportList()
+        fetchTotalSupport()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
