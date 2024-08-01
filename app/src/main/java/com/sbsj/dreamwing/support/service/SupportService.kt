@@ -1,6 +1,7 @@
 package com.sbsj.dreamwing.support.service
 
 import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -19,5 +20,8 @@ interface SupportService {
 
     @GET("/support/total")
     fun getTotalSupport(): Call<ApiResponse<TotalSupportResponse>>
+
+    @GET("/support/list/5")
+    fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 
 }
