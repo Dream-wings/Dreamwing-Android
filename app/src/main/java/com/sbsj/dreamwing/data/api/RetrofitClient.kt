@@ -2,6 +2,7 @@ package com.sbsj.dreamwing.data.api
 
 import com.sbsj.dreamwing.BuildConfig
 import com.sbsj.dreamwing.support.service.SupportService
+import com.sbsj.dreamwing.user.service.UserService
 import com.sbsj.dreamwing.volunteer.service.VolunteerService
 
 import retrofit2.Retrofit
@@ -26,6 +27,12 @@ object RetrofitClient {
     val supportService: SupportService by lazy {
         retrofit.create(SupportService::class.java)
     }
+
+    val userService: UserService by lazy {
+        retrofit.create(UserService::class.java)
+    }
+
+
 
     // VolunteerService 인스턴스
     val volunteerService: VolunteerService by lazy {

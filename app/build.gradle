@@ -2,7 +2,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("androidx.navigation.safeargs.kotlin") version "2.7.7" // 플러그인 버전 추가
-
 }
 
 Properties properties = new Properties()
@@ -85,7 +84,7 @@ dependencies {
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.material3
-    //  implementation libs.androidx.recyclerview
+  //  implementation libs.androidx.recyclerview
     implementation 'androidx.appcompat:appcompat:1.4.2'
 
     testImplementation libs.junit
@@ -117,7 +116,13 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:2.7.7"
     implementation "androidx.navigation:navigation-ui-ktx:2.7.7"
 
-    //KAKAO MAP API
-    implementation 'com.kakao.maps.open:android:2.6.0'// 카카오 맵 API
+    // Retrofit2
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
 
+    // OkHttp3
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    implementation 'com.kakao.maps.open:android:2.6.0'// 카카오 맵 API
 }
