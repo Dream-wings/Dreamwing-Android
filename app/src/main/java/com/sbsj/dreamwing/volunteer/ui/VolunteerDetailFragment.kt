@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.kakao.vectormap.KakaoMap
+import com.kakao.vectormap.KakaoMapReadyCallback
+import com.kakao.vectormap.MapLifeCycleCallback
 import com.sbsj.dreamwing.databinding.FragmentVolunteerDetailBinding
 import com.sbsj.dreamwing.volunteer.model.VolunteerDetailDTO
 import com.sbsj.dreamwing.data.api.RetrofitClient
@@ -45,6 +48,7 @@ class VolunteerDetailFragment : Fragment() {
         }
 
         loadVolunteerDetails(args.volunteerId)
+        initializeMapView()
     }
 
     private fun loadVolunteerDetails(volunteerId: Long) {
@@ -63,10 +67,10 @@ class VolunteerDetailFragment : Fragment() {
                             binding.contentTextView.text = volunteer.content
                             binding.categoryTextView.text = when (volunteer.category) {
                                 1 -> "빵만들기"
-                                2 -> "청각장애인을 위한 자막달기"
-                                3 -> "신생아 돌보기"
+                                2 -> "자막달기"
+                                3 -> "돌보기"
                                 4 -> "밑반찬 만들기"
-                                5 -> "환경정화를 위한 흙공 만들기"
+                                5 -> "흙공 만들기"
                                 else -> "기타"
                             }
                             binding.addressTextView.text = volunteer.address
@@ -107,6 +111,29 @@ class VolunteerDetailFragment : Fragment() {
         })
     }
 
+
+
+
+
+
+
+    private fun initializeMapView() {
+        binding.mapView.start(object : MapLifeCycleCallback() {
+            override fun onMapDestroy() {
+                Log.e("VolunteerDetailFragment", "onMapDestroy")
+            }
+
+            override fun onMapError(error: Exception?) {
+                Log.e("VolunteerDetailFragment", "onMapError", error)
+            }
+        }, object : KakaoMapReadyCallback() {
+            override fun onMapReady(kakaoMap: KakaoMap) {
+                Log.e("VolunteerDetailFragment", "onMapReady")
+                // 위치 정보 설정 없이 지도만 띄우기
+            }
+        })
+    }
+
     private fun formatDate(dateString: String?): String {
         return try {
             Log.d("VolunteerDetailFragment", "Original date string: $dateString")
@@ -117,6 +144,16 @@ class VolunteerDetailFragment : Fragment() {
             "N/A"
         }
     }
+    override fun onResume() {
+        super.onResume()
+        binding.mapView.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.mapView.pause()
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

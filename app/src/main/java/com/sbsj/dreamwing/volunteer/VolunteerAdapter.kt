@@ -23,10 +23,10 @@ class VolunteerAdapter(
             binding.titleTextView.text = volunteer.title
             binding.categoryTextView.text = when (volunteer.category) {
                 1 -> "빵만들기"
-                2 -> "청각장애인을 위한 자막달기"
-                3 -> "신생아 돌보기"
+                2 -> "자막달기"
+                3 -> "돌보기"
                 4 -> "밑반찬 만들기"
-                5 -> "환경정화를 위한 흙공 만들기"
+                5 -> "흙공 만들기"
                 else -> "기타"
             }
             binding.addressTextView.text = volunteer.address
