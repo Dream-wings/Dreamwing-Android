@@ -1,60 +1,101 @@
 package com.sbsj.dreamwing.volunteer.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.navigation.fragment.findNavController
 import com.sbsj.dreamwing.R
+import com.sbsj.dreamwing.data.api.RetrofitClient
+import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
+import com.sbsj.dreamwing.volunteer.VolunteerAdapter
+import com.sbsj.dreamwing.volunteer.model.VolunteerListDTO
+import com.sbsj.dreamwing.volunteer.model.response.VolunteerListResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-/**
- * 봉사&멘토링 프래그먼트
- * @author 정은지
- * @since 2024.08.01
- * @version 1.0
- *
- * <pre>
- * 수정일        	수정자        수정내용
- * ----------  --------    ---------------------------
- * 2024.08.01  	정은지       최초 생성
- * </pre>
- */
 class VolunteerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
+    private var _binding: FragmentVolunteerBinding? = null
+    private val binding get() = _binding!!
 
-        }
-    }
+    private lateinit var volunteerAdapter: VolunteerAdapter
+    private var volunteerList: MutableList<VolunteerListDTO> = mutableListOf()
+    private var page = 0
+    private val size = 2
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_volunteer, container, false)
+        _binding = FragmentVolunteerBinding.inflate(inflater, container, false)
+        val view = binding.root
+
+        // Initialize VolunteerAdapter
+        volunteerAdapter = VolunteerAdapter(volunteerList) { volunteer ->
+            Log.d("VolunteerFragment", "Navigating to details with volunteerId: ${volunteer.volunteerId}")
+
+            val action = VolunteerFragmentDirections.actionVolunteerFragmentToVolunteerDetailFragment(
+                volunteer.volunteerId.toLong()
+            )
+            findNavController().navigate(action)
+        }
+
+        // Set the adapter and layout manager for RecyclerView
+        binding.recyclerView.adapter = volunteerAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        // Load volunteers
+        loadMoreVolunteers()
+
+        // Set scroll listener to load more volunteers on scroll
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!recyclerView.canScrollVertically(1)) {
+                    loadMoreVolunteers()
+                }
+            }
+        })
+
+        return view
+    }
+
+    private fun loadMoreVolunteers() {
+        RetrofitClient.volunteerService.getVolunteerList(page, size).enqueue(object : Callback<VolunteerListResponse> {
+            override fun onResponse(
+                call: Call<VolunteerListResponse>,
+                response: Response<VolunteerListResponse>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("VolunteerDetailFragment", "Volunteer list : $response")
+
+                    response.body()?.let { volunteerListResponse ->
+                        volunteerList.addAll(volunteerListResponse.data)
+                        volunteerAdapter.notifyDataSetChanged()
+                        page++
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<VolunteerListResponse>, t: Throwable) {
+                // Handle API failure
+            }
+        })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment VolunteerFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            VolunteerFragment().apply {
-                arguments = Bundle().apply {
-
-                }
-            }
+        fun newInstance() = VolunteerFragment()
     }
 }

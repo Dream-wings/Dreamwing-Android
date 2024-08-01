@@ -7,14 +7,7 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/openVolunteerActivityButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Open Volunteer Activity"
-        tools:ignore="MissingConstraints" />
+
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/container_main"
