@@ -3,6 +3,8 @@ package com.sbsj.dreamwing.data.api
 import com.sbsj.dreamwing.BuildConfig
 import com.sbsj.dreamwing.support.service.SupportService
 import com.sbsj.dreamwing.user.service.UserService
+import com.sbsj.dreamwing.volunteer.service.VolunteerService
+
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -31,4 +33,9 @@ object RetrofitClient {
     }
 
 
+
+    // VolunteerService 인스턴스
+    val volunteerService: VolunteerService by lazy {
+        retrofit.create(VolunteerService::class.java)
+    }
 }

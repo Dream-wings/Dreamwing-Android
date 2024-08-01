@@ -31,6 +31,10 @@
         android:name="com.sbsj.dreamwing.volunteer.ui.VolunteerFragment"
         android:label="fragment_volunteer"
         tools:layout="@layout/fragment_volunteer" >
+        <!-- 상세페이지를 위한 detailFragment추가 -->
+        <action
+            android:id="@+id/action_volunteerFragment_to_volunteerDetailFragment"
+            app:destination="@id/volunteerDetailFragment" />
         <action
             android:id="@+id/action_volunteerFragment_to_supportFragment"
             app:destination="@id/navigation_support" />
@@ -43,6 +47,15 @@
         <action
             android:id="@+id/action_volunteerFragment_to_missionFragment"
             app:destination="@id/navigation_mission" />
+    </fragment>
+    <!-- 상세페이지를 위한 detailFragment 정의 -->
+    <fragment
+        android:id="@+id/volunteerDetailFragment"
+        android:name="com.sbsj.dreamwing.volunteer.ui.VolunteerDetailFragment"
+        android:label="VolunteerDetailFragment" >
+        <argument
+            android:name="volunteerId"
+            app:argType="long" />
     </fragment>
     <fragment
         android:id="@+id/navigation_support"
