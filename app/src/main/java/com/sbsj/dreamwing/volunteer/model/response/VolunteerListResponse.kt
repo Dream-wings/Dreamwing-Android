@@ -1,6 +1,7 @@
-package com.sbsj.dreamwing.data.model
+package com.sbsj.dreamwing.volunteer.model.response
 
 import com.google.gson.annotations.SerializedName
+import com.sbsj.dreamwing.volunteer.model.VolunteerListDTO
 
 data class VolunteerListResponse(
     @SerializedName("code") val code: Int,

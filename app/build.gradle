@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    id("androidx.navigation.safeargs.kotlin") version "2.7.7" // 플러그인 버전 추가
+
 }
 
 Properties properties = new Properties()
@@ -45,6 +47,7 @@ android {
     buildFeatures {
         compose true
         buildConfig true
+        dataBinding true
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
@@ -82,7 +85,7 @@ dependencies {
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.material3
-  //  implementation libs.androidx.recyclerview
+    //  implementation libs.androidx.recyclerview
     implementation 'androidx.appcompat:appcompat:1.4.2'
 
     testImplementation libs.junit

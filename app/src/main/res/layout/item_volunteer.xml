@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:layout_marginBottom="60dp"
+    android:background="@drawable/item_background"> <!-- Set background to custom drawable -->
 
     <!-- Image at the top -->
     <ImageView
@@ -21,20 +23,20 @@
 
         <TextView
             android:id="@+id/categoryTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_weight="1"
             android:gravity="left" />
 
         <TextView
             android:id="@+id/titleTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_weight="1"
             android:gravity="left" />
     </LinearLayout>
 
@@ -55,18 +57,18 @@
 
         <TextView
             android:id="@+id/volunteerStartDateTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_weight="1"
+            android:textSize="16sp"
             android:gravity="left" />
 
         <TextView
             android:id="@+id/statusTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
             android:layout_weight="1"
+            android:textSize="16sp"
             android:gravity="right"
             android:textColor="@android:color/holo_red_light" />
     </LinearLayout>
