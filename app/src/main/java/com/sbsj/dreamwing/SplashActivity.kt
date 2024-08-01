@@ -14,6 +14,8 @@ import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.NumberFormat
+import java.util.Locale
 
 /**
  * 스플래시 스크린
@@ -41,19 +43,22 @@ class SplashActivity : AppCompatActivity() {
                     val support = response.body()?.data
                     Log.d("SplashActivity", "TotalSupport: $support")
                     support?.let {
-                        totalPoint.text = it.totalPoints.toString()
-                        val totalP = it.totalPoints
-                        startAnimation(totalP)
+                        val numberFormat = NumberFormat.getNumberInstance(Locale.getDefault())
+                        val formattedTotalPoints = numberFormat.format(it.totalPoints)
+                        totalPoint.text = formattedTotalPoints
+
+                        val totalPointAnimation = it.totalPoints
+                        startAnimation(totalPointAnimation)
                     }
                 } else {
                     Log.e("SplashActivity", "Response not successful")
-                    totalPoint.text = "Failed"
+                    totalPoint.text = "0"
                 }
             }
 
             override fun onFailure(call: Call<ApiResponse<TotalSupportResponse>>, t: Throwable) {
                 Log.e("SplashActivity", "Error: ${t.message}")
-                totalPoint.text = "Failed"
+                totalPoint.text = "0"
             }
         })
     }
