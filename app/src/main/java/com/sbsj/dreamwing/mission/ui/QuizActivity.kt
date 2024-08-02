@@ -7,6 +7,6 @@ import com.sbsj.dreamwing.R
 class QuizActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_walk)
+        setContentView(R.layout.activity_quiz)
     }
 }

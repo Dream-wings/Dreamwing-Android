@@ -86,6 +86,7 @@ dependencies {
     implementation libs.androidx.material3
   //  implementation libs.androidx.recyclerview
     implementation 'androidx.appcompat:appcompat:1.4.2'
+    implementation libs.androidx.activity
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit
@@ -125,4 +126,8 @@ dependencies {
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
     implementation 'com.kakao.maps.open:android:2.6.0'// 카카오 맵 API
+
+    // lottie
+    implementation 'com.airbnb.android:lottie:5.0.2'
+
 }
