@@ -78,6 +78,13 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
+        <!-- 밑줄을 추가하는 View -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"/>
+
         <TextView
             android:id="@+id/idCheckMessage"
             android:layout_width="match_parent"
@@ -86,13 +93,6 @@
             android:visibility="gone"
             android:layout_marginTop="8dp"
             android:text="이곳에 중복 여부 메시지가 표시됩니다" />
-
-        <!-- 밑줄을 추가하는 View -->
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/black"
-            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -136,6 +136,16 @@
             android:layout_height="match_parent"
             />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- 비밀번호 일치 여부를 표시할 TextView 추가 -->
+    <TextView
+        android:id="@+id/passwordMatchMessage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/red"
+        android:visibility="gone"
+        android:layout_marginTop="8dp"
+        android:text="비밀번호가 일치하지 않습니다." />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editNameLayout"
@@ -188,5 +198,4 @@
         android:textColor="@color/white"
         android:fontFamily="@font/happiness_sans_regular"
         android:background="@drawable/button_signup"/>
-
 </LinearLayout>

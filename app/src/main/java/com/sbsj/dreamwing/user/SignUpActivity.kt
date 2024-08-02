@@ -1,5 +1,6 @@
 package com.sbsj.dreamwing.user
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -34,6 +35,9 @@ import java.io.InputStream
 class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수
     private lateinit var idCheckMessage: TextView // 아이디 중복 확인 메시지를 표시하는 TextView
+    private lateinit var passwordMatchMessage: TextView // 비밀번호 일치 여부를 표시하는 TextView
+    private var idCheckStatus = false // 아이디 중복 여부 상태, 초기값은 중복
+    private var passwordMatchStatus = false // 비밀번호 일치 여부 상태, 초기값은 불일치
 
     // 이미지를 선택하는 ActivityResultLauncher 설정
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -60,6 +64,7 @@ class SignUpActivity : AppCompatActivity() {
         val signUpButton = findViewById<Button>(R.id.btnDone)
         val profile = findViewById<ShapeableImageView>(R.id.registration_iv)
         idCheckMessage = findViewById(R.id.idCheckMessage) // 아이디 중복 확인 메시지를 표시하는 TextView
+        passwordMatchMessage = findViewById(R.id.passwordMatchMessage) // 비밀번호 일치 여부 메시지를 표시하는 TextView
 
         // 프로필 이미지 클릭 시 갤러리에서 이미지 선택
         profile.setOnClickListener {
@@ -72,6 +77,12 @@ class SignUpActivity : AppCompatActivity() {
         checkExistIDButton.setOnClickListener {
             val idText = loginId.text.toString()
             checkExistLoginId(idText) // 아이디 중복 확인 요청
+//            if (idCheckMessage.visibility == View.GONE) {
+//                // 중복 확인 메시지가 보이지 않으면 다이얼로그를 띄우기
+//                showIdCheckDialog(idText)
+//            } else {
+//
+//            }
         }
 
         // 회원가입 버튼 클릭 시 실행되는 코드
@@ -83,7 +94,12 @@ class SignUpActivity : AppCompatActivity() {
 
             // 입력된 값이 비어있는지 확인
             if (idText.isEmpty() || passwordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()) {
-                Toast.makeText(this, "아이디와 비밀번호, 이름, 전화번호를 제대로 입력해주세요.", Toast.LENGTH_SHORT).show()
+                showErrorDialog("빈 입력칸이 있습니다.")
+            } else if (!idCheckStatus) {
+                // 중복 확인이 안 되어 있으면 다이얼로그 표시
+                showIdCheckDialog(idText)
+            } else if (!passwordMatchStatus) {
+                showErrorDialog("비밀번호가 일치하지 않습니다.")
             } else {
                 val imageFile = imageUri?.let { createImageFile(it) } // 이미지 파일 생성
 
@@ -108,6 +124,9 @@ class SignUpActivity : AppCompatActivity() {
         setEditTextListeners(passwordConfirm)
         setEditTextListeners(name)
         setEditTextListeners(phone)
+
+        // 비밀번호와 비밀번호 확인란에 TextWatcher 추가
+        setPasswordMatchListener(password, passwordConfirm)
     }
 
     // EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
@@ -116,10 +135,14 @@ class SignUpActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (editText.hasFocus()) {
-                    editText.backgroundTintList = getColorStateList(R.color.skyblue) // 텍스트 입력 시 배경색 변경
+                // 아이디 입력란의 텍스트가 변경되면 idCheckMessage 숨기기
+                if (editText.id == R.id.editID) {
+                    idCheckMessage.visibility = View.GONE
+                    idCheckStatus = false // 중복 확인 완료 상태를 초기화
+                } else if (editText.hasFocus()) {
+                    // 텍스트 입력 시 배경색 변경
+                    editText.backgroundTintList = getColorStateList(R.color.skyblue)
                 }
-                idCheckMessage.visibility = View.GONE // 입력값이 수정되면 메시지 숨기기
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -127,10 +150,52 @@ class SignUpActivity : AppCompatActivity() {
 
         editText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                editText.backgroundTintList = getColorStateList(R.color.skyblue) // 포커스를 얻으면 배경색 변경
+                // 포커스를 얻으면 배경색 변경
+                editText.backgroundTintList = getColorStateList(R.color.skyblue)
             } else {
-                editText.backgroundTintList = getColorStateList(R.color.black) // 포커스를 잃으면 배경색 변경
+                // 포커스를 잃으면 배경색 변경
+                editText.backgroundTintList = getColorStateList(R.color.black)
             }
+        }
+    }
+
+    // 비밀번호와 비밀번호 확인란이 일치하는지 확인하는 TextWatcher를 설정하는 메서드
+    private fun setPasswordMatchListener(password: EditText, passwordConfirm: EditText) {
+        val passwordTextWatcher = object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                validatePasswordMatch(password, passwordConfirm)
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        }
+
+        password.addTextChangedListener(passwordTextWatcher)
+        passwordConfirm.addTextChangedListener(passwordTextWatcher)
+    }
+
+    // 비밀번호와 비밀번호 확인란의 일치 여부를 검증하고 메시지를 업데이트하는 메서드
+    private fun validatePasswordMatch(password: EditText, passwordConfirm: EditText) {
+        val passwordText = password.text.toString()
+        val confirmText = passwordConfirm.text.toString()
+
+        // 비밀번호 확인란이 비어 있는지 검사
+        if (confirmText.isEmpty()) {
+            passwordMatchMessage.visibility = View.GONE
+            passwordMatchStatus = false // 비밀번호 불일치 상태로 설정
+        } else {
+            // 비밀번호와 비밀번호 확인란의 값을 비교
+            if (confirmText == passwordText) {
+                passwordMatchMessage.text = "비밀번호가 일치합니다."
+                passwordMatchMessage.setTextColor(getColor(R.color.green))
+                passwordMatchStatus = true // 비밀번호 일치 상태로 설정
+            } else {
+                passwordMatchMessage.text = "비밀번호가 일치하지 않습니다."
+                passwordMatchMessage.setTextColor(getColor(R.color.red))
+                passwordMatchStatus = false // 비밀번호 불일치 상태로 설정
+            }
+            passwordMatchMessage.visibility = View.VISIBLE
         }
     }
 
@@ -159,13 +224,14 @@ class SignUpActivity : AppCompatActivity() {
                             // 아이디 사용 가능
                             idCheckMessage.text = "사용 가능한 아이디입니다."
                             idCheckMessage.setTextColor(getColor(R.color.green))
-                            idCheckMessage.visibility = View.VISIBLE
+                            idCheckStatus = true // 아이디 중복이 아님
                         } else {
                             // 아이디 사용 불가능
                             idCheckMessage.text = "사용할 수 없는 아이디입니다."
                             idCheckMessage.setTextColor(getColor(R.color.red))
-                            idCheckMessage.visibility = View.VISIBLE
+                            idCheckStatus = false // 아이디 중복
                         }
+                        idCheckMessage.visibility = View.VISIBLE
                     } else {
                         Toast.makeText(this@SignUpActivity, "응답이 비어있습니다.", Toast.LENGTH_SHORT).show()
                     }
@@ -211,5 +277,24 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this@SignUpActivity, "회원가입 실패: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    // 아이디 중복 확인 다이얼로그를 띄우는 메서드
+    private fun showIdCheckDialog(id: String) {
+        AlertDialog.Builder(this)
+            .setTitle("아이디 중복 확인")
+            .setMessage("아이디 중복 확인이 필요합니다.")
+            .setPositiveButton("확인") {  dialog, _ -> dialog.dismiss()
+            }
+            .show()
+    }
+
+    // 오류 다이얼로그를 표시하는 메서드
+    private fun showErrorDialog(message: String) {
+        AlertDialog.Builder(this)
+            .setTitle("오류")
+            .setMessage(message)
+            .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 }
