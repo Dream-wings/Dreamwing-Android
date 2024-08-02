@@ -78,6 +78,15 @@
                 android:textColor="@color/white" />
         </LinearLayout>
 
+        <TextView
+            android:id="@+id/idCheckMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:text="이곳에 중복 여부 메시지가 표시됩니다" />
+
         <!-- 밑줄을 추가하는 View -->
         <View
             android:layout_width="match_parent"
