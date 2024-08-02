@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="RoundImage">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">50%</item> <!-- 둥글기의 정도를 백분율로 설정 -->
-    </style>
-</resources>
