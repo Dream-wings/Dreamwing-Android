@@ -7,7 +7,7 @@ import retrofit2.Call
 import retrofit2.http.GET
 
 /**
- * 후원 서비스
+ * 후원 서비스 인터페이스
  * @author 정은지
  * @since 2024.07.31
  * @version 1.0
@@ -20,7 +20,7 @@ interface SupportService {
 
     @GET("/support/total")
     fun getTotalSupport(): Call<ApiResponse<TotalSupportResponse>>
-
+    
     @GET("/support/list/5")
     fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 

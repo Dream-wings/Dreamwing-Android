@@ -41,6 +41,7 @@
             android:name=".mission.MissionActivity"
             android:exported="false"
             android:label="@string/app_name" />
+
         <meta-data
             android:name="com.kakao.vectormap.APP_KEY"
             android:value="@string/kakao_api_key" />
@@ -49,16 +50,20 @@
             android:name=".user.SignUpActivity"
             android:exported="true"
             android:label="@string/app_name" />
-
         <activity
             android:name=".mission.ui.WalkActivity"
             android:exported="true"
-            android:label="@string/title_activity_walk"/>
-
+            android:label="@string/title_activity_walk" />
         <activity
             android:name=".mission.ui.QuizActivity"
             android:exported="true"
-            android:label="@string/title_activity_walk"/>
+            android:label="@string/title_activity_walk" />
+        <activity
+            android:name=".mission.ui.QuizIncorrectActivity"
+            android:exported="true" />
+        <activity
+            android:name=".mission.ui.QuizCorrectActivity"
+            android:exported="true" />
     </application>
 
 </manifest>
