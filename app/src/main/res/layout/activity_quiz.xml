@@ -8,28 +8,9 @@
     android:layout_height="match_parent"
     tools:context=".mission.ui.QuizActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <include
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_arrow_back"
-            app:tint="@color/black" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/quiz_title"
-            style="@style/title" />
-
-    </androidx.appcompat.widget.Toolbar>
+        layout="@layout/toolbar" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/question_layout"
@@ -52,7 +33,7 @@
             style="@style/quiz_question"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="기부금 사용의 투명성을 높이기 위한 방법은 무엇인가요?"
+            android:text=""
             app:layout_constraintStart_toEndOf="@id/ic_question"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,7 +52,7 @@
         <TextView
             android:id="@+id/option1"
             android:drawableLeft="@drawable/ic_check_off"
-            android:text="1. 정기적인 회계 감사"
+            android:text="1. "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -80,7 +61,7 @@
         <TextView
             android:id="@+id/option2"
             android:drawableLeft="@drawable/ic_check_off"
-            android:text="2. 기부금 사용 내역 공개"
+            android:text="2. "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/option1"
@@ -89,7 +70,7 @@
         <TextView
             android:id="@+id/option3"
             android:drawableLeft="@drawable/ic_check_off"
-            android:text="3. 외부 전문가의 평가"
+            android:text="3. "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/option2"
@@ -98,7 +79,7 @@
         <TextView
             android:id="@+id/option4"
             android:drawableLeft="@drawable/ic_check_off"
-            android:text="4. 기부자와의 소통 강화"
+            android:text="4. "
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/option3"
@@ -106,6 +87,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Button
+        android:id="@+id/submit_button"
         android:background="@drawable/bg_round_box2"
         android:layout_width="match_parent"
         android:layout_height="60dp"
