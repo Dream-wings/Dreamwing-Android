@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
+    android:layout_margin="20dp"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -14,8 +15,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
         android:scrollbars="vertical">
 
         <androidx.constraintlayout.widget.Guideline
@@ -53,8 +52,7 @@
             android:background="@drawable/bg_round_box2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="40dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/comment_1"
