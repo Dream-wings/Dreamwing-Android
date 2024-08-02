@@ -12,6 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
 import com.sbsj.dreamwing.R
+import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import com.sbsj.dreamwing.user.service.UserService
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -33,7 +34,7 @@ import java.io.InputStream
 
 class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null
-    private lateinit var apiService: UserService
+//    private lateinit var apiService: UserService
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -60,14 +61,6 @@ class SignUpActivity : AppCompatActivity() {
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
             .build()
-
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://10.0.2.2")  // 서버 URL을 확인하세요
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        apiService = retrofit.create(UserService::class.java)
 
         val loginId = findViewById<EditText>(R.id.editID)
         val password = findViewById<EditText>(R.id.editPWD)
@@ -128,8 +121,7 @@ class SignUpActivity : AppCompatActivity() {
         imageFile: MultipartBody.Part?,
         profileImageUrl: RequestBody?
     ) {
-        val call = apiService.signUp(loginId, password, name, phone, imageFile, profileImageUrl)
-        call.enqueue(object : Callback<SignUpResponse> {
+        RetrofitClient.userService.signUp(loginId, password, name, phone, imageFile, profileImageUrl).enqueue(object : Callback<SignUpResponse> {
             override fun onResponse(call: Call<SignUpResponse>, response: Response<SignUpResponse>) {
                 if (response.isSuccessful) {
                     val signUpResponse = response.body()
@@ -151,5 +143,6 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this@SignUpActivity, "회원가입 실패: ${t.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
     }
 }
