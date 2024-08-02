@@ -1,106 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <ImageView
-        android:id="@+id/imageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/contentTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
+            <!-- 첫 번째 부분: 이미지와 오버레이 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="250dp">
 
-    <TextView
-        android:id="@+id/typeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
+                <!-- 배경 이미지 -->
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                     />
 
-    <TextView
-        android:id="@+id/categoryTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/addressTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
+                <ImageButton
+                    android:id="@+id/backButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|top"
+                    android:layout_margin="16dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:background="@android:color/transparent"
+                   />
 
-    <TextView
-        android:id="@+id/volunteerStartDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/volunteerEndDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/recruitStartDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/recruitEndDateTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/totalCountTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
 
-    <TextView
-        android:id="@+id/statusTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp"
-        android:textColor="@android:color/holo_red_light" />
 
-    <TextView
-        android:id="@+id/latitudeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
+                <!-- 카테고리와 타이틀 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:layout_gravity="bottom"
+                    android:background="@android:color/transparent">
 
-    <TextView
-        android:id="@+id/longitudeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_marginTop="4dp" />
-</LinearLayout>
+                    <TextView
+                        android:id="@+id/categoryTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_round_box"
+                        android:backgroundTint="#FEE500"
+                        android:padding="8dp"
+                        android:text="카테고리"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:fontFamily="@font/happiness_sans_title"
+                        />
+
+                    <TextView
+                        android:id="@+id/titleTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="타이틀"
+                        android:textColor="#FFFFFF"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/happiness_sans_title"
+                        />
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- 두 번째 부분: 기본적인 내용 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/recruitStartDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="모집 시작일: 2024-07-01"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/recruitEndDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="모집 종료일: 2024-07-31"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="16dp"/>
+                </LinearLayout>
+
+                <!-- 봉사 시작일과 봉사 종료일 한 줄로 배치 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/volunteerStartDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="봉사 시작일: 2024-08-01"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        />
+
+                    <TextView
+                        android:id="@+id/volunteerEndDateTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="봉사 종료일: 2024-08-31"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="16dp"/>
+                </LinearLayout>
+
+                <!-- 현재 모집 인원과 총 인원 한 줄로 배치 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+
+                    <TextView
+                        android:id="@+id/currentApplicantCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="총 인원: 50명"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"/>
+
+                    <TextView
+                        android:id="@+id/totalCountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="현재 신청자 수: 30명"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="16dp"/>
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:id="@+id/addressTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="주소: 서울시 강남구"
+                    android:fontFamily="@font/happiness_sans_title"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"/>
+
+
+                <TextView
+                    android:id="@+id/contentTextView"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="내용"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:layout_marginTop="16dp"/>
+
+
+
+            </LinearLayout>
+
+            <!-- 선을 추가합니다 -->
+            <View
+                android:layout_width="416dp"
+                android:layout_marginLeft="16dp"
+                android:layout_height="1dp"
+                android:background="#D9D9D9"
+                android:layout_marginBottom="5dp"/>
+
+            <!-- 세 번째 부분: 기타 추가 레이아웃 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- 여기에 추가할 내용을 넣습니다 -->
+
+
+                <com.kakao.vectormap.MapView
+                    android:id="@+id/mapView"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginTop="10dp"/>
+                />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</layout>

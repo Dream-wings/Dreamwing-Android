@@ -1,5 +1,6 @@
 package com.sbsj.dreamwing.volunteer.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,11 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.navigation.fragment.findNavController
-import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
 import com.sbsj.dreamwing.volunteer.VolunteerAdapter
+import com.sbsj.dreamwing.volunteer.VolunteerDetailActivity
 import com.sbsj.dreamwing.volunteer.model.VolunteerListDTO
 import com.sbsj.dreamwing.volunteer.model.response.VolunteerListResponse
 import retrofit2.Call
@@ -40,10 +40,9 @@ class VolunteerFragment : Fragment() {
         volunteerAdapter = VolunteerAdapter(volunteerList) { volunteer ->
             Log.d("VolunteerFragment", "Navigating to details with volunteerId: ${volunteer.volunteerId}")
 
-            val action = VolunteerFragmentDirections.actionVolunteerFragmentToVolunteerDetailFragment(
-                volunteer.volunteerId.toLong()
-            )
-            findNavController().navigate(action)
+            val intent = Intent(requireContext(), VolunteerDetailActivity::class.java)
+            intent.putExtra("volunteerId", volunteer.volunteerId.toLong())
+            startActivity(intent)
         }
 
         // Set the adapter and layout manager for RecyclerView
