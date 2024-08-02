@@ -32,12 +32,31 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStream
 
+/**
+ *
+ * @author 정은찬
+ * @since 2024.08.01
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.01   정은찬        최초 생성
+ * 2024.08.02   정은찬        회원가입 정보 retrofit 통신
+ * 2024.08.02   정은찬        회원가입시 아이디 중복, 비밀번호 일치, 정보 입력 여부 확인
+ */
 class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수
     private lateinit var idCheckMessage: TextView // 아이디 중복 확인 메시지를 표시하는 TextView
     private lateinit var passwordMatchMessage: TextView // 비밀번호 일치 여부를 표시하는 TextView
     private var idCheckStatus = false // 아이디 중복 여부 상태, 초기값은 중복
     private var passwordMatchStatus = false // 비밀번호 일치 여부 상태, 초기값은 불일치
+
+    // 각 입력 필드 밑에 있는 밑줄 View를 위한 변수 선언
+    private lateinit var underlineID: View
+    private lateinit var underlinePWD: View
+    private lateinit var underlinePWDConfirm: View
+    private lateinit var underlineName: View
+    private lateinit var underlinePhone: View
 
     // 이미지를 선택하는 ActivityResultLauncher 설정
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -66,6 +85,13 @@ class SignUpActivity : AppCompatActivity() {
         idCheckMessage = findViewById(R.id.idCheckMessage) // 아이디 중복 확인 메시지를 표시하는 TextView
         passwordMatchMessage = findViewById(R.id.passwordMatchMessage) // 비밀번호 일치 여부 메시지를 표시하는 TextView
 
+        // 밑줄 View 초기화
+        underlineID = findViewById(R.id.underlineID)
+        underlinePWD = findViewById(R.id.underlinePWD)
+        underlinePWDConfirm = findViewById(R.id.underlinePWDConfirm)
+        underlineName = findViewById(R.id.underlineName)
+        underlinePhone = findViewById(R.id.underlinePhone)
+
         // 프로필 이미지 클릭 시 갤러리에서 이미지 선택
         profile.setOnClickListener {
             val intentImage = Intent(Intent.ACTION_PICK)
@@ -77,12 +103,6 @@ class SignUpActivity : AppCompatActivity() {
         checkExistIDButton.setOnClickListener {
             val idText = loginId.text.toString()
             checkExistLoginId(idText) // 아이디 중복 확인 요청
-//            if (idCheckMessage.visibility == View.GONE) {
-//                // 중복 확인 메시지가 보이지 않으면 다이얼로그를 띄우기
-//                showIdCheckDialog(idText)
-//            } else {
-//
-//            }
         }
 
         // 회원가입 버튼 클릭 시 실행되는 코드
@@ -119,18 +139,18 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         // EditText에 TextWatcher 및 OnFocusChangeListener 설정
-        setEditTextListeners(loginId)
-        setEditTextListeners(password)
-        setEditTextListeners(passwordConfirm)
-        setEditTextListeners(name)
-        setEditTextListeners(phone)
+        setEditTextListeners(loginId, underlineID)
+        setEditTextListeners(password, underlinePWD)
+        setEditTextListeners(passwordConfirm, underlinePWDConfirm)
+        setEditTextListeners(name, underlineName)
+        setEditTextListeners(phone, underlinePhone)
 
         // 비밀번호와 비밀번호 확인란에 TextWatcher 추가
         setPasswordMatchListener(password, passwordConfirm)
     }
 
     // EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
-    private fun setEditTextListeners(editText: EditText) {
+    private fun setEditTextListeners(editText: EditText, underline: View) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
@@ -139,9 +159,6 @@ class SignUpActivity : AppCompatActivity() {
                 if (editText.id == R.id.editID) {
                     idCheckMessage.visibility = View.GONE
                     idCheckStatus = false // 중복 확인 완료 상태를 초기화
-                } else if (editText.hasFocus()) {
-                    // 텍스트 입력 시 배경색 변경
-                    editText.backgroundTintList = getColorStateList(R.color.skyblue)
                 }
             }
 
@@ -151,10 +168,10 @@ class SignUpActivity : AppCompatActivity() {
         editText.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 // 포커스를 얻으면 배경색 변경
-                editText.backgroundTintList = getColorStateList(R.color.skyblue)
+                underline.setBackgroundColor(getColor(R.color.skyblue))
             } else {
                 // 포커스를 잃으면 배경색 변경
-                editText.backgroundTintList = getColorStateList(R.color.black)
+                underline.setBackgroundColor(getColor(R.color.black))
             }
         }
     }
