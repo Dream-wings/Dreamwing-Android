@@ -1,13 +1,11 @@
 package com.sbsj.dreamwing.user
 
 import android.content.Intent
-import android.content.res.ColorStateList
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -17,13 +15,13 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputLayout
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
+import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -50,30 +48,30 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
-        val loginIdLayout = findViewById<TextInputLayout>(R.id.editIDLayout)
+//        val loginIdLayout = findViewById<TextInputLayout>(R.id.editIDLayout)
         val passwordLayout = findViewById<TextInputLayout>(R.id.editPWDLayout)
         val passwordConfirmLayout = findViewById<TextInputLayout>(R.id.editPWDConfirmLayout)
         val nameLayout = findViewById<TextInputLayout>(R.id.editNameLayout)
         val phoneLayout = findViewById<TextInputLayout>(R.id.editPhoneLayout)
 
-        // ColorStateList 생성
-        val hintColorStateList = ColorStateList(
-            arrayOf(
-                intArrayOf(android.R.attr.state_focused), // 포커스 상태
-                intArrayOf() // 기본 상태
-            ),
-            intArrayOf(
-                getColor(R.color.skyblue), // 포커스 상태 색상
-                getColor(R.color.black)    // 기본 색상
-            )
-        )
+//        // ColorStateList 생성
+//        val hintColorStateList = ColorStateList(
+//            arrayOf(
+//                intArrayOf(android.R.attr.state_focused), // 포커스 상태
+//                intArrayOf() // 기본 상태
+//            ),
+//            intArrayOf(
+//                getColor(R.color.skyblue), // 포커스 상태 색상
+//                getColor(R.color.black)    // 기본 색상
+//            )
+//        )
 
-        // TextInputLayout에 hintTextColor 설정
-        loginIdLayout.hintTextColor = hintColorStateList
-        passwordLayout.hintTextColor = hintColorStateList
-        passwordConfirmLayout.hintTextColor = hintColorStateList
-        nameLayout.hintTextColor = hintColorStateList
-        phoneLayout.hintTextColor = hintColorStateList
+//        // TextInputLayout에 hintTextColor 설정
+//        loginIdLayout.hintTextColor = hintColorStateList
+//        passwordLayout.hintTextColor = hintColorStateList
+//        passwordConfirmLayout.hintTextColor = hintColorStateList
+//        nameLayout.hintTextColor = hintColorStateList
+//        phoneLayout.hintTextColor = hintColorStateList
 
         // UI 요소 초기화
         val loginId = findViewById<EditText>(R.id.editID)
@@ -81,6 +79,7 @@ class SignUpActivity : AppCompatActivity() {
         val passwordConfirm = findViewById<EditText>(R.id.editPWDConfirm)
         val name = findViewById<EditText>(R.id.editName)
         val phone = findViewById<EditText>(R.id.editPhone)
+        val checkExistIDButton = findViewById<Button>(R.id.btnCheckExistID)
         val signUpButton = findViewById<Button>(R.id.btnDone)
         val profile = findViewById<ShapeableImageView>(R.id.registration_iv)
 
@@ -89,6 +88,15 @@ class SignUpActivity : AppCompatActivity() {
             val intentImage = Intent(Intent.ACTION_PICK)
             intentImage.type = MediaStore.Images.Media.CONTENT_TYPE
             getContent.launch(intentImage)
+        }
+
+        checkExistIDButton.setOnClickListener{
+            val idText = loginId.text.toString()
+//            val loginIdRequestBody = requestBody(idText)
+            checkExistLoginId(idText)
+
+
+
         }
 
         // 회원가입 버튼 클릭 시 실행되는 코드
@@ -127,6 +135,11 @@ class SignUpActivity : AppCompatActivity() {
         setEditTextListeners(phone)
     }
 
+    private fun requestBody(idText: String): RequestBody {
+        val loginIdRequestBody = idText.toRequestBody("text/plain".toMediaTypeOrNull())
+        return loginIdRequestBody
+    }
+
     // EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
     private fun setEditTextListeners(editText: EditText) {
         editText.addTextChangedListener(object : TextWatcher {
@@ -162,6 +175,31 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
         return file
+    }
+
+    private fun checkExistLoginId(loginId: String) {
+        RetrofitClient.userService.checkExistLoginId(loginId).enqueue(object : Callback<CheckExistIdResponse> {
+            override fun onResponse(call: Call<CheckExistIdResponse>, response: Response<CheckExistIdResponse>) {
+                if (response.isSuccessful) {
+                    val checkExistIdUpResponse = response.body()
+                    if (checkExistIdUpResponse != null) {
+                        if (checkExistIdUpResponse.data) {
+                            Toast.makeText(this@SignUpActivity, "사용가능한 아이디입니다", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(this@SignUpActivity, "사용할 수 없는 아이디입니다", Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(this@SignUpActivity, "응답이 비어있습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@SignUpActivity, "중복 확인 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<CheckExistIdResponse>, t: Throwable) {
+                Toast.makeText(this@SignUpActivity, "중복 확인 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     // 회원가입 요청을 서버로 보내는 메서드

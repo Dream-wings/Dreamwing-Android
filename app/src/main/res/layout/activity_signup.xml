@@ -37,43 +37,53 @@
         android:scaleType="centerCrop"/>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp">
+        android:layout_marginTop="15dp"
+        android:padding="8dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/editIDLayout"
-            android:textColorHint="@color/black"
-            android:fontFamily="@font/happiness_sans_regular"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_login_id" />
 
             <EditText
                 android:hint="@string/id"
                 android:id="@+id/editID"
-                android:layout_width="match_parent"
-                android:backgroundTint="@color/black"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:maxLines="1"
                 android:maxLength="12"
                 android:inputType="text"
                 android:fontFamily="@font/happiness_sans_regular"
                 android:textColor="@color/black"
-                android:layout_height="match_parent"
-                />
-        </com.google.android.material.textfield.TextInputLayout>
+                android:backgroundTint="@color/white"
+                android:padding="8dp" />
 
-        <Button
-            android:id="@+id/btnCheckExistID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|right"
-            android:layout_marginLeft="10dp"
-            android:background="@drawable/button_signup"
-            android:text="중복확인"
-            android:fontFamily="@font/happiness_sans_regular"
-            android:textColor="@color/white" />
+            <Button
+                android:id="@+id/btnCheckExistID"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:background="@drawable/button_signup"
+                android:text="중복확인"
+                android:fontFamily="@font/happiness_sans_regular"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <!-- 밑줄을 추가하는 View -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            android:layout_marginTop="10dp"/>
     </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
