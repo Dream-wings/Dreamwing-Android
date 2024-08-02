@@ -278,7 +278,7 @@ class SignUpActivity : AppCompatActivity() {
                     val signUpResponse = response.body()
                     if (signUpResponse != null) {
                         if (signUpResponse.success) {
-                            Toast.makeText(this@SignUpActivity, "회원가입 성공", Toast.LENGTH_SHORT).show()
+                            showSignUpSuccessDialog()
                         } else {
                             Toast.makeText(this@SignUpActivity, "회원가입 실패", Toast.LENGTH_SHORT).show()
                         }
@@ -312,6 +312,20 @@ class SignUpActivity : AppCompatActivity() {
             .setTitle("오류")
             .setMessage(message)
             .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+    
+    // 회원가입 완료 다이얼로그를 표시하는 메서드
+    private fun showSignUpSuccessDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("회원가입 성공")
+            .setMessage("회원가입이 성공적으로 완료되었습니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 확인 버튼 클릭 시 로그인 화면으로 이동
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish() // 현재 액티비티 종료
+            }
             .show()
     }
 }
