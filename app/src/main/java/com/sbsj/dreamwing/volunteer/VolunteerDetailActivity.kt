@@ -364,7 +364,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
             .setMessage(message)
             .setPositiveButton("확인") { dialog, _ ->
                 dialog.dismiss()
-                finish() // Optionally finish the activity after success
+                // Removed finish() here to prevent the activity from closing
             }
             .create()
             .show()
