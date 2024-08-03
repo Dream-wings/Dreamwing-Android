@@ -31,10 +31,10 @@
         android:name="com.sbsj.dreamwing.volunteer.ui.VolunteerFragment"
         android:label="fragment_volunteer"
         tools:layout="@layout/fragment_volunteer" >
-        <!-- 상세페이지를 위한 detailFragment추가 -->
-        <action
-            android:id="@+id/action_volunteerFragment_to_volunteerDetailFragment"
-            app:destination="@id/volunteerDetailFragment" />
+
+<!--        <action-->
+<!--            android:id="@+id/action_volunteerFragment_to_volunteerDetailFragment"-->
+<!--            app:destination="@id/volunteerDetailFragment" />-->
         <action
             android:id="@+id/action_volunteerFragment_to_supportFragment"
             app:destination="@id/navigation_support" />
