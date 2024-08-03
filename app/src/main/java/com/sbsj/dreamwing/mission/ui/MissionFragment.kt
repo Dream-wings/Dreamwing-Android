@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.databinding.FragmentMissionBinding
+import com.sbsj.dreamwing.volunteer.ui.VolunteerCertificationActivity
 
 /**
  * 미션 프래그먼트
@@ -47,10 +48,10 @@ class MissionFragment : Fragment() {
             startActivity(intent)
         }
 
-//        binding.cardVolunteer.setOnClickListener {
-//            val intent = Intent(activity, VolunteerActivity::class.java)
-//            startActivity(intent)
-//        }
+        binding.cardVolunteer.setOnClickListener {
+            val intent = Intent(activity, VolunteerCertificationActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun onDestroyView() {
