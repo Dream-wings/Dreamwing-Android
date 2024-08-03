@@ -4,23 +4,11 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.sbsj.dreamwing.MainActivity
-import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityLoginBinding
-import com.sbsj.dreamwing.databinding.ActivityQuizBinding
 import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
-import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
-import com.sbsj.dreamwing.user.model.response.SignUpResponse
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,10 +49,10 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // 뷰 참조 가져오기
-        val loginId = findViewById<EditText>(R.id.editID)
-        val password = findViewById<EditText>(R.id.editPWD)
-        val loginButton = findViewById<Button>(R.id.btnLogin)
-        val signUpButton = findViewById<Button>(R.id.btnSignUp)
+        val loginId = binding.editID
+        val password = binding.editPWD
+        val loginButton = binding.btnLogin
+        val signUpButton = binding.btnSignUp
 
         // 로그인 버튼 클릭 리스너 설정
         loginButton.setOnClickListener {
@@ -114,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
                         saveToken(token)
                     } else {
                         // 토큰을 가져오지 못한 경우 사용자에게 알림
-                        Toast.makeText(this@LoginActivity, "토큰을 가져오지 못했습니다.", Toast.LENGTH_SHORT).show()
+                        showNetworkFailDialog()
                     }
                 } else {
                     // 로그인 실패 시 사용자에게 알림
@@ -124,7 +112,7 @@ class LoginActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<Void>, t: Throwable) {
                 // 네트워크 요청 실패 시 사용자에게 알림
-                Toast.makeText(this@LoginActivity, "로그인 실패: ${t.message}", Toast.LENGTH_SHORT).show()
+                showNetworkFailDialog()
             }
         })
     }
@@ -174,6 +162,17 @@ class LoginActivity : AppCompatActivity() {
         AlertDialog.Builder(this)
             .setTitle("로그인 실패")
             .setMessage("로그인 정보를 다시 입력해주세요.")
+            .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    /**
+     * 네트워크 오류 다이얼로그를 표시합니다.
+     */
+    private fun showNetworkFailDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("로그인 실패")
+            .setMessage("나중에 다시 시도해주세요.")
             .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
             .show()
     }
