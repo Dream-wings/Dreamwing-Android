@@ -13,11 +13,11 @@ import retrofit2.http.Query
 
 interface VolunteerService {
 
-    @GET("/volunteer/list")
-    fun getVolunteerList(
-        @Query("page") page: Int,
-        @Query("size") size: Int
-    ): Call<VolunteerListResponse>
+//    @GET("/volunteer/list")
+//    fun getVolunteerList(
+//        @Query("page") page: Int,
+//        @Query("size") size: Int
+//    ): Call<VolunteerListResponse>
 
     @GET("/volunteer/detail")
     fun getVolunteerDetail(@Query("volunteerId") volunteerId: Long): Call<VolunteerDetailResponse>
@@ -45,6 +45,13 @@ interface VolunteerService {
         @Query("userId") userId: Long
     ): Call<ApiResponse<Int>>
 
+
+    @GET("/volunteer/list")
+    fun getVolunteerListWithStatus(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("status") status: Int // Add status parameter for filtering
+    ): Call<VolunteerListResponse>
 }
 
 

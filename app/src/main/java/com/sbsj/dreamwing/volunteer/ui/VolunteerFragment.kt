@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
@@ -31,6 +32,7 @@ class VolunteerFragment : Fragment() {
     private var page = 0
     private val size = 2
     private var userId: Long = 2L // Replace with the actual user ID
+    private var currentFilter = 0 // Default to show "모집중" (status = 0)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,24 +59,38 @@ class VolunteerFragment : Fragment() {
         binding.recyclerView.adapter = volunteerAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Load volunteers
-        loadMoreVolunteers()
+        // Load volunteers based on initial filter
+        loadVolunteers(currentFilter)
 
         // Set scroll listener to load more volunteers on scroll
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1)) {
-                    loadMoreVolunteers()
+                    loadVolunteers(currentFilter)
                 }
             }
         })
 
+        // Set up filter buttons
+        binding.filterRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            page = 0 // Reset page number for new filter
+            when (checkedId) {
+                R.id.radioInRecruitment -> {
+                    currentFilter = 0 // 모집중
+                }
+                R.id.radioCompleted -> {
+                    currentFilter = 1 // 모집완료
+                }
+            }
+            loadVolunteers(currentFilter) // Load volunteers based on the selected filter
+        }
+
         return view
     }
 
-    private fun loadMoreVolunteers() {
-        RetrofitClient.volunteerService.getVolunteerList(page, size).enqueue(object : Callback<VolunteerListResponse> {
+    private fun loadVolunteers(status: Int) {
+        RetrofitClient.volunteerService.getVolunteerListWithStatus(page, size, status).enqueue(object : Callback<VolunteerListResponse> {
             override fun onResponse(
                 call: Call<VolunteerListResponse>,
                 response: Response<VolunteerListResponse>
@@ -83,6 +99,9 @@ class VolunteerFragment : Fragment() {
                     Log.d("VolunteerFragment", "Volunteer list : $response")
 
                     response.body()?.let { volunteerListResponse ->
+                        if (page == 0) {
+                            volunteerList.clear() // Clear the list on the first page load of a new filter
+                        }
                         volunteerList.addAll(volunteerListResponse.data)
                         volunteerAdapter.notifyDataSetChanged()
                         page++
