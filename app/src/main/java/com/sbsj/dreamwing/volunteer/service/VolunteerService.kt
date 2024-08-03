@@ -24,5 +24,17 @@ interface VolunteerService {
 
     @POST("/volunteer/apply")
     fun applyForVolunteer(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
-}
+
+    @GET("/volunteer/check-application")
+    fun checkApplicationStatus(
+        @Query("volunteerId") volunteerId: Long,
+        @Query("userId") userId: Long
+    ): Call<ApiResponse<Boolean>>
+
+    @POST("/volunteer/check-application")
+        fun checkIfAlreadyApplied(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Boolean>>
+    }
+
+
+
 

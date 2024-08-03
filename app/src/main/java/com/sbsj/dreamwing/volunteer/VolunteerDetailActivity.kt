@@ -35,8 +35,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
     private var longitude: Double? = null
     private lateinit var volunteerDetailDTO: VolunteerDetailDTO
 
-    private val inputDateFormat =
-        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+    private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
     private val outputDateFormat = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
 
     private val dayOfWeekMap = mapOf(
@@ -49,12 +48,15 @@ class VolunteerDetailActivity : AppCompatActivity() {
         "Sat" to "토"
     )
 
+    private var userId: Long = 2L // Replace with method to get the actual user ID
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVolunteerDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val volunteerId = intent.getLongExtra("volunteerId", -1)
+        userId = intent.getLongExtra("userId", 2L) // Fetch userId from Intent
 
         binding.backButton.setOnClickListener {
             finish()
@@ -67,6 +69,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         if (volunteerId != -1L) {
             loadVolunteerDetails(volunteerId)
             initializeMapView()
+            checkIfUserApplied(volunteerId, userId) // Check if the user has applied
         } else {
             Log.e("VolunteerDetailActivity", "Invalid volunteerId")
             finish()
@@ -203,33 +206,13 @@ class VolunteerDetailActivity : AppCompatActivity() {
         return formattedDate.replace(weekday, koreanWeekday)
     }
 
-
-    //    private fun showConfirmationDialog() {
-//        val dialogBuilder = AlertDialog.Builder(this)
-//        dialogBuilder.setTitle("Confirm Application")
-//        dialogBuilder.setMessage("Are you sure you want to apply for this volunteer opportunity?")
-//        dialogBuilder.setPositiveButton("Confirm") { _, _ ->
-//            // Proceed with applying
-//            volunteerDetailDTO?.let { volunteer ->
-//                val userId = getUserId() // Replace with actual user ID retrieval logic
-//                val request = PostApplyVolunteerRequestDTO(volunteer.volunteerId, userId)
-//                applyForVolunteer(request)
-//            }
-//        }
-//        dialogBuilder.setNegativeButton("Cancel") { dialog, _ ->
-//            dialog.dismiss()
-//        }
-//        val alertDialog = dialogBuilder.create()
-//        alertDialog.show()
-//    }
     private fun showConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle("신청 확인")
             .setMessage("신청을 확정합니다.")
             .setPositiveButton("확인") { dialog, _ ->
-                val userId = getUserId()
                 val requestDTO = PostApplyVolunteerRequestDTO(
-                    volunteerId = volunteerDetailDTO.volunteerId, // Replace with actual volunteer ID
+                    volunteerId = volunteerDetailDTO.volunteerId,
                     userId = userId
                 )
                 applyForVolunteer(requestDTO)
@@ -253,36 +236,75 @@ class VolunteerDetailActivity : AppCompatActivity() {
                         val apiResponse = response.body()
                         if (apiResponse != null && apiResponse.success) {
                             Log.d("VolunteerDetailActivity", "Application successful")
-                            showSuccessDialog("신청에 성공했습니다!")
+                            showSuccessDialog("신청이 완료되었습니다.")
                         } else {
-                            Log.e(
-                                "VolunteerDetailActivity",
-                                "Application failed: ${apiResponse?.message}"
-                            )
-                            showErrorDialog("신청에 실패했습니다: ${apiResponse?.message}")
+                            Log.e("VolunteerDetailActivity", "Application failed: ${apiResponse?.message}")
+                            showErrorDialog("신청 실패: ${apiResponse?.message}")
                         }
                     } else {
-                        Log.e(
-                            "VolunteerDetailActivity",
-                            "Response error: ${response.errorBody()?.string()}"
-                        )
-                        showErrorDialog("응답 오류: ${response.message()}")
+                        Log.e("VolunteerDetailActivity", "Response error: ${response.errorBody()?.string()}")
+                        showErrorDialog("신청 실패: ${response.errorBody()?.string()}")
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse<Unit>>, t: Throwable) {
                     Log.e("VolunteerDetailActivity", "Network request failed", t)
-                    showErrorDialog("네트워크 요청 실패: ${t.message}")
+                    showErrorDialog("신청 실패: 네트워크 오류")
                 }
             })
     }
 
+    private fun checkIfUserApplied(volunteerId: Long, userId: Long) {
+        RetrofitClient.volunteerService.checkIfAlreadyApplied(
+            PostApplyVolunteerRequestDTO(volunteerId, userId)
+        ).enqueue(object : Callback<ApiResponse<Boolean>> {
+            override fun onResponse(
+                call: Call<ApiResponse<Boolean>>,
+                response: Response<ApiResponse<Boolean>>
+            ) {
+                if (response.isSuccessful) {
+                    val apiResponse = response.body()
+                    if (apiResponse != null && apiResponse.success) {
+                        val hasApplied = apiResponse.data ?: false
+                        // Show or hide the apply button and certificate button based on application status
+                        if (hasApplied) {
+                            binding.applyButton.visibility = View.GONE
+                            binding.certificateButton.visibility = View.VISIBLE
+                        } else {
+                            binding.applyButton.visibility = View.VISIBLE
+                            binding.certificateButton.visibility = View.GONE
+                        }
+                    } else {
+                        Log.e("VolunteerDetailActivity", "API response error: ${apiResponse?.message}")
+                        // Handle case where response is not successful
+                        binding.applyButton.visibility = View.GONE
+                        binding.certificateButton.visibility = View.GONE
+                    }
+                } else {
+                    Log.e("VolunteerDetailActivity", "Response error: ${response.errorBody()?.string()}")
+                    // Handle case where response is not successful
+                    binding.applyButton.visibility = View.GONE
+                    binding.certificateButton.visibility = View.GONE
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Boolean>>, t: Throwable) {
+                Log.e("VolunteerDetailActivity", "Network request failed", t)
+                // Handle network failure
+                binding.applyButton.visibility = View.GONE
+                binding.certificateButton.visibility = View.GONE
+            }
+        })
+    }
+
+
     private fun showSuccessDialog(message: String) {
         AlertDialog.Builder(this)
-            .setTitle("신청 확정")
+            .setTitle("성공")
             .setMessage(message)
-            .setPositiveButton("OK") { dialog, _ ->
+            .setPositiveButton("확인") { dialog, _ ->
                 dialog.dismiss()
+                finish() // Optionally finish the activity after success
             }
             .create()
             .show()
@@ -290,47 +312,18 @@ class VolunteerDetailActivity : AppCompatActivity() {
 
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(this)
-            .setTitle("에러코드 1101 : 관리자에게 문의하십시오.")
+            .setTitle("오류")
             .setMessage(message)
-            .setPositiveButton("OK") { dialog, _ ->
+            .setPositiveButton("확인") { dialog, _ ->
                 dialog.dismiss()
             }
             .create()
             .show()
     }
 
-//    private fun applyForVolunteer(request: PostApplyVolunteerRequestDTO) {
-//        val userId = getUserId() // Method to get the user ID
-//
-//        val requestDTO = PostApplyVolunteerRequestDTO(
-//            volunteerId = volunteerDetailDTO.volunteerId, // Replace with actual volunteer ID
-//            userId = userId
-//        )
-//
-//        RetrofitClient.volunteerService.applyForVolunteer(requestDTO).enqueue(object : Callback<Void> {
-//            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-//                if (response.isSuccessful) {
-//                    showToast("Application successful!")
-//                } else {
-//                    showToast("Application failed: ${response.message()}")
-//                }
-//            }
-
-//            override fun onFailure(call: Call<ApiResponse<Void>>, t: Throwable) {
-//                showToast("Network request failed: ${t.message}")
-//            }
-
-
-//        })
-//    }
-
     private fun getUserId(): Long {
         // Replace with actual method to get user ID from preferences or session
         return 2L // Example user ID
-    }
-
-    private fun showToast(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 
     override fun onResume() {
@@ -348,6 +341,3 @@ class VolunteerDetailActivity : AppCompatActivity() {
 //        binding.mapView.destroy()
     }
 }
-
-
-
