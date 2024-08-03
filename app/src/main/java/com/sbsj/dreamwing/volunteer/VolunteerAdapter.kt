@@ -18,33 +18,42 @@ class VolunteerAdapter(
 
     inner class VolunteerViewHolder(private val binding: ItemVolunteerBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(volunteer: VolunteerListDTO) {
-            Log.d("VolunteerAdapter", "Binding volunteer with ID: ${volunteer.volunteerId}") // 추가된 로그
+            Log.d("VolunteerAdapter", "Binding volunteer with ID: ${volunteer.volunteerId}")
 
-            binding.titleTextView.text = volunteer.title
-            binding.categoryTextView.text = when (volunteer.category) {
-                1 -> "빵만들기"
-                2 -> "자막달기"
-                3 -> "돌보기"
-                4 -> "밑반찬 만들기"
-                5 -> "흙공 만들기"
-                else -> "기타"
+            with(binding) {
+                titleTextView.text = volunteer.title
+                categoryTextView.text = volunteer.getCategoryName()
+                addressTextView.text = volunteer.address
+                volunteerStartDateTextView.text = volunteer.getFormattedStartDate()
+                statusTextView.text = if (volunteer.status == 1) "모집완료" else "모집중"
+                setImage(volunteer.imageUrl)
+                root.setOnClickListener { onItemClick(volunteer) }
             }
-            binding.addressTextView.text = volunteer.address
-            binding.volunteerStartDateTextView.text = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault()).format(SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault()).parse(volunteer.volunteerStartDate))
-            binding.statusTextView.text = if (volunteer.status == 1) "모집중" else "모집완료"
+        }
 
-            if (volunteer.imageUrl.isNotEmpty()) {
-                Picasso.get().load(volunteer.imageUrl).into(binding.imageView)
-                binding.imageView.visibility = View.VISIBLE
+        private fun ItemVolunteerBinding.setImage(imageUrl: String) {
+            if (imageUrl.isNotEmpty()) {
+                Picasso.get().load(imageUrl).into(imageView)
+                imageView.visibility = View.VISIBLE
             } else {
-                binding.imageView.visibility = View.GONE
+                imageView.visibility = View.GONE
             }
+        }
 
-            binding.root.setOnClickListener {
-                Log.d("VolunteerAdapter", "Item clicked with volunteerId: ${volunteer.volunteerId}")
+        private fun VolunteerListDTO.getCategoryName() = when (category) {
+            1 -> "빵만들기"
+            2 -> "자막달기"
+            3 -> "돌보기"
+            4 -> "밑반찬 만들기"
+            5 -> "흙공 만들기"
+            else -> "기타"
+        }
 
-                onItemClick(volunteer)
-            }
+        private fun VolunteerListDTO.getFormattedStartDate(): String {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
+            val date = inputFormat.parse(volunteerStartDate)
+            return outputFormat.format(date)
         }
     }
 
@@ -57,7 +66,5 @@ class VolunteerAdapter(
         holder.bind(volunteers[position])
     }
 
-    override fun getItemCount(): Int {
-        return volunteers.size
-    }
+    override fun getItemCount(): Int = volunteers.size
 }

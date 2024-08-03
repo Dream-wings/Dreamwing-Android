@@ -16,8 +16,8 @@ data class VolunteerDetailDTO(
     @SerializedName("recruitStartDate") val recruitStartDate: String?,
     @SerializedName("recruitEndDate") val recruitEndDate: String?,
     @SerializedName("imageUrl") val imageUrl: String?,
-    @SerializedName("currentApplicantCount") val currentApplicantCount: Int,
-    @SerializedName("latitude") val latitude: String?, // 서버와 일치하도록 String으로 설정
-    @SerializedName("longitude") val longitude: String? // 서버와 일치하도록 String으로 설정
+    @SerializedName("latitude") val latitude: Double?,
+    @SerializedName("longitude") val longitude: Double?,
+    @SerializedName("currentApplicantCount") val currentApplicantCount: Int
 )
 
