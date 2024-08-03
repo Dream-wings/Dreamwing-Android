@@ -25,7 +25,7 @@ class VolunteerAdapter(
                 categoryTextView.text = volunteer.getCategoryName()
                 addressTextView.text = volunteer.address
                 volunteerStartDateTextView.text = volunteer.getFormattedStartDate()
-                statusTextView.text = if (volunteer.status == 1) "모집중" else "모집완료"
+                statusTextView.text = if (volunteer.status == 1) "모집완료" else "모집중"
                 setImage(volunteer.imageUrl)
                 root.setOnClickListener { onItemClick(volunteer) }
             }
