@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -32,7 +33,9 @@ class VolunteerFragment : Fragment() {
     private var page = 0
     private val size = 2
     private var userId: Long = 2L // Replace with the actual user ID
-    private var currentFilter = 0 // Default to show "모집중" (status = 0)
+
+    private var selectedStatus = 0 // Default to "모집중"
+    private var selectedType = 0 // Default to "봉사"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,61 +62,63 @@ class VolunteerFragment : Fragment() {
         binding.recyclerView.adapter = volunteerAdapter
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Load volunteers based on initial filter
-        loadVolunteers(currentFilter)
+        // Load volunteers
+        loadMoreVolunteers()
 
         // Set scroll listener to load more volunteers on scroll
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (!recyclerView.canScrollVertically(1)) {
-                    loadVolunteers(currentFilter)
+                    loadMoreVolunteers()
                 }
             }
         })
 
-        // Set up filter buttons
-        binding.filterRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            page = 0 // Reset page number for new filter
-            when (checkedId) {
-                R.id.radioInRecruitment -> {
-                    currentFilter = 0 // 모집중
-                }
-                R.id.radioCompleted -> {
-                    currentFilter = 1 // 모집완료
-                }
-            }
-            loadVolunteers(currentFilter) // Load volunteers based on the selected filter
+        // Set filter listeners
+        binding.filterRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            selectedStatus = if (checkedId == R.id.radioInRecruitment) 0 else 1
+            refreshVolunteers()
+        }
+
+        binding.typeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            selectedType = if (checkedId == R.id.radioVolunteer) 0 else 1
+            refreshVolunteers()
         }
 
         return view
     }
 
-    private fun loadVolunteers(status: Int) {
-        RetrofitClient.volunteerService.getVolunteerListWithStatus(page, size, status).enqueue(object : Callback<VolunteerListResponse> {
-            override fun onResponse(
-                call: Call<VolunteerListResponse>,
-                response: Response<VolunteerListResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("VolunteerFragment", "Volunteer list : $response")
+    private fun loadMoreVolunteers() {
+        RetrofitClient.volunteerService.getVolunteerListWithStatus(page, size, selectedStatus, selectedType)
+            .enqueue(object : Callback<VolunteerListResponse> {
+                override fun onResponse(
+                    call: Call<VolunteerListResponse>,
+                    response: Response<VolunteerListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("VolunteerFragment", "Volunteer list : $response")
 
-                    response.body()?.let { volunteerListResponse ->
-                        if (page == 0) {
-                            volunteerList.clear() // Clear the list on the first page load of a new filter
+                        response.body()?.let { volunteerListResponse ->
+                            volunteerList.addAll(volunteerListResponse.data)
+                            volunteerAdapter.notifyDataSetChanged()
+                            page++
                         }
-                        volunteerList.addAll(volunteerListResponse.data)
-                        volunteerAdapter.notifyDataSetChanged()
-                        page++
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<VolunteerListResponse>, t: Throwable) {
-                // Handle API failure
-                Log.e("VolunteerFragment", "Failed to load volunteers", t)
-            }
-        })
+                override fun onFailure(call: Call<VolunteerListResponse>, t: Throwable) {
+                    // Handle API failure
+                    Log.e("VolunteerFragment", "Failed to load volunteers", t)
+                }
+            })
+    }
+
+    private fun refreshVolunteers() {
+        page = 0
+        volunteerList.clear()
+        volunteerAdapter.notifyDataSetChanged()
+        loadMoreVolunteers()
     }
 
     private fun checkIfUserApplied(volunteerId: Long, callback: (Boolean) -> Unit) {

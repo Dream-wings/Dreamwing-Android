@@ -50,7 +50,8 @@ interface VolunteerService {
     fun getVolunteerListWithStatus(
         @Query("page") page: Int,
         @Query("size") size: Int,
-        @Query("status") status: Int // Add status parameter for filtering
+        @Query("status") status: Int, // Add status parameter for filtering
+        @Query("type") type: Int? // Add type parameter for filtering
     ): Call<VolunteerListResponse>
 }
 
