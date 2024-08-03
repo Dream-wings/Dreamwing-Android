@@ -1,6 +1,7 @@
 package com.sbsj.dreamwing.data.api
 
 import com.sbsj.dreamwing.BuildConfig
+import com.sbsj.dreamwing.mission.service.MissionService
 import com.sbsj.dreamwing.support.service.SupportService
 import com.sbsj.dreamwing.user.service.UserService
 import com.sbsj.dreamwing.volunteer.service.VolunteerService
@@ -16,14 +17,6 @@ object RetrofitClient {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
-    val instance: ApiService by lazy {
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(BASE_URL)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
-        retrofit.create(ApiService::class.java)
-    }
-
     val supportService: SupportService by lazy {
         retrofit.create(SupportService::class.java)
     }
@@ -32,10 +25,11 @@ object RetrofitClient {
         retrofit.create(UserService::class.java)
     }
 
-
-
-    // VolunteerService 인스턴스
     val volunteerService: VolunteerService by lazy {
         retrofit.create(VolunteerService::class.java)
+    }
+
+    val missionService: MissionService by lazy {
+        retrofit.create(MissionService::class.java)
     }
 }
