@@ -248,12 +248,13 @@
         android:id="@+id/certificateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/applyButton"
-        android:text="증명서 발급"
+        android:layout_alignParentBottom="true"
+        android:text="신청취소"
         android:textSize="16sp"
         android:padding="16dp"
-        android:background="#FF6F61"
+        android:background="#FF0000"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/happiness_sans_title"
+        android:visibility="gone"
         />
 </RelativeLayout>

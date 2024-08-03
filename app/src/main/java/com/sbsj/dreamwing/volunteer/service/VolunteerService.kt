@@ -37,6 +37,14 @@ interface VolunteerService {
     // New method for canceling application
     @POST("/volunteer/cancel-application")
     fun cancelApplication(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
+
+
+    @GET("/volunteer/check-status")
+    fun checkStatus(
+        @Query("volunteerId") volunteerId: Long,
+        @Query("userId") userId: Long
+    ): Call<ApiResponse<Int>>
+
 }
 
 
