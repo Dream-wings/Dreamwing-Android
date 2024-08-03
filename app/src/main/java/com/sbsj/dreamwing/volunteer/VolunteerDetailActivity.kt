@@ -48,7 +48,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
 
     private var userId: Long = 2L // Replace with method to get the actual user ID
     private var isApplied = false
-    private var isVerified = false // New variable for verification status
+    private var isVerified = false // Variable for verification status
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,7 +73,8 @@ class VolunteerDetailActivity : AppCompatActivity() {
         if (volunteerId != -1L) {
             loadVolunteerDetails(volunteerId)
             initializeMapView()
-            checkApplicationStatus(volunteerId, userId) // Updated method call
+            checkApplicationStatus(volunteerId, userId) // Check if the user has applied
+            checkStatus(volunteerId, userId) // Check if the application is approved
         } else {
             Log.e("VolunteerDetailActivity", "Invalid volunteerId")
             finish()
@@ -304,7 +305,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
             })
     }
 
-    // Updated method to check both application and verification status
+    // Method to check if the user has applied
     private fun checkApplicationStatus(volunteerId: Long, userId: Long) {
         RetrofitClient.volunteerService.checkApplicationStatus(
             volunteerId,
@@ -318,7 +319,6 @@ class VolunteerDetailActivity : AppCompatActivity() {
                     val apiResponse = response.body()
                     if (apiResponse != null && apiResponse.success) {
                         isApplied = apiResponse.data ?: false
-                        isVerified = false // Assuming there's no verification for now
                         updateButtonState()
                     } else {
                         Log.e("VolunteerDetailActivity", "API response error: ${apiResponse?.message}")
@@ -335,6 +335,41 @@ class VolunteerDetailActivity : AppCompatActivity() {
                 updateButtonState()
             }
         })
+    }
+
+    // Method to fetch application approval status from server
+    private fun checkStatus(volunteerId: Long, userId: Long) {
+        RetrofitClient.volunteerService.checkStatus(volunteerId, userId)
+            .enqueue(object : Callback<ApiResponse<Int>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<Int>>,
+                    response: Response<ApiResponse<Int>>
+                ) {
+                    if (response.isSuccessful) {
+                        val apiResponse = response.body()
+                        if (apiResponse != null && apiResponse.success) {
+                            val status = apiResponse.data ?: 0
+                            updateUIBasedOnStatus(status)
+                        } else {
+                            Log.e("VolunteerDetailActivity", "API response error: ${apiResponse?.message}")
+                        }
+                    } else {
+                        Log.e("VolunteerDetailActivity", "Response error: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<Int>>, t: Throwable) {
+                    Log.e("VolunteerDetailActivity", "Network request failed", t)
+                }
+            })
+    }
+
+    // Update the UI based on approval status
+    private fun updateUIBasedOnStatus(status: Int) {
+        if (status == 1) { // If status is approved
+            isVerified = true
+        }
+        updateButtonState()
     }
 
     private fun updateButtonState() {
