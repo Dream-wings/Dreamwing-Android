@@ -33,7 +33,13 @@ interface VolunteerService {
 
     @POST("/volunteer/check-application")
         fun checkIfAlreadyApplied(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Boolean>>
-    }
+
+    // New method for canceling application
+    @POST("/volunteer/cancel-application")
+    fun cancelApplication(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
+}
+
+
 
 
 

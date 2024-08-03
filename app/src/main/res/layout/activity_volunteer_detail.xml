@@ -225,7 +225,23 @@
         android:background="#00AEFF"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/happiness_sans_title"
-        />
+        android:visibility="gone"
+    />
+
+    <!-- Cancel Application Button -->
+    <Button
+        android:id="@+id/cancelApplyButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="신청취소"
+        android:textSize="16sp"
+        android:padding="16dp"
+        android:background="#FF0000"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/happiness_sans_title"
+        android:visibility="gone"
+    />
 
     <!-- Certificate Button -->
     <Button
