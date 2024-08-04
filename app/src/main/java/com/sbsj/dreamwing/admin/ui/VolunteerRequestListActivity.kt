@@ -52,7 +52,6 @@ class VolunteerRequestListActivity : AppCompatActivity() {
                 }
             }
         })
-
     }
 
     private fun fetchRequestList() {

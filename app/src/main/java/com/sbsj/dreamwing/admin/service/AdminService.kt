@@ -1,9 +1,14 @@
 package com.sbsj.dreamwing.admin.service
 
+import com.sbsj.dreamwing.admin.model.request.ApproveRequest
+import com.sbsj.dreamwing.admin.model.response.VolunteerRequestDetailResponse
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
+import com.sbsj.dreamwing.admin.ui.VolunteerRequestDetailActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.PATCH
 import retrofit2.http.Query
 
 /**
@@ -34,7 +39,16 @@ interface AdminService {
      * @since 2024.08.04
      * @version 1.0
      */
-//    @GET("/admin/volunteer/request")
-//    fun getVolunteerRequestDetail(@Query("volunteerId") volunteerId: Long,
-//                                  @Query("userId") userId: Long)
+    @GET("/admin/volunteer/request")
+    fun getVolunteerRequestDetail(@Query("volunteerId") volunteerId: Long,
+                                  @Query("userId") userId: Long) : Call<ApiResponse<VolunteerRequestDetailResponse>>
+
+    /**
+     * 봉사활동 신청 승인
+     * @author 정은지
+     * @since 2024.08.04
+     * @version 1.0
+     */
+    @PATCH("/admin/volunteer/approve")
+    fun approveVolunteerRequest(@Body request: ApproveRequest) : Call<ApiResponse<Void>>
 }
