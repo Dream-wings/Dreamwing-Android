@@ -130,7 +130,7 @@ class QuizActivity : AppCompatActivity() {
         val request = AwardPointRequest(
             userId = 1,
             activityType = ActivityType.QUIZ.type,
-            activityTitle = ActivityType.QUIZ.displayName,
+            activityTitle = ActivityType.QUIZ.title,
             point = ActivityType.QUIZ.point
         )
 

@@ -29,11 +29,15 @@
             android:name=".user.PointDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".mission.ui.WalkAwardActivity"
+            android:exported="true" />
+        <activity
             android:name=".volunteer.ui.VolunteerCertificationSuccessActivity"
             android:exported="true" />
         <activity
             android:name=".volunteer.ui.VolunteerCertificationActivity"
             android:exported="true" />
+
         <activity
             android:name=".user.LoginActivity"
             android:exported="true" />

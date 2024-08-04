@@ -8,7 +8,8 @@
     android:layout_marginRight="16dp"
     android:layout_marginBottom="20dp"
     card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="4dp">
+    card_view:cardElevation="4dp"
+    android:fontFamily="@font/happiness_sans_title">
 
     <!-- Original LinearLayout and its contents -->
     <LinearLayout
@@ -34,21 +35,26 @@
 
             <TextView
                 android:id="@+id/categoryTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="left" />
+                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:background="@drawable/bg_jaeseong_categoryview"
+            android:padding="8dp"
+            android:textColor="@android:color/black"
+            android:layout_marginEnd="8dp"
+                android:minWidth="130dp"
+                />
 
             <TextView
                 android:id="@+id/titleTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="left" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="left" />
         </LinearLayout>
 
         <!-- Address -->
@@ -57,7 +63,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:drawableLeft="@drawable/ic_location"
+            android:drawablePadding="8dp"
+            android:padding="8dp"/>
 
         <!-- Start Date and Status in one line -->
         <LinearLayout
@@ -72,16 +81,22 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"
-                android:gravity="left" />
+                android:gravity="left"
+                android:drawableLeft="@drawable/ic_clock"
+            android:drawablePadding="8dp"
+            android:padding="8dp" />
 
             <TextView
                 android:id="@+id/statusTextView"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="16sp"
-                android:gravity="right"
-                android:textColor="@android:color/holo_red_light" />
+                android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:background="@drawable/bg_jaeseong_textview"
+            android:padding="8dp"
+            android:textColor="@android:color/white"
+            android:layout_marginStart="8dp"
+                android:minWidth="100dp"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
