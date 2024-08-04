@@ -26,12 +26,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".user.PointDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".volunteer.ui.VolunteerCertificationSuccessActivity"
             android:exported="true" />
         <activity
             android:name=".volunteer.ui.VolunteerCertificationActivity"
             android:exported="true" />
-
         <activity
             android:name=".user.LoginActivity"
             android:exported="true" />
@@ -48,11 +50,8 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:usesCleartextTraffic="true">
-        </activity>
-
-        <activity android:name=".volunteer.VolunteerDetailActivity"/>
-
+            android:usesCleartextTraffic="true"></activity>
+        <activity android:name=".volunteer.VolunteerDetailActivity" />
         <activity
             android:name=".mission.MissionActivity"
             android:exported="false"
