@@ -51,7 +51,7 @@ class VolunteerAdapter(
 
         private fun VolunteerListDTO.getFormattedStartDate(): String {
             val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
+            val outputFormat = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.KOREAN)
             val date = inputFormat.parse(volunteerStartDate)
             return outputFormat.format(date)
         }
