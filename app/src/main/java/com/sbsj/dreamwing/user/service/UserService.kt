@@ -1,12 +1,17 @@
 package com.sbsj.dreamwing.user.service
+import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.mission.model.response.QuizResponse
 import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
+import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
+import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -45,5 +50,10 @@ interface UserService {
     fun login(
         @Body loginRequestDTO: LoginRequestDTO
     ): Call<Void>
+
+    @GET("/user/getMyPageInfo")
+    fun getMyPageInfo(
+        @Header("Authorization") authHeader: String
+    ): Call<ApiResponse<MyPageDTO>>
 
 }
