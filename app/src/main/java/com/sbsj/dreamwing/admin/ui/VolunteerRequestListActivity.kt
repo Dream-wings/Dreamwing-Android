@@ -13,6 +13,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * 봉사활동 신청 대기 목록 화면
+ * @author 정은지
+ * @since 2024.08.04
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.04  	정은지       최초 생성
+ * </pre>
+ */
 class VolunteerRequestListActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVolunteerRequestListBinding
