@@ -1,6 +1,7 @@
 package com.sbsj.dreamwing.admin.ui
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -59,6 +60,21 @@ class VolunteerRequestRecyclerViewAdapter(
 
     inner class RequestListViewHolder(private val binding: ItemAdminBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        init {
+            binding.root.setOnClickListener {
+                val position = bindingAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    val item = requestList[position - 1]
+                    val intent = Intent(context, VolunteerRequestDetailActivity::class.java).apply {
+                        putExtra("volunteerId", item.volunteerId)
+                        putExtra("userId", item.userId)
+                        putExtra("volunteerRequest", item)
+                    }
+                    context.startActivity(intent)
+                }
+            }
+        }
+
         fun bind(item: VolunteerRequestListResponse) {
             Log.d("VolunteerRequestRecyclerViewAdapter", item.toString())
             binding.column1.text = item.volunteerId.toString()
