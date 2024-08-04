@@ -9,12 +9,14 @@ import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityLoginBinding
 import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 /**
- *
+ * 로그인 액티비티
+ * 사용자 로그인 요청을 처리하고 JWT 토큰을 저장합니다.
  * @author 정은찬
  * @since 2024.08.02
  * @version 1.0
@@ -22,7 +24,7 @@ import retrofit2.Response
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.02   정은찬        최초 생성
- * 2024.08.03   정은찬        Rtrofit을 통해 로그인 정보 보내기 및 JWT 토큰 헤더에서 받기
+ * 2024.08.03   정은찬        Retrofit을 통해 로그인 정보 보내기 및 JWT 토큰 헤더에서 받기
  * 2024.08.03   정은찬        뒤로가기 툴바 적용
  */
 class LoginActivity : AppCompatActivity() {
@@ -99,7 +101,7 @@ class LoginActivity : AppCompatActivity() {
                         // 로그인 성공 다이얼로그 표시
                         showLoginSuccessDialog()
                         // 토큰 저장 (추후 사용 가능)
-                        saveToken(token)
+                        SharedPreferencesUtil.saveToken(this@LoginActivity, token)
                     } else {
                         // 토큰을 가져오지 못한 경우 사용자에게 알림
                         showNetworkFailDialog()
@@ -115,17 +117,6 @@ class LoginActivity : AppCompatActivity() {
                 showNetworkFailDialog()
             }
         })
-    }
-
-    /**
-     * JWT 토큰을 SharedPreferences에 저장합니다.
-     * @param token JWT 토큰
-     */
-    private fun saveToken(token: String) {
-        val sharedPreferences = getSharedPreferences("auth", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("token", token)
-        editor.apply()
     }
 
     /**
