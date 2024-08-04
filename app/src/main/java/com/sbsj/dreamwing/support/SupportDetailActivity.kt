@@ -4,14 +4,12 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivitySupportDetailBinding
-import com.sbsj.dreamwing.support.model.SupportCategory
 import com.sbsj.dreamwing.support.model.SupportDetailDTO
 import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
 import com.squareup.picasso.Picasso
@@ -19,7 +17,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 class SupportDetailActivity : AppCompatActivity() {
 
@@ -27,19 +26,7 @@ class SupportDetailActivity : AppCompatActivity() {
     private lateinit var supportDetailDTO: SupportDetailDTO
 
     private val inputDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.getDefault())
-    private val outputDateFormat = SimpleDateFormat("yyyy-MM-dd (EEE)", Locale.getDefault())
-
-    private val dayOfWeekMap = mapOf(
-        "Sun" to "일",
-        "Mon" to "월",
-        "Tue" to "화",
-        "Wed" to "수",
-        "Thu" to "목",
-        "Fri" to "금",
-        "Sat" to "토"
-    )
-
-    private var userId: Long = 2L // Replace with method to get the actual user ID
+    private val outputDateFormat = SimpleDateFormat("yyyy.MM.dd", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +34,6 @@ class SupportDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val supportId = intent.getLongExtra("supportId", -1)
-        userId = intent.getLongExtra("userId", 2L) // Fetch userId from Intent
 
         binding.backButton.setOnClickListener {
             finish()
@@ -81,19 +67,14 @@ class SupportDetailActivity : AppCompatActivity() {
 
                             binding.titleTextView.text = supportDetailDTO.title
                             binding.contentTextView.text = supportDetailDTO.content
+                            binding.totalAmountTextView.text = "${supportDetailDTO.goalPoint} WING 목표"
+                            binding.currentAmountTextView.text = "${supportDetailDTO.currentPoint} WING"
 
-                            // Use enum for category
-                            val category = SupportCategory.fromValue(supportDetailDTO.category)
-                            binding.categoryTextView.text = category.displayName
+                            val progressPercentage = calculateProgressPercentage(supportDetailDTO.goalPoint, supportDetailDTO.currentPoint)
+                            binding.progressBar.progress = progressPercentage
+                            binding.progressPercentageTextView.text = "$progressPercentage%"
 
-                            binding.totalAmountTextView.text = "목표 금액: ${supportDetailDTO.goalPoint} WING"
-                            binding.currentAmountTextView.text = "모금액: ${supportDetailDTO.currentPoint} WING"
-
-                            val recruitStartDate = formatDate(supportDetailDTO.recruitStartDate)
-                            val recruitEndDate = formatDate(supportDetailDTO.recruitEndDate)
-
-                            binding.recruitStartDateTextView.text = "모금 시작일: $recruitStartDate"
-                            binding.recruitEndDateTextView.text = "모금 종료일: $recruitEndDate"
+                            binding.fundraisingPeriodTextView.text = "모금 기간 : ${formatDate(supportDetailDTO.startDate.toString())} ~ ${formatDate(supportDetailDTO.endDate.toString())}"
 
                             val imageUrl = supportDetailDTO.imageUrl
                             if (!imageUrl.isNullOrEmpty()) {
@@ -105,77 +86,74 @@ class SupportDetailActivity : AppCompatActivity() {
                         }
                     } else {
                         Log.e("SupportDetailActivity", "Response error: ${response.errorBody()?.string()}")
+                        showErrorDialog("상세 정보를 가져오는 데 실패했습니다.")
                     }
                 }
 
                 override fun onFailure(call: Call<SupportDetailResponse>, t: Throwable) {
                     Log.e("SupportDetailActivity", "Network request failed", t)
+                    showErrorDialog("상세 정보를 가져오는 데 실패했습니다: 네트워크 오류")
                 }
             })
+    }
+
+    private fun calculateProgressPercentage(goalPoint: Int, currentPoint: Int): Int {
+        return if (goalPoint == 0) {
+            0
+        } else {
+            (currentPoint * 100) / goalPoint
+        }
     }
 
     private fun formatDate(dateString: String?): String {
         return try {
             Log.d("SupportDetailActivity", "Original date string: $dateString")
             val date = dateString?.let { inputDateFormat.parse(it) }
-            date?.let { formatDateWithKoreanWeekday(it) } ?: "N/A"
+            date?.let { outputDateFormat.format(it) } ?: "N/A"
         } catch (e: Exception) {
             Log.e("SupportDetailActivity", "Date parsing error", e)
             "N/A"
         }
     }
 
-    private fun formatDateWithKoreanWeekday(date: Date): String {
-        val formattedDate = outputDateFormat.format(date)
-        val weekday = SimpleDateFormat("EEE", Locale.ENGLISH).format(date)
-        val koreanWeekday = dayOfWeekMap[weekday] ?: "N/A"
-        return formattedDate.replace(weekday, koreanWeekday)
-    }
-
     private fun showDonationDialog() {
-        // Create an EditText to input the donation amount
-        val input = EditText(this)
-        input.hint = "기부할 금액을 입력하세요"
+        val donationDialog = AlertDialog.Builder(this)
+        donationDialog.setTitle("기부하기")
+        donationDialog.setMessage("기부할 금액을 입력하세요:")
 
-        AlertDialog.Builder(this)
-            .setTitle("기부하기")
-            .setMessage("기부할 금액을 입력하세요.")
-            .setView(input)
-            .setPositiveButton("확인") { dialog, _ ->
-                val donationAmount = input.text.toString().toIntOrNull()
-                if (donationAmount != null && donationAmount > 0) {
-                    donateForSupport(supportDetailDTO.supportId, userId, donationAmount)
-                } else {
-                    Toast.makeText(this, "유효한 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
-                }
-                dialog.dismiss()
+        val input = android.widget.EditText(this)
+        input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
+        donationDialog.setView(input)
+
+        donationDialog.setPositiveButton("확인") { dialog, _ ->
+            val amount = input.text.toString().toIntOrNull()
+            if (amount != null && amount > 0) {
+                donateToSupport(amount)
+            } else {
+                Toast.makeText(this, "유효한 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
             }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
+            dialog.dismiss()
+        }
+
+        donationDialog.setNegativeButton("취소") { dialog, _ ->
+            dialog.cancel()
+        }
+
+        donationDialog.show()
     }
 
-    private fun donateForSupport(supportId: Long, userId: Long, amount: Int) {
+    private fun donateToSupport(amount: Int) {
+        val supportId = supportDetailDTO.supportId
+        val userId = 2L // Replace with actual user ID retrieval logic
+
         RetrofitClient.supportService.donateForSupport(supportId, userId, amount)
             .enqueue(object : Callback<ApiResponse<Unit>> {
-                override fun onResponse(
-                    call: Call<ApiResponse<Unit>>,
-                    response: Response<ApiResponse<Unit>>
-                ) {
-                    if (response.isSuccessful) {
-                        val apiResponse = response.body()
-                        if (apiResponse != null && apiResponse.success) {
-                            Log.d("SupportDetailActivity", "Donation successful")
-                            showSuccessDialog("기부가 완료되었습니다.")
-                            loadSupportDetails(supportId) // Reload details to update current amount
-                        } else {
-                            Log.e("SupportDetailActivity", "Donation failed: ${apiResponse?.message}")
-                            showErrorDialog("기부 실패: ${apiResponse?.message}")
-                        }
+                override fun onResponse(call: Call<ApiResponse<Unit>>, response: Response<ApiResponse<Unit>>) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Toast.makeText(this@SupportDetailActivity, "기부가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        loadSupportDetails(supportId) // Reload details to update current points
                     } else {
-                        Log.e("SupportDetailActivity", "Response error: ${response.errorBody()?.string()}")
+                        Log.e("SupportDetailActivity", "Donation failed: ${response.errorBody()?.string()}")
                         showErrorDialog("기부 실패: ${response.errorBody()?.string()}")
                     }
                 }
@@ -185,17 +163,6 @@ class SupportDetailActivity : AppCompatActivity() {
                     showErrorDialog("기부 실패: 네트워크 오류")
                 }
             })
-    }
-
-    private fun showSuccessDialog(message: String) {
-        AlertDialog.Builder(this)
-            .setTitle("성공")
-            .setMessage(message)
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .create()
-            .show()
     }
 
     private fun showErrorDialog(message: String) {

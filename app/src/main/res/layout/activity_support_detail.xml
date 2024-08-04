@@ -16,18 +16,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Image and Overlay -->
+            <!-- Image and overlay -->
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="250dp">
 
-                <!-- Background Image -->
+                <!-- Background image -->
                 <ImageView
                     android:id="@+id/imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    />
+                    android:scaleType="centerCrop" />
 
                 <ImageButton
                     android:id="@+id/backButton"
@@ -36,8 +35,7 @@
                     android:layout_gravity="start|top"
                     android:layout_margin="16dp"
                     android:src="@drawable/ic_arrow_back"
-                    android:background="@android:color/transparent"
-                    />
+                    android:background="@android:color/transparent" />
 
                 <!-- Category and Title -->
                 <LinearLayout
@@ -48,18 +46,7 @@
                     android:layout_gravity="bottom"
                     android:background="@android:color/transparent">
 
-                    <TextView
-                        android:id="@+id/categoryTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bg_round_box"
-                        android:backgroundTint="#FEE500"
-                        android:padding="8dp"
-                        android:text="카테고리"
-                        android:textColor="#000000"
-                        android:textSize="16sp"
-                        android:fontFamily="@font/happiness_sans_title"
-                        />
+
 
                     <TextView
                         android:id="@+id/titleTextView"
@@ -70,104 +57,97 @@
                         android:textSize="20sp"
                         android:textStyle="bold"
                         android:layout_marginTop="8dp"
-                        android:fontFamily="@font/happiness_sans_title"
-                        />
-
+                        android:fontFamily="@font/happiness_sans_title" />
                 </LinearLayout>
-
             </FrameLayout>
 
-            <!-- Basic Information -->
+            <!-- Fundraising period -->
+            <TextView
+                android:id="@+id/fundraisingPeriodTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"
+                android:text="모금 기간 : 2024.00.00 ~ 2024.00.00"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/happiness_sans_title"
+                android:background="@drawable/bg_support_textview" />
+
+
+            <!-- Progress Bar with percentage and amounts -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_marginTop="16dp"
+                android:padding="8dp">
+
+                <TextView
+                    android:id="@+id/progressPercentageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0%"
+                    android:textSize="14sp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/happiness_sans_title"
+                    android:layout_gravity="start" />
+
+                <ProgressBar
+                    android:id="@+id/progress_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:progress="0"
+                android:max="100"
+                android:progressDrawable="@drawable/progress_bar_custom"
+                style="@android:style/Widget.ProgressBar.Horizontal" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:id="@+id/recruitStartDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="모집 시작일: 2024-07-01"
-                        android:fontFamily="@font/happiness_sans_title"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"/>
-
-                    <TextView
-                        android:id="@+id/recruitEndDateTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="모집 종료일: 2024-07-31"
-                        android:fontFamily="@font/happiness_sans_title"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"
-                        android:layout_marginStart="16dp"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="8dp">
-
-                    <TextView
-                        android:id="@+id/totalAmountTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="목표 금액: 100,000,000 WING"
-                        android:fontFamily="@font/happiness_sans_title"
-                        android:textSize="14sp"
-                        android:textColor="@color/black"
-                        />
+                    android:layout_marginTop="4dp">
 
                     <TextView
                         android:id="@+id/currentAmountTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="모금액: 50,000,000 WING"
-                        android:fontFamily="@font/happiness_sans_title"
+                        android:text="0 WING"
                         android:textSize="14sp"
                         android:textColor="@color/black"
-                        android:layout_marginStart="16dp"/>
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:layout_gravity="start"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:id="@+id/totalAmountTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0 WING 목표"
+                        android:textSize="14sp"
+                        android:textColor="@color/black"
+                        android:fontFamily="@font/happiness_sans_title"
+                        android:layout_gravity="end"
+                        android:layout_marginStart="100dp" />
                 </LinearLayout>
-
-                <TextView
-                    android:id="@+id/contentTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="내용"
-                    android:fontFamily="@font/happiness_sans_regular"
-                    android:textSize="14sp"
-                    android:textColor="@color/black"
-                    android:layout_marginTop="16dp"/>
-
             </LinearLayout>
-
-            <!-- Separator Line -->
             <View
                 android:layout_width="416dp"
                 android:layout_marginLeft="16dp"
                 android:layout_height="1dp"
                 android:background="#D9D9D9"
                 android:layout_marginBottom="5dp"/>
-
-            <!-- Additional Layout -->
-            <LinearLayout
+            <!-- Content -->
+            <TextView
+                android:id="@+id/contentTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <!-- Placeholder for additional content -->
-
-            </LinearLayout>
-
+                android:layout_marginTop="16dp"
+                android:text="내용"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/happiness_sans_regular" />
         </LinearLayout>
     </ScrollView>
 
@@ -182,7 +162,5 @@
         android:padding="16dp"
         android:background="#00AEFF"
         android:textColor="#FFFFFF"
-        android:fontFamily="@font/happiness_sans_title"
-        android:visibility="visible"
-        />
+        android:fontFamily="@font/happiness_sans_title" />
 </RelativeLayout>
