@@ -2,10 +2,12 @@ package com.sbsj.dreamwing.volunteer.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -81,12 +83,38 @@ class VolunteerFragment : Fragment() {
             refreshVolunteers()
         }
 
-        binding.typeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            selectedType = if (checkedId == R.id.radioVolunteer) 0 else 1
-            refreshVolunteers()
-        }
+        // Initialize type buttons
+        setupTypeButtons()
 
         return view
+    }
+
+    private fun setupTypeButtons() {
+        binding.btnVolunteer.setOnClickListener {
+            selectedType = 0
+            refreshVolunteers()
+            updateButtonStates(binding.btnVolunteer, binding.btnMentoring)
+        }
+
+        binding.btnMentoring.setOnClickListener {
+            selectedType = 1
+            refreshVolunteers()
+            updateButtonStates(binding.btnMentoring, binding.btnVolunteer)
+        }
+
+        // Set the initial state
+        updateButtonStates(binding.btnVolunteer, binding.btnMentoring)
+    }
+
+    private fun updateButtonStates(selectedButton: Button, unselectedButton: Button) {
+        selectedButton.apply {
+            setBackgroundResource(R.drawable.button_jaeseong)
+            setTextColor(Color.WHITE)
+        }
+        unselectedButton.apply {
+            setBackgroundResource(R.drawable.button_jaeseong_selector)
+            setTextColor(Color.parseColor("#767676"))
+        }
     }
 
     private fun loadMoreVolunteers() {
