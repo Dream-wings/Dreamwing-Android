@@ -1,7 +1,6 @@
 package com.sbsj.dreamwing.mission.ui
 
 import android.Manifest
-import android.content.BroadcastReceiver
 import android.content.ContentValues.TAG
 import android.content.Context
 import android.content.Intent
@@ -20,8 +19,20 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
+import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.common.model.ErrorResponse
+import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityWalkBinding
+import com.sbsj.dreamwing.mission.model.ActivityType
+import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Converter
+import retrofit2.Response
+import java.io.IOException
 
 /**
  * 드림워크 화면
@@ -47,6 +58,7 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var walk7000Button: Button
     private lateinit var walk10000Button: Button
     private lateinit var requestPointButton: Button
+    private lateinit var request: AwardPointRequest
 
     private val TYPE = Sensor.TYPE_STEP_COUNTER // 보행 계수기
 
@@ -82,14 +94,14 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         Log.d(TAG, "onCrate previousTotalSteps: ${previousTotalSteps}")
 
         if (stepCountSensor == null) {
-            Toast.makeText(this, "No Step Detect Sensor!!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "센서 없음", Toast.LENGTH_SHORT).show()
         } else {
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACTIVITY_RECOGNITION
                 ) == PackageManager.PERMISSION_DENIED
             ) {
-                Toast.makeText(this, "No Permission!!", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "No Permission!!", Toast.LENGTH_SHORT).show()
                 requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACTIVITY_RECOGNITION))
             }
         }
@@ -176,33 +188,50 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun onWalk4000ButtonClick() {
-        Toast.makeText(this, "Walk 4000 button clicked!", Toast.LENGTH_SHORT).show()
         walk4000Button.setBackgroundResource(R.drawable.bg_round_box2)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk10000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true
 
+        request = AwardPointRequest(
+            userId = 3,
+            activityType = ActivityType.WALK_4000.type,
+            activityTitle = ActivityType.WALK_4000.title,
+            point = ActivityType.WALK_4000.point
+        )
+
     }
 
     private fun onWalk7000ButtonClick() {
-        Toast.makeText(this, "Walk 7000 button clicked!", Toast.LENGTH_SHORT).show()
         walk7000Button.setBackgroundResource(R.drawable.bg_round_box2)
         walk4000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk10000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true
+
+        request = AwardPointRequest(
+            userId = 3,
+            activityType = ActivityType.WALK_7000.type,
+            activityTitle = ActivityType.WALK_7000.title,
+            point = ActivityType.WALK_7000.point
+        )
     }
 
     private fun onWalk10000ButtonClick() {
-        Toast.makeText(this, "Walk 10000 button clicked!", Toast.LENGTH_SHORT).show()
         walk10000Button.setBackgroundResource(R.drawable.bg_round_box2)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk4000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true
+
+        request = AwardPointRequest(
+            userId = 3,
+            activityType = ActivityType.WALK_10000.type,
+            activityTitle = ActivityType.WALK_10000.title,
+            point = ActivityType.WALK_10000.point
+        )
     }
 
     private fun onRequestPointButtonClick() {
-        Toast.makeText(this, "Request Point button clicked!", Toast.LENGTH_SHORT).show()
-        // 여기에 버튼 클릭 시 수행할 작업을 추가하세요
+        awardPoints(request)
     }
 
     private fun loadPreviousTotalSteps() {
@@ -245,6 +274,54 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
             0
         } else {
             (currentSteps * 100) / goalSteps
+        }
+    }
+
+    private fun awardPoints(request: AwardPointRequest) {
+
+        RetrofitClient.missionService.awardPoints(request).enqueue(object :
+            Callback<ApiResponse<Any>> {
+            override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                if (response.isSuccessful) {
+                    val intent = Intent(this@WalkActivity, WalkAwardActivity::class.java)
+
+                    intent.putExtra("point", request.point)
+                    intent.putExtra("activityTitle", request.activityTitle)
+
+                    startActivity(intent)
+                } else {
+                    val errorResponse = convertErrorBody(response)
+                    val errorMessage = errorResponse?.message ?: "Unknown error"
+
+                    if (errorMessage == "이미 포인트를 받았습니다.") {
+                        Log.d("WalkActivity", "$errorResponse")
+                        Toast.makeText(this@WalkActivity, "이미 포인트를 받았어요!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e("WalkActivity", "서버 오류: $errorResponse")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                Log.e("QuizActivity", "Request failed: ${t.message}")
+            }
+        })
+    }
+
+    // 에러메세지
+    private fun convertErrorBody(response: Response<*>): ErrorResponse? {
+        return try {
+            response.errorBody()?.let {
+                val converter: Converter<ResponseBody, ErrorResponse> =
+                    RetrofitClient.retrofit.responseBodyConverter(
+                        ErrorResponse::class.java,
+                        arrayOfNulls<Annotation>(0)
+                    )
+                converter.convert(it)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
         }
     }
 }
