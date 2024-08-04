@@ -7,6 +7,7 @@ import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import com.sbsj.dreamwing.user.model.vo.MyPointVO
+import com.sbsj.dreamwing.user.model.vo.MySupportVO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -63,4 +64,11 @@ interface UserService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Call<ApiResponse<List<MyPointVO>>>
+
+    @GET("/user/getSupportList")
+    fun getUserSupportList(
+        @Header("Authorization") authHeader: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<ApiResponse<List<MySupportVO>>>
 }

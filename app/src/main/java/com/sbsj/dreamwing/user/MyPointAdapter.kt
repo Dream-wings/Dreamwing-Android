@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class PointAdapter : RecyclerView.Adapter<PointAdapter.PointViewHolder>() {
+class MyPointAdapter : RecyclerView.Adapter<MyPointAdapter.PointViewHolder>() {
 
     private val points = mutableListOf<MyPointVO>()
 
