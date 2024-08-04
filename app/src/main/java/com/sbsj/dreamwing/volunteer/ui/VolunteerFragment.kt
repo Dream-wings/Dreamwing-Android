@@ -6,9 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
@@ -31,6 +33,9 @@ class VolunteerFragment : Fragment() {
     private var page = 0
     private val size = 2
     private var userId: Long = 2L // Replace with the actual user ID
+
+    private var selectedStatus = 0 // Default to "모집중"
+    private var selectedType = 0 // Default to "봉사"
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,31 +75,50 @@ class VolunteerFragment : Fragment() {
             }
         })
 
+        // Set filter listeners
+        binding.filterRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            selectedStatus = if (checkedId == R.id.radioInRecruitment) 0 else 1
+            refreshVolunteers()
+        }
+
+        binding.typeRadioGroup.setOnCheckedChangeListener { group, checkedId ->
+            selectedType = if (checkedId == R.id.radioVolunteer) 0 else 1
+            refreshVolunteers()
+        }
+
         return view
     }
 
     private fun loadMoreVolunteers() {
-        RetrofitClient.volunteerService.getVolunteerList(page, size).enqueue(object : Callback<VolunteerListResponse> {
-            override fun onResponse(
-                call: Call<VolunteerListResponse>,
-                response: Response<VolunteerListResponse>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("VolunteerFragment", "Volunteer list : $response")
+        RetrofitClient.volunteerService.getVolunteerListWithStatus(page, size, selectedStatus, selectedType)
+            .enqueue(object : Callback<VolunteerListResponse> {
+                override fun onResponse(
+                    call: Call<VolunteerListResponse>,
+                    response: Response<VolunteerListResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d("VolunteerFragment", "Volunteer list : $response")
 
-                    response.body()?.let { volunteerListResponse ->
-                        volunteerList.addAll(volunteerListResponse.data)
-                        volunteerAdapter.notifyDataSetChanged()
-                        page++
+                        response.body()?.let { volunteerListResponse ->
+                            volunteerList.addAll(volunteerListResponse.data)
+                            volunteerAdapter.notifyDataSetChanged()
+                            page++
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<VolunteerListResponse>, t: Throwable) {
-                // Handle API failure
-                Log.e("VolunteerFragment", "Failed to load volunteers", t)
-            }
-        })
+                override fun onFailure(call: Call<VolunteerListResponse>, t: Throwable) {
+                    // Handle API failure
+                    Log.e("VolunteerFragment", "Failed to load volunteers", t)
+                }
+            })
+    }
+
+    private fun refreshVolunteers() {
+        page = 0
+        volunteerList.clear()
+        volunteerAdapter.notifyDataSetChanged()
+        loadMoreVolunteers()
     }
 
     private fun checkIfUserApplied(volunteerId: Long, callback: (Boolean) -> Unit) {

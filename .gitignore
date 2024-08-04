@@ -37,3 +37,6 @@ gen-external-apklibs
 
 # 운영체제 관련
 .DS_Store
+
+# network_security_config
+/app/src/main/res/xml/network_security_config.xml
