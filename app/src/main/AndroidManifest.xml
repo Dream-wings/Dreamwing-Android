@@ -85,6 +85,8 @@
         <activity
             android:name=".mission.ui.QuizCorrectActivity"
             android:exported="true" />
+        <activity android:name=".support.SupportDetailActivity" />
+
     </application>
 
 </manifest>
