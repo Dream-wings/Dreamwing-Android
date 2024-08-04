@@ -26,111 +26,42 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <Button
+            android:id="@+id/walk_4000"
             style="@style/title"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_gravity="start"
             android:layout_weight="1"
-            android:background="@drawable/bg_round_box2"
+            android:background="@drawable/selector_walk_button"
             android:text="@string/walk_4000"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:enabled="false" />
 
         <Button
+            android:id="@+id/walk_7000"
             style="@style/title"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_marginLeft="30dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_round_box2"
+            android:background="@drawable/selector_walk_button"
             android:text="@string/walk_7000"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:enabled="false" />
 
         <Button
+            android:id="@+id/walk_10000"
             style="@style/title"
             android:layout_width="0dp"
             android:layout_height="100dp"
             android:layout_gravity="end"
             android:layout_marginLeft="30dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_round_box2"
+            android:background="@drawable/selector_walk_button"
             android:text="@string/walk_10000"
-            android:textColor="@color/white" />
-
-        <!--        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout_4000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/box_4000"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/bg_round_box2"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-
-                />
-
-            <TextView
-                android:id="@+id/text_4000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4000"
-                android:textColor="@color/white"
-                style="@style/title"
-                app:layout_constraintBottom_toBottomOf="@id/box_4000"
-                app:layout_constraintEnd_toEndOf="@id/box_4000"
-                app:layout_constraintStart_toStartOf="@id/box_4000"
-                app:layout_constraintTop_toTopOf="@id/box_4000"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintVertical_bias="0.5"/>
-
-            <ImageView
-                android:id="@+id/box_7000"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/bg_round_box2"
-                app:layout_constraintLeft_toRightOf="@id/box_4000"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="30dp"/>
-
-            <TextView
-                android:id="@+id/walk_7000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="7000"
-                android:textColor="@color/white"
-                style="@style/title"
-                app:layout_constraintBottom_toBottomOf="@id/box_7000"
-                app:layout_constraintEnd_toEndOf="@id/box_7000"
-                app:layout_constraintStart_toStartOf="@id/box_7000"
-                app:layout_constraintTop_toTopOf="@id/box_7000"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintVertical_bias="0.5"/>
-
-            <ImageView
-                android:id="@+id/box_10000"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/bg_round_box2"
-                app:layout_constraintLeft_toRightOf="@id/box_7000"
-                app:layout_constraintTop_toTopOf="parent"/>
-
-            <TextView
-                android:id="@+id/walk_10000"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10000"
-                android:textColor="@color/white"
-                style="@style/title"
-                app:layout_constraintBottom_toBottomOf="@id/box_10000"
-                app:layout_constraintEnd_toEndOf="@id/box_10000"
-                app:layout_constraintStart_toStartOf="@id/box_10000"
-                app:layout_constraintTop_toTopOf="@id/box_10000"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintVertical_bias="0.5"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>-->
+            android:textColor="@color/white"
+            android:enabled="false" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -186,20 +117,24 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/step_count" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10,000" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     <Button
+        android:id="@+id/request_point"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="20dp"
         android:text="윙 받기"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/bg_round_box2"
+        android:background="@drawable/selector_request_button"
         android:stateListAnimator="@null"
         style="@style/title"
         android:textColor="@color/white"
+        android:enabled="false"
         />
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

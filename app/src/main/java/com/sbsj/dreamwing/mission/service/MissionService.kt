@@ -30,4 +30,5 @@ interface MissionService {
     @POST("/mission/point")
     fun awardPoints(@Body request : AwardPointRequest): Call<ApiResponse<Any>>
 
+    @Post("/")
 }
