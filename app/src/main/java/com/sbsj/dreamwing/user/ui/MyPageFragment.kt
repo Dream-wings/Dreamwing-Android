@@ -14,9 +14,9 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentMypageBinding
-import com.sbsj.dreamwing.user.PointDetailActivity
+import com.sbsj.dreamwing.user.MyPointDetailActivity
+import com.sbsj.dreamwing.user.MySupportDetailActivity
 import com.sbsj.dreamwing.user.model.dto.MyPageDTO
-import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
@@ -58,7 +58,14 @@ class MyPageFragment : Fragment() {
         // 포인트 상세보기 클릭 이벤트 설정
         val pointDetail = view.findViewById<View>(R.id.pointDetail)
         pointDetail.setOnClickListener {
-            val intent = Intent(activity, PointDetailActivity::class.java)
+            val intent = Intent(activity, MyPointDetailActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 후원 상세보기 클릭 이벤트 설정
+        val supportDetail = view.findViewById<View>(R.id.supportDetail)
+        supportDetail.setOnClickListener {
+            val intent = Intent(activity, MySupportDetailActivity::class.java)
             startActivity(intent)
         }
     }
