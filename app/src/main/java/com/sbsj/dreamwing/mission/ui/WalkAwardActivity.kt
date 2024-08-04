@@ -1,32 +1,30 @@
 package com.sbsj.dreamwing.mission.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sbsj.dreamwing.common.model.ApiResponse
-import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.databinding.ActivityQuizBinding
-import com.sbsj.dreamwing.databinding.ActivityQuizCorrectBinding
-import com.sbsj.dreamwing.mission.model.ActivityType
-import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.sbsj.dreamwing.databinding.ActivityWalkAwardBinding
 
-class QuizCorrectActivity : AppCompatActivity() {
+class WalkAwardActivity : AppCompatActivity() {
 
-    private lateinit var binding : ActivityQuizCorrectBinding
+    private lateinit var binding : ActivityWalkAwardBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityQuizCorrectBinding.inflate(layoutInflater)
+        binding = ActivityWalkAwardBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar.root)
         supportActionBar?.title = ""
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val point = intent.getIntExtra("point", 0)
+        val activityTitle = intent.getStringExtra("activityTitle")
+        val steps = activityTitle?.split(" ")?.getOrNull(1) ?: ""
+        val message = steps + " 걸음을 달성했어요!"
+
+        binding.message.text = message
+        binding.point.text = "+" + point.toString()
 
     }
 
