@@ -97,10 +97,6 @@ class MyPageFragment : Fragment() {
         Picasso.get().load(myPageDTO.profileImageUrl).into(binding.profileImage)
         binding.userPoint.text = myPageDTO.totalPoint.toString()
         binding.totalSupportPoit.text = myPageDTO.totalSupportPoint.toString()
-
-//        addDetailsToContainer(binding.pointDetailsContainer, myPageDTO.pointDetails.map { it.point.toString() })
-//        addDetailsToContainer(binding.supportDetailsContainer, myPageDTO.supportDetails.map { it.title })
-//        addDetailsToContainer(binding.volunteerDetailsContainer, myPageDTO.volunteerDetails.map { it.title })
     }
 
     private fun addDetailsToContainer(container: LinearLayout, details: List<String>) {
