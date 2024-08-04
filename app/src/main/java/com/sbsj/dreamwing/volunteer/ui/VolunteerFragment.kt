@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.RadioGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -77,16 +77,36 @@ class VolunteerFragment : Fragment() {
             }
         })
 
-        // Set filter listeners
-        binding.filterRadioGroup.setOnCheckedChangeListener { group, checkedId ->
-            selectedStatus = if (checkedId == R.id.radioInRecruitment) 0 else 1
-            refreshVolunteers()
-        }
+        // Initialize recruitment status buttons
+        setupRecruitmentStatusButtons()
 
         // Initialize type buttons
         setupTypeButtons()
 
         return view
+    }
+
+    private fun setupRecruitmentStatusButtons() {
+        val options = listOf(binding.optionInRecruitment, binding.optionCompleted)
+
+        options.forEach { option ->
+            option.setOnClickListener { view ->
+                val selected = (view as TextView)
+                options.forEach {
+                    it.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_recruit_end, 0, 0, 0)
+                    it.setTextColor(Color.parseColor("#767676"))
+                }
+                selected.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_recruit_started, 0, 0, 0)
+                selected.setTextColor(Color.BLACK)
+
+                selectedStatus = if (selected.id == R.id.optionInRecruitment) 0 else 1
+                refreshVolunteers()
+            }
+        }
+
+        // Set the initial state for the first option
+        binding.optionInRecruitment.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_recruit_started, 0, 0, 0)
+        binding.optionInRecruitment.setTextColor(Color.BLACK)
     }
 
     private fun setupTypeButtons() {
