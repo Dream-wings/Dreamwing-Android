@@ -6,6 +6,7 @@ import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import com.sbsj.dreamwing.user.model.response.UserInfoResponse
+import com.sbsj.dreamwing.user.model.vo.MyPointVO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -56,4 +57,10 @@ interface UserService {
         @Header("Authorization") authHeader: String
     ): Call<ApiResponse<MyPageDTO>>
 
+    @GET("/user/getPointList")
+    fun getUserPointList(
+        @Header("Authorization") authHeader: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<ApiResponse<List<MyPointVO>>>
 }
