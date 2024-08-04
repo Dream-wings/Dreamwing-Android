@@ -1,18 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="1dp"
-    android:layout_marginRight="1dp"
+    android:layout_marginTop="8dp"
+
+    android:layout_marginBottom="20dp"
     card_view:cardCornerRadius="16dp"
-    card_view:cardElevation="2dp">
+    card_view:cardElevation="4dp"
+    android:fontFamily="@font/happiness_sans_title">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/image"
@@ -23,11 +26,11 @@
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="결식 아동들에게 행복한 여름방학을 선물해주세요"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -41,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100,000,000 WING"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/time_remaining"
@@ -49,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="30일 8시간"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:drawableLeft="@drawable/ic_time"
                 android:drawablePadding="4dp"/>
 
@@ -59,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:text="0%"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ProgressBar
