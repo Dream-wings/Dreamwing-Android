@@ -9,12 +9,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.common.model.ErrorResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityQuizBinding
+import com.sbsj.dreamwing.mission.model.ActivityType
+import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
 import com.sbsj.dreamwing.mission.model.response.QuizResponse
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
+import retrofit2.Converter
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * 데일리 퀴즈 화면
@@ -25,12 +31,14 @@ import retrofit2.Response
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.02   정은지        최초 생성
+ * 2024.08.03   정은지        답 미선택, 데일리 미션 완료시 토스트 메세지 추가
  */
 class QuizActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityQuizBinding
     private var correctAnswer: Int? = null
     private var selectedAnswer: Int? = null
+    private var responseMessage: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -108,18 +116,65 @@ class QuizActivity : AppCompatActivity() {
     private fun submitAnswer() {
         if (selectedAnswer == correctAnswer) {
             // 정답일 경우 QuizCorrectActivity
-            startActivity(Intent(this, QuizCorrectActivity::class.java))
+            awardPoints()
         } else if (selectedAnswer == null ) {
             // 모달 창 띄우기
+            Toast.makeText(this, "정답을 선택해 주세요", Toast.LENGTH_SHORT).show()
         } else {
             // 오답일 경우 QuizIncorrectActivity
             startActivity(Intent(this, QuizIncorrectActivity::class.java))
         }
-        finish()
+    }
+
+    private fun awardPoints() {
+        val request = AwardPointRequest(
+            userId = 1,
+            activityType = ActivityType.QUIZ.type,
+            activityTitle = ActivityType.QUIZ.displayName,
+            point = ActivityType.QUIZ.point
+        )
+
+        RetrofitClient.missionService.awardPoints(request).enqueue(object : Callback<ApiResponse<Any>> {
+            override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                if (response.isSuccessful) {
+                    startActivity(Intent(this@QuizActivity, QuizCorrectActivity::class.java))
+                } else {
+                    val errorResponse = convertErrorBody(response)
+                    val errorMessage = errorResponse?.message ?: "Unknown error"
+
+                    if (errorMessage == "이미 포인트를 받았습니다.") {
+                        Log.d("QuizActivity", "$errorResponse")
+                        Toast.makeText(this@QuizActivity, "이미 데일리 퀴즈를 풀었어요!", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.e("QuizActivity", "서버 오류: $errorResponse")
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                Log.e("QuizActivity", "Request failed: ${t.message}")
+            }
+        })
     }
 
     private fun extractAnswerFromText(text: String): Int? {
         return text.substringBefore('.').toIntOrNull()
     }
 
+    // 에러메세지
+    private fun convertErrorBody(response: Response<*>): ErrorResponse? {
+        return try {
+            response.errorBody()?.let {
+                val converter: Converter<ResponseBody, ErrorResponse> =
+                    RetrofitClient.retrofit.responseBodyConverter(
+                        ErrorResponse::class.java,
+                        arrayOfNulls<Annotation>(0)
+                    )
+                converter.convert(it)
+            }
+        } catch (e: IOException) {
+            e.printStackTrace()
+            null
+        }
+    }
 }
