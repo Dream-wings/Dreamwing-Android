@@ -4,8 +4,10 @@ import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.support.model.response.GetSupportListResponse
 import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
+import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -22,7 +24,7 @@ interface SupportService {
 
     @GET("/support/total")
     fun getTotalSupport(): Call<ApiResponse<TotalSupportResponse>>
-    
+
     @GET("/support/list/5")
     fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 
@@ -33,5 +35,15 @@ interface SupportService {
         @Query("status") status: Int,     // 0 for 모금중, 1 for 모금완료
         @Query("category") category: Int  // 1 for 교육, 2 for 물품, etc.
     ): Call<GetSupportListResponse> // Ensure the correct return type
-}
 
+    @GET("/support/detail")
+    fun getSupportDetail(@Query("supportId") supportId: Long): Call<SupportDetailResponse>
+
+    @POST("/support/donate")
+    fun donateForSupport(
+        @Query("supportId") supportId: Long,
+        @Query("userId") userId: Long,
+        @Query("amount") amount: Int
+    ): Call<ApiResponse<Unit>>
+
+}
