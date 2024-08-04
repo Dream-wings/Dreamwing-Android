@@ -1,10 +1,12 @@
 package com.sbsj.dreamwing.support.service
 
 import com.sbsj.dreamwing.common.model.ApiResponse
+import com.sbsj.dreamwing.support.model.response.GetSupportListResponse
 import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 /**
  * 후원 서비스 인터페이스
@@ -24,4 +26,12 @@ interface SupportService {
     @GET("/support/list/5")
     fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 
+    @GET("/support/list")
+    fun getSupportList(
+        @Query("page") page: Int,
+        @Query("size") size: Int,
+        @Query("status") status: Int,     // 0 for 모금중, 1 for 모금완료
+        @Query("category") category: Int  // 1 for 교육, 2 for 물품, etc.
+    ): Call<GetSupportListResponse> // Ensure the correct return type
 }
+

@@ -6,16 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sbsj.dreamwing.databinding.FragmentHomeBinding
 import com.sbsj.dreamwing.databinding.ItemSupportBinding
 import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.squareup.picasso.Picasso
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class SupportRecyclerViewAdapter(
-    private val supportList : ArrayList<SupportListResponse>,
+    private val supportList: MutableList<SupportListResponse>,
     private val context: Context
 )  : RecyclerView.Adapter<SupportRecyclerViewAdapter.SupportListViewHolder>() {
 

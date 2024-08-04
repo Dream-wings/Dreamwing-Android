@@ -1,5 +1,6 @@
 package com.sbsj.dreamwing.support.model.response
 
+import com.google.gson.annotations.SerializedName
 import java.util.Date
 
 /**
@@ -13,11 +14,11 @@ import java.util.Date
  * 2024.08.01   정은지        최초 생성
  */
 data class SupportListResponse (
-    val supportId: Long,
-    val goalPoint: Int,
-    val currentPoint: Int,
-    val title: String,
-    val endDate: Date,
-    val imageUrl: String,
-    val dday: String
+    @SerializedName("supportId") val supportId: Long,
+    @SerializedName("goalPoint") val goalPoint: Int,
+    @SerializedName("currentPoint") val currentPoint: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("endDate") val endDate: Date,
+    @SerializedName("imageUrl") val imageUrl: String,
+    @SerializedName("dday") val dday: String
 )
