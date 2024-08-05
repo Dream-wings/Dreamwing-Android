@@ -20,6 +20,7 @@ import com.sbsj.dreamwing.databinding.FragmentMypageBinding
 import com.sbsj.dreamwing.user.LoginActivity
 import com.sbsj.dreamwing.user.MyPointDetailActivity
 import com.sbsj.dreamwing.user.MySupportDetailActivity
+import com.sbsj.dreamwing.user.MyVolunteerDetailActivity
 import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso
@@ -115,17 +116,24 @@ class MyPageFragment : Fragment() {
 
         }
 
-        // 포인트 상세보기 클릭 이벤트 설정
+        // 포인트 내역 클릭 이벤트 설정
         val pointDetail = view.findViewById<View>(R.id.pointDetail)
         pointDetail.setOnClickListener {
             val intent = Intent(activity, MyPointDetailActivity::class.java)
             startActivity(intent)
         }
 
-        // 후원 상세보기 클릭 이벤트 설정
+        // 후원 내역 클릭 이벤트 설정
         val supportDetail = view.findViewById<View>(R.id.supportDetail)
         supportDetail.setOnClickListener {
             val intent = Intent(activity, MySupportDetailActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 봉사 활동 내역 클릭 이벤트 설정
+        val volunteerDetail = view.findViewById<View>(R.id.volunteerDetail)
+        volunteerDetail.setOnClickListener {
+            val intent = Intent(activity, MyVolunteerDetailActivity::class.java)
             startActivity(intent)
         }
     }

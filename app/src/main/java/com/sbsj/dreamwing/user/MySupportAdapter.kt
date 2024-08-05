@@ -12,7 +12,7 @@ class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder
 
     private val supports = mutableListOf<MySupportVO>()
 
-    fun addPoints(newSupports: List<MySupportVO>) {
+    fun addSupports(newSupports: List<MySupportVO>) {
         supports.addAll(newSupports)
         notifyDataSetChanged()
     }
@@ -35,16 +35,7 @@ class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder
 
         fun bind(mySupportVO: MySupportVO) {
             title.text = mySupportVO.title
-
-            var userPoint = mySupportVO.point
-
-            if(userPoint >= 0) {
-                point.text = "+ " + mySupportVO.point.toString()
-            }
-            else {
-                point.text = "- " + mySupportVO.point.toString()
-            }
-
+            point.text = mySupportVO.point.toString()
             createdDate.text = mySupportVO.createdDate
         }
     }
