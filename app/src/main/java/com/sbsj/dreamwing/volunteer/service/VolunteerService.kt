@@ -1,5 +1,7 @@
 package com.sbsj.dreamwing.volunteer.service
 
+import com.sbsj.dreamwing.admin.model.response.AdminVolunteerDTO
+import com.sbsj.dreamwing.admin.model.response.VolunteerAdminListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.volunteer.model.PostApplyVolunteerRequestDTO
 import com.sbsj.dreamwing.volunteer.model.VolunteerDetailDTO
@@ -9,11 +11,14 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.Part
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -33,7 +38,13 @@ interface VolunteerService {
 //        @Query("page") page: Int,
 //        @Query("size") size: Int
 //    ): Call<VolunteerListResponse>
-
+//
+//    @GET("/admin/volunteer/adminList")
+//    fun getVolunteerList(
+//        @Query("page") page: Int,
+//        @Query("size") size: Int
+//    ): Call<VolunteerAdminListResponse>
+//
     @GET("/volunteer/detail")
     fun getVolunteerDetail(@Query("volunteerId") volunteerId: Long): Call<VolunteerDetailResponse>
 
@@ -77,6 +88,33 @@ interface VolunteerService {
     @PATCH("/volunteer/certification")
     fun certificationVolunteer(@Part("request") request: RequestBody,
                                @Part imageFile: MultipartBody.Part?) : Call<ApiResponse<Void>>
+
+
+    @GET("/admin/volunteer/adminList")
+    fun getVolunteerList(
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<VolunteerAdminListResponse>
+
+//    @GET("/admin/volunteer/detail")
+//    fun getVolunteerDetail(
+//        @Query("volunteerId") volunteerId: Long
+//    ): Call<ApiResponse<AdminVolunteerDTO>>
+
+    @PUT("/admin/volunteer/update")
+    fun updateVolunteer(
+        @Body request: AdminVolunteerDTO
+    ): Call<ApiResponse<Void>>
+
+    @DELETE("/admin/volunteer/{volunteerId}")
+    fun deleteVolunteer(
+        @Path("volunteerId") volunteerId: Long
+    ): Call<ApiResponse<Void>>
+
+    @POST("/admin/volunteer/create")
+    fun createVolunteer(
+        @Body request: AdminVolunteerDTO
+    ): Call<ApiResponse<Void>>
 }
 
 
