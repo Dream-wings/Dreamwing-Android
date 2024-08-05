@@ -1,11 +1,14 @@
 package com.sbsj.dreamwing
 
+import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
@@ -17,6 +20,11 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import androidx.navigation.fragment.findNavController
+import com.sbsj.dreamwing.mission.ui.QuizActivity
+import com.sbsj.dreamwing.mission.ui.WalkActivity
+import com.sbsj.dreamwing.volunteer.ui.VolunteerFragment
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 /**
  * 홈 프래그먼트
@@ -63,7 +71,6 @@ class HomeFragment : Fragment() {
                     Log.e("HomeFragment", "Response not successful")
                 }
             }
-
             override fun onFailure(call: Call<ApiResponse<List<SupportListResponse>>>, t: Throwable) {
                 Log.e("HomeFragment", "Error: ${t.message}")
             }
@@ -80,8 +87,9 @@ class HomeFragment : Fragment() {
                     val support = response.body()?.data
                     Log.d("HomeFragment", "TotalSupport: $support")
                     support?.let {
-                        binding.supportPoint.text = it.totalPoints.toString() + " 원"
-                        binding.supportCount.text = it.totalCount.toString() + " 건"
+                        val decimalFormat = DecimalFormat("#,###")
+                        binding.supportPoint.text = decimalFormat.format(it.totalPoints) + " 원"
+                        binding.supportCount.text = decimalFormat.format(it.totalCount) + " 건"
                     }
                 } else {
                     Log.e("HomeFragment", "Response not successful")
@@ -101,12 +109,51 @@ class HomeFragment : Fragment() {
 
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        binding.walkIcon.setOnClickListener {
+            val intent = Intent(requireContext(), WalkActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.quizIcon.setOnClickListener {
+            val intent = Intent(requireContext(), QuizActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.volunteerIcon.setOnClickListener {
+            val volunteerFragment = VolunteerFragment()
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.action_homeFragment_to_volunteerFragment,
+                    volunteerFragment)
+                .commit()
+        }
+
+        binding.viewAll.setOnClickListener {
+            val volunteerFragment = VolunteerFragment()
+            requireActivity().supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.action_homeFragment_to_supportFragment,
+                    volunteerFragment)
+                .commit()
+        }
+
         supportList = ArrayList()
         supportRecyclerViewAdapter = SupportRecyclerViewAdapter(supportList, requireContext())
         binding.recyclerView.adapter = supportRecyclerViewAdapter
 
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm", Locale.getDefault())
+        val currentDateTime = dateFormat.format(System.currentTimeMillis())
+        val currentDate = "$currentDateTime 기준"
+
+        binding.currentDate.text = currentDate
+
+        binding.currentDate
         fetchSupportList()
         fetchTotalSupport()
+
+
         // Admin 버튼 클릭 리스너 설정
         binding.buttonAdminNavigation.setOnClickListener {
             // NavController를 사용하여 AdminFragment로 이동
