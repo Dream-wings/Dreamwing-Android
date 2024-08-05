@@ -37,13 +37,8 @@ class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder
             title.text = mySupportVO.title
 
             var userPoint = mySupportVO.point
+            point.text = "+ " + mySupportVO.point.toString()
 
-            if(userPoint >= 0) {
-                point.text = "+ " + mySupportVO.point.toString()
-            }
-            else {
-                point.text = "- " + mySupportVO.point.toString()
-            }
 
             createdDate.text = mySupportVO.createdDate
         }
