@@ -84,4 +84,9 @@ interface UserService {
         @Part imageFile: MultipartBody.Part?,  // Nullable type
         @Part("profileImageUrl") profileImageUrl: RequestBody?
     ): Call<UpdateResponse>
+
+    @POST("/user/logout")
+    fun logout(
+        @Header("Authorization") authHeader: String
+    ): Call<Void>
 }

@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.user.UpdateUserActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
@@ -75,12 +76,43 @@ class MyPageFragment : Fragment() {
             fetchUserInfo()
         }
 
-        // 회원가입 버튼 클릭 리스너 설정
+        // 회원정보 수정 버튼 클릭 리스너 설정
         val updateButton = binding.updateButton
         updateButton.setOnClickListener {
             // 회원가입 액티비티로 이동
             val intent = Intent(activity, UpdateUserActivity::class.java)
             startActivity(intent)
+        }
+
+        // 로그아웃 수정 버튼 클릭 리스너 설정
+        val logoutButton = binding.logoutButton
+        logoutButton.setOnClickListener {
+            val jwtToken = SharedPreferencesUtil.getToken(requireContext())
+            val authHeader = "$jwtToken"
+
+            // Retrofit을 사용하여 사용자 정보 API 호출
+            RetrofitClient.userService.logout(authHeader).enqueue(object : Callback<Void> {
+                override fun onResponse(
+                    call: Call<Void>,
+                    response: Response<Void>
+                ) {
+                    if (response.isSuccessful) {
+                        // 토큰 삭제
+                        SharedPreferencesUtil.clearToken(requireContext())
+                        showLogoutSuccessDialog()
+
+
+                    } else {
+                        showLogoutFailDialog()
+                        Log.e("MypageFragment", "Response not successful: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.e("MypageFragment", "Error: ${t.message}")
+                }
+            })
+
         }
 
         // 포인트 상세보기 클릭 이벤트 설정
@@ -103,10 +135,7 @@ class MyPageFragment : Fragment() {
      */
     override fun onResume() {
         super.onResume()
-        // 프래그먼트가 다시 보여질 때마다 사용자 정보를 갱신
-        if (checkUserLoggedIn()) {
-            fetchUserInfo()
-        }
+        fetchUserInfo()
     }
 
     /**
@@ -224,6 +253,33 @@ class MyPageFragment : Fragment() {
                 startActivity(intent)
                 activity?.finish()
             }
+            .show()
+    }
+
+    /**
+     * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     */
+    private fun showLogoutSuccessDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("로그아웃 성공")
+            .setMessage("로그아웃 되었습니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // MainActivity로 이동
+                val intent = Intent(activity, MainActivity::class.java)
+                startActivity(intent)
+                activity?.finish() // 현재 액티비티 종료
+            }
+            .show()
+    }
+
+    /**
+     * 로그아웃 실패 시 실패 다이얼로그를 표시합니다.
+     */
+    private fun showLogoutFailDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("로그아웃 실패")
+            .setMessage("로그아웃 정보를 다시 입력해주세요.")
+            .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
             .show()
     }
 }
