@@ -1,14 +1,16 @@
 package com.sbsj.dreamwing.admin.service
 
 import com.sbsj.dreamwing.admin.model.request.ApproveRequest
+import com.sbsj.dreamwing.admin.model.request.AwardVolunteerPointRequest
+import com.sbsj.dreamwing.admin.model.response.VolunteerCertificationDetailResponse
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestDetailResponse
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
-import com.sbsj.dreamwing.admin.ui.VolunteerRequestDetailActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.PATCH
+import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -51,4 +53,33 @@ interface AdminService {
      */
     @PATCH("/admin/volunteer/approve")
     fun approveVolunteerRequest(@Body request: ApproveRequest) : Call<ApiResponse<Void>>
+
+    /**
+     * 봉사활동 인증 대기 목록
+     * @author 정은지
+     * @since 2024.08.05
+     * @version 1.0
+     */
+    @GET("/admin/volunteer/certification/list")
+    fun getVolunteerCertificationList(@Query("page") page: Int,
+                                      @Query("size") size: Int) : Call<ApiResponse<List<VolunteerRequestListResponse>>>
+
+    /**
+     * 봉사활동 인증 대기 상세
+     * @author 정은지
+     * @since 2024.08.05
+     * @version 1.0
+     */
+    @GET("/admin/volunteer/certification")
+    fun getVolunteerCertificationDetail(@Query("volunteerId") volunteerId: Long,
+                                        @Query("userId") userId: Long) : Call<ApiResponse<VolunteerCertificationDetailResponse>>
+
+    /**
+     * 봉사활동 인증 처리 및 포인트 부여
+     * @author 정은지
+     * @since 2024.08.05
+     * @version 1.0
+     */
+    @POST("/admin/volunteer/point")
+    fun awardVolunteerPoints(@Body request : AwardVolunteerPointRequest): Call<ApiResponse<Void>>
 }

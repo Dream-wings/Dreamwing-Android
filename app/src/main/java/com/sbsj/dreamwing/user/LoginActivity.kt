@@ -50,6 +50,10 @@ class LoginActivity : AppCompatActivity() {
         supportActionBar?.title = "로그인"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        // Toolbar의 NavigationIcon 클릭 리스너 추가
+        binding.toolbar.root.setNavigationOnClickListener {
+            onBackPressed() // 이전 페이지로 돌아갑니다.
+        }
         // 뷰 참조 가져오기
         val loginId = binding.editID
         val password = binding.editPWD

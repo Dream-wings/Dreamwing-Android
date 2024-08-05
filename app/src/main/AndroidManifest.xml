@@ -26,10 +26,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".admin.ui.VolunteerRequestDetailActivity"
+            android:name=".admin.ui.AdminActivity"
             android:exported="true" />
         <activity
-            android:name=".admin.ui.VolunteerRequestListActivity"
+            android:name=".user.UpdateUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ui.VolunteerCertificationDetailActivity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.ui.VolunteerRequestDetailActivity"
             android:exported="true" />
         <activity
             android:name=".user.MySupportDetailActivity"
