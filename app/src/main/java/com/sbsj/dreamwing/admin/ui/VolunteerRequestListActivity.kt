@@ -1,13 +1,19 @@
 package com.sbsj.dreamwing.admin.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
@@ -41,6 +47,8 @@ class VolunteerRequestListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityVolunteerRequestListBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        fetchRequestList()
 
         // 툴바
         setSupportActionBar(binding.adminToolbar.toolbar)
@@ -92,5 +100,27 @@ class VolunteerRequestListActivity : AppCompatActivity() {
                 Log.e("VolunteerRequestListActivity", "Error: ${t.message}")
             }
         })
+    }
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.admin_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.volunteer_board -> {
+                startActivity(Intent(this, AdminActivity::class.java))
+                return true
+            }
+            R.id.volunteer_request -> {
+                startActivity(Intent(this, VolunteerRequestListActivity::class.java))
+                return true
+            }
+            R.id.volunteer_certification -> {
+                startActivity(Intent(this, VolunteerCertificationListActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
