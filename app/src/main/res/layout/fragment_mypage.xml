@@ -37,7 +37,7 @@
                     android:id="@+id/name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="TextView"
+                    android:text="로그인이 필요합니다."
                     app:layout_constraintStart_toEndOf="@id/profileImage"
                     app:layout_constraintTop_toTopOf="@id/profileImage"
                     app:layout_constraintBottom_toBottomOf="@id/profileImage"
@@ -77,7 +77,7 @@
                         android:id="@+id/userPoint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Point Title"
+                        android:text="0 wing"
                         android:textSize="18sp"
                         android:textColor="@color/black" />
 
@@ -85,7 +85,7 @@
                         android:id="@+id/totalSupportPoit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Point Value"
+                        android:text="0 wing"
                         android:textSize="16sp"
                         android:textColor="@color/black" />
                 </LinearLayout>
