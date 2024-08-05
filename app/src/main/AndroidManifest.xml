@@ -29,6 +29,12 @@
             android:name=".user.MyVolunteerDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".admin.ui.VolunteerCertificationListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".admin.ui.VolunteerRequestListActivity"
+            android:exported="true" />
+        <activity
             android:name=".admin.ui.AdminActivity"
             android:exported="true" />
         <activity

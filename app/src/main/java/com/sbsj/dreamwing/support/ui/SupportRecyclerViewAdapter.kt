@@ -2,6 +2,7 @@ package com.sbsj.dreamwing.support.ui
 
 import android.content.Context
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,6 @@ class SupportRecyclerViewAdapter(
         val item = supportList[position]
         holder.bind(item)
 
-        // Set click listener to launch SupportDetailActivity
         holder.itemView.setOnClickListener {
             val intent = Intent(context, SupportDetailActivity::class.java)
             intent.putExtra("supportId", item.supportId)
@@ -54,7 +54,10 @@ class SupportRecyclerViewAdapter(
         fun bind(item: SupportListResponse) {
             Log.d("SupportRecyclerViewAdapter", item.toString())
             binding.title.text = item.title
-            binding.amount.text = item.goalPoint.toString()
+
+            val decimalFormat = DecimalFormat("#,###")
+            val formattedGoal: String = decimalFormat.format(item.goalPoint)
+            binding.amount.text = formattedGoal
 
             val progressPercentage = calculateProgressPercentage(item.goalPoint, item.currentPoint)
             binding.progressPercentage.text = "$progressPercentage%"
@@ -78,7 +81,7 @@ class SupportRecyclerViewAdapter(
             val timeParts = parts[1].split(":")
             val hours = timeParts[0]
 
-            return "$days 일  $hours 시간"
+            return days+"일 "+hours+"시간"
         }
 
         private fun calculateProgressPercentage(goalPoint: Int, currentPoint: Int): Int {

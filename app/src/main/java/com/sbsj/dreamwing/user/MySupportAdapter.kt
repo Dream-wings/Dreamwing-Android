@@ -35,11 +35,7 @@ class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder
 
         fun bind(mySupportVO: MySupportVO) {
             title.text = mySupportVO.title
-
-            var userPoint = mySupportVO.point
-            point.text = "+ " + mySupportVO.point.toString()
-
-
+            point.text = mySupportVO.point.toString()
             createdDate.text = mySupportVO.createdDate
         }
     }

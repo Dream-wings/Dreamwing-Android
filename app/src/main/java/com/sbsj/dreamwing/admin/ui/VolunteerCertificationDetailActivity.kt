@@ -36,6 +36,13 @@ class VolunteerCertificationDetailActivity : AppCompatActivity() {
         binding = ActivityVolunteerCertificationDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 툴바
+        setSupportActionBar(binding.adminToolbar.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.adminToolbar.toolbar.title = "봉사활동 인증 대기 목록"
+
         val volunteerId = intent.getLongExtra("volunteerId", 0)
         val userId = intent.getLongExtra("userId", 1L)
         val activityType = intent.getIntExtra("activityType", 0)

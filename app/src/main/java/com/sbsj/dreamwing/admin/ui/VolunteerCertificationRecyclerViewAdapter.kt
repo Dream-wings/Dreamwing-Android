@@ -6,9 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.sbsj.dreamwing.admin.model.request.AwardVolunteerPointRequest
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
-import com.sbsj.dreamwing.admin.ui.VolunteerRequestRecyclerViewAdapter.Companion
 import com.sbsj.dreamwing.databinding.ItemAdminBinding
 import com.sbsj.dreamwing.databinding.ItemAdminHeaderBinding
 import com.sbsj.dreamwing.volunteer.model.VolunteerType
@@ -28,45 +26,27 @@ import com.sbsj.dreamwing.volunteer.model.VolunteerType
 class VolunteerCertificationRecyclerViewAdapter (
     private val requestList: MutableList<VolunteerRequestListResponse>,
     private val context: Context
-    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    ) : RecyclerView.Adapter<VolunteerCertificationRecyclerViewAdapter.RequestListViewHolder>() {
 
-    companion object {
-        private const val VIEW_TYPE_HEADER = 0
-        private const val VIEW_TYPE_ITEM = 1
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RequestListViewHolder {
+        val binding = ItemAdminBinding.inflate(LayoutInflater.from(context), parent, false)
+        return RequestListViewHolder(binding)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == VIEW_TYPE_HEADER) {
-            val binding = ItemAdminHeaderBinding.inflate(LayoutInflater.from(context), parent, false)
-            HeaderViewHolder(binding)
-        } else {
-            val binding = ItemAdminBinding.inflate(LayoutInflater.from(context), parent, false)
-            RequestListViewHolder(binding)
-        }
+    override fun onBindViewHolder(holder: RequestListViewHolder, position: Int) {
+        val item = requestList[position]
+        holder.bind(item)
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == VIEW_TYPE_HEADER) return
-
-        val item = requestList[position - 1]
-        (holder as RequestListViewHolder).bind(item)
-    }
-
-    override fun getItemCount(): Int = requestList.size + 1
-
-    override fun getItemViewType(position: Int): Int {
-        return if (position == 0) VIEW_TYPE_HEADER else VIEW_TYPE_ITEM
-    }
-
-    inner class HeaderViewHolder(private val binding: ItemAdminHeaderBinding) : RecyclerView.ViewHolder(binding.root)
+    override fun getItemCount(): Int = requestList.size
 
     inner class RequestListViewHolder(private val binding: ItemAdminBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.root.setOnClickListener {
                 val position = bindingAdapterPosition
-                if (position != RecyclerView.NO_POSITION) {
-                    val item = requestList[position - 1]
+                if (position != RecyclerView.NO_POSITION && position < requestList.size) {
+                    val item = requestList[position]
                     val intent = Intent(context, VolunteerCertificationDetailActivity::class.java).apply {
                         putExtra("volunteerId", item.volunteerId)
                         putExtra("userId", item.userId)
@@ -80,7 +60,7 @@ class VolunteerCertificationRecyclerViewAdapter (
         }
 
         fun bind(item: VolunteerRequestListResponse) {
-            Log.d("VolunteerRequestRecyclerViewAdapter", item.toString())
+            Log.d("VolunteerCertificationRecyclerViewAdapter", item.toString())
             binding.column1.text = item.volunteerId.toString()
             val type = VolunteerType.fromCode(item.type)
             binding.column2.text = type

@@ -4,8 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
     android:layout_marginBottom="20dp"
     card_view:cardCornerRadius="16dp"
     card_view:cardElevation="4dp"
@@ -37,7 +37,7 @@
                 android:id="@+id/categoryTextView"
                 android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
+            android:textSize="14sp"
             android:textStyle="bold"
             android:gravity="center"
             android:background="@drawable/bg_jaeseong_categoryview"
@@ -45,6 +45,7 @@
             android:textColor="@android:color/black"
             android:layout_marginEnd="8dp"
                 android:minWidth="130dp"
+                android:fontFamily="@font/happiness_sans_title"
                 />
 
             <TextView
@@ -52,9 +53,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:gravity="left" />
+            android:gravity="left"
+            android:textColor="@color/black"
+            android:fontFamily="@font/happiness_sans_title"/>
         </LinearLayout>
 
         <!-- Address -->
@@ -63,10 +66,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:drawableLeft="@drawable/ic_location"
             android:drawablePadding="8dp"
-            android:padding="8dp"/>
+            android:padding="8dp"
+            android:fontFamily="@font/happiness_sans_title"
+            />
 
         <!-- Start Date and Status in one line -->
         <LinearLayout
@@ -80,22 +85,24 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:gravity="left"
                 android:drawableLeft="@drawable/ic_clock"
             android:drawablePadding="8dp"
+                android:fontFamily="@font/happiness_sans_title"
             android:padding="8dp" />
 
             <TextView
                 android:id="@+id/statusTextView"
                 android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:gravity="center"
             android:background="@drawable/bg_jaeseong_textview"
             android:padding="8dp"
             android:textColor="@android:color/white"
             android:layout_marginStart="8dp"
+                android:fontFamily="@font/happiness_sans_title"
                 android:minWidth="100dp"/>
         </LinearLayout>
     </LinearLayout>

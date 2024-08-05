@@ -39,24 +39,16 @@ class AdminActivity : AppCompatActivity() {
 //                return true
 //            }
             R.id.volunteer_request -> {
-                switchFragment(VolunteerRequestListFragment(), "봉사활동 신청 대기 목록")
+                startActivity(Intent(this, VolunteerRequestListActivity::class.java))
                 return true
             }
             R.id.volunteer_certification -> {
-                switchFragment(VolunteerCertificationListFragment(), "봉사활동 인증 대기 목록")
+                startActivity(Intent(this, VolunteerCertificationListActivity::class.java))
                 return true
             }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
-    private fun switchFragment(fragment: Fragment, title: String) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.container, fragment)
-            .commit()
-
-        supportActionBar?.title = title
-    }
 
 }

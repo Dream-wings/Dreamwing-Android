@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Title Input -->
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="제목 입력"
+            android:textSize="16sp" />
+
+        <!-- Content Input -->
+        <EditText
+            android:id="@+id/editTextContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="내용 입력"
+            android:textSize="16sp"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top" />
+
+        <!-- Type Input -->
+        <EditText
+            android:id="@+id/editTextType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="종류 입력"
+            android:textSize="16sp"
+            android:inputType="number" />
+
+        <!-- Category Input -->
+        <EditText
+            android:id="@+id/editTextCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="카테고리 입력"
+            android:textSize="16sp"
+            android:inputType="number" />
+
+        <!-- Volunteer Start Date -->
+        <EditText
+            android:id="@+id/editTextVolunteerStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="봉사 시작 날짜 입력 (YYYY-MM-DD)"
+            android:textSize="16sp"
+            android:inputType="date" />
+
+        <!-- Volunteer End Date -->
+        <EditText
+            android:id="@+id/editTextVolunteerEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="봉사 종료 날짜 입력 (YYYY-MM-DD)"
+            android:textSize="16sp"
+            android:inputType="date" />
+
+        <!-- Address Input -->
+        <EditText
+            android:id="@+id/editTextAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="주소 입력"
+            android:textSize="16sp" />
+
+        <!-- Total Count Input -->
+        <EditText
+            android:id="@+id/editTextTotalCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="총 인원 입력"
+            android:textSize="16sp"
+            android:inputType="number" />
+
+        <!-- Status Input -->
+        <EditText
+            android:id="@+id/editTextStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="상태 입력"
+            android:textSize="16sp"
+            android:inputType="number" />
+
+        <!-- Recruit Start Date -->
+        <EditText
+            android:id="@+id/editTextRecruitStartDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="모집 시작 날짜 입력 (YYYY-MM-DD)"
+            android:textSize="16sp"
+            android:inputType="date" />
+
+        <!-- Recruit End Date -->
+        <EditText
+            android:id="@+id/editTextRecruitEndDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="모집 종료 날짜 입력 (YYYY-MM-DD)"
+            android:textSize="16sp"
+            android:inputType="date" />
+
+        <!-- Latitude Input -->
+        <EditText
+            android:id="@+id/editTextLatitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="위도 입력"
+            android:textSize="16sp"
+            android:inputType="numberDecimal" />
+
+        <!-- Longitude Input -->
+        <EditText
+            android:id="@+id/editTextLongitude"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="경도 입력"
+            android:textSize="16sp"
+            android:inputType="numberDecimal" />
+
+        <!-- Image Picker -->
+        <Button
+            android:id="@+id/buttonSelectImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="사진 선택"
+            android:textSize="16sp" />
+
+        <!-- Image Preview -->
+        <ImageView
+            android:id="@+id/imageViewPreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:layout_marginTop="8dp" />
+
+        <!-- Add Volunteer Button -->
+        <Button
+            android:id="@+id/buttonAddVolunteer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="봉사 등록"
+            android:textSize="16sp"
+            android:layout_marginTop="16dp" />
+
+    </LinearLayout>
+</ScrollView>

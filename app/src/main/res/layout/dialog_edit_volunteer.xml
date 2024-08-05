@@ -1,0 +1,105 @@
+<!-- dialog_edit_volunteer.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/editTextTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="제목" />
+
+    <EditText
+        android:id="@+id/editTextContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="내용" />
+
+    <EditText
+        android:id="@+id/editTextType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="타입 (0: 봉사, 1: 멘토링)" />
+
+    <EditText
+        android:id="@+id/editTextCategory"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="카테고리" />
+
+    <EditText
+        android:id="@+id/editTextVolunteerStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="봉사 시작일 (YYYY-MM-DD)" />
+
+    <EditText
+        android:id="@+id/editTextVolunteerEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="봉사 종료일 (YYYY-MM-DD)" />
+
+    <EditText
+        android:id="@+id/editTextAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주소" />
+
+    <EditText
+        android:id="@+id/editTextTotalCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모집 인원" />
+
+    <EditText
+        android:id="@+id/editTextStatus"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="상태" />
+
+    <EditText
+        android:id="@+id/editTextRecruitStartDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모집 시작일 (YYYY-MM-DD)" />
+
+    <EditText
+        android:id="@+id/editTextRecruitEndDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모집 종료일 (YYYY-MM-DD)" />
+
+    <EditText
+        android:id="@+id/editTextLatitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="위도" />
+
+    <EditText
+        android:id="@+id/editTextLongitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="경도" />
+
+    <Button
+        android:id="@+id/buttonSelectImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="이미지 선택" />
+
+    <ImageView
+        android:id="@+id/imageViewPreview"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:scaleType="centerCrop" />
+
+    <Button
+        android:id="@+id/buttonEditVolunteer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="수정" />
+
+</LinearLayout>
