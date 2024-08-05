@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sbsj.dreamwing.R
+import com.sbsj.dreamwing.user.UpdateUserActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentMypageBinding
@@ -55,6 +56,18 @@ class MyPageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         fetchUserInfo()
 
+        val updateButton = binding.updateButton
+
+        // 회원가입 버튼 클릭 리스너 설정
+        updateButton.setOnClickListener {
+            // 회원가입 액티비티로 이동
+            val intent = Intent(activity, UpdateUserActivity::class.java)
+            startActivity(intent)
+            // Fragment에서는 finish()를 호출할 수 없습니다.
+            // Activity에서 Fragment를 종료하려면 다음과 같이 작성하세요.
+            activity?.finish()
+        }
+
         // 포인트 상세보기 클릭 이벤트 설정
         val pointDetail = view.findViewById<View>(R.id.pointDetail)
         pointDetail.setOnClickListener {
@@ -73,6 +86,8 @@ class MyPageFragment : Fragment() {
     private fun fetchUserInfo() {
         val jwtToken = SharedPreferencesUtil.getToken(requireContext())
         if (jwtToken.isNullOrEmpty()) {
+
+
             return
         }
 

@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:background="@color/white"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="15dp"
+        android:padding="8dp">
+
+
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/registration_iv"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="32dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_image"
+            app:layout_constraintBottom_toTopOf="@+id/editIDLayout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/RoundImage"
+            app:strokeColor="@android:color/white"
+            app:strokeWidth="2dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_login_id" />
+
+                <EditText
+                    android:hint="@string/id"
+                    android:id="@+id/editID"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    android:maxLength="12"
+                    android:inputType="text"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:textColor="@color/black"
+                    android:backgroundTint="@color/white"
+                    android:padding="8dp" />
+
+                <Button
+                    android:id="@+id/btnCheckExistID"
+                    android:layout_width="80dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="10dp"
+                    android:background="@drawable/button_login"
+                    android:text="중복확인"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <!-- 밑줄을 추가하는 View -->
+            <View
+                android:id="@+id/underlineID"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+        <TextView
+            android:id="@+id/idCheckMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:text="이곳에 중복 여부 메시지가 표시됩니다" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp">
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_password" />
+                <EditText
+                    android:id="@+id/editPWD"
+                    android:hint="@string/pwd"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:layout_width="match_parent"
+                    android:maxLines="1"
+                    android:maxLength="20"
+                    android:backgroundTint="@color/white"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+
+            <!-- 비밀번호 입력란 밑의 밑줄 -->
+            <View
+                android:id="@+id/underlinePWD"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_password" />
+
+                <EditText
+                    android:id="@+id/editPWDConfirm"
+                    android:layout_width="match_parent"
+                    android:hint="@string/pwd_confirm"
+                    android:maxLines="1"
+                    android:maxLength="20"
+                    android:backgroundTint="@color/white"
+                    android:inputType="textPassword"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+
+            <!-- 비밀번호 확인 입력란 밑의 밑줄 -->
+            <View
+                android:id="@+id/underlinePWDConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+        <!-- 비밀번호 일치 여부를 표시할 TextView 추가 -->
+        <TextView
+            android:id="@+id/passwordMatchMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"
+            android:text="비밀번호가 일치하지 않습니다." />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp">
+
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_name" />
+
+                <EditText
+                    android:hint="@string/name"
+                    android:id="@+id/editName"
+                    android:layout_width="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:maxLines="1"
+                    android:maxLength="12"
+                    android:inputType="text"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:textColor="@color/black"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+
+            <!-- 이름 입력란 밑의 밑줄 -->
+            <View
+                android:id="@+id/underlineName"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_phone" />
+
+                <EditText
+                    android:hint="@string/phone"
+                    android:id="@+id/editPhone"
+                    android:layout_width="match_parent"
+                    android:backgroundTint="@color/white"
+                    android:maxLines="1"
+                    android:maxLength="12"
+                    android:inputType="text"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/happiness_sans_regular"
+                    android:layout_height="match_parent"
+                    />
+            </LinearLayout>
+
+            <!-- 전화번호 입력란 밑의 밑줄 -->
+            <View
+                android:id="@+id/underlinePhone"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black"
+                android:layout_marginTop="10dp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnDone"
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/update"
+            android:textColor="@color/white"
+            android:fontFamily="@font/happiness_sans_regular"
+            android:background="@drawable/button_login"/>
+    </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
