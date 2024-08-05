@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/edit_text_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="제목" />
+
+    <EditText
+        android:id="@+id/edit_text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="내용" />
+
+    <EditText
+        android:id="@+id/edit_text_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="종류 (숫자)" />
+
+    <EditText
+        android:id="@+id/edit_text_category"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="카테고리 (숫자)" />
+
+    <EditText
+        android:id="@+id/edit_text_volunteer_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="봉사 시작 날짜" />
+
+    <EditText
+        android:id="@+id/edit_text_volunteer_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="봉사 종료 날짜" />
+
+    <EditText
+        android:id="@+id/edit_text_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="주소" />
+
+    <EditText
+        android:id="@+id/edit_text_total_count"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="총 인원" />
+
+    <EditText
+        android:id="@+id/edit_text_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="상태 (숫자)" />
+
+    <EditText
+        android:id="@+id/edit_text_recruit_start_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모집 시작 날짜" />
+
+    <EditText
+        android:id="@+id/edit_text_recruit_end_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="모집 종료 날짜" />
+
+    <EditText
+        android:id="@+id/edit_text_latitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="위도" />
+
+    <EditText
+        android:id="@+id/edit_text_longitude"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="경도" />
+</LinearLayout>

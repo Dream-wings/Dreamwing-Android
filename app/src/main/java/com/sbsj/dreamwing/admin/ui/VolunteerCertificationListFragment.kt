@@ -2,13 +2,18 @@ package com.sbsj.dreamwing.admin.ui
 
 import android.os.Bundle
 import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.databinding.ActivityVolunteerRequestListBinding
+import com.sbsj.dreamwing.databinding.FragmentVolunteerRequestListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -25,23 +30,32 @@ import retrofit2.Response
  * 2024.08.05  	정은지       최초 생성
  * </pre>
  */
-class VolunteerCertificationListActivity : AppCompatActivity() {
+class VolunteerCertificationListFragment : Fragment() {
 
-    private lateinit var binding: ActivityVolunteerRequestListBinding
+    private var _binding: FragmentVolunteerRequestListBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var volunteerCertificationRecyclerViewAdapter: VolunteerCertificationRecyclerViewAdapter
     private val requestList = mutableListOf<VolunteerRequestListResponse>()
     private var page = 0
     private val size = 10
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityVolunteerRequestListBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentVolunteerRequestListBinding.inflate(inflater, container, false)
+        setHasOptionsMenu(true)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // RecyclerView 설정
-        volunteerCertificationRecyclerViewAdapter = VolunteerCertificationRecyclerViewAdapter(requestList, this)
+        volunteerCertificationRecyclerViewAdapter = VolunteerCertificationRecyclerViewAdapter(requestList, requireContext())
         binding.recyclerView.adapter = volunteerCertificationRecyclerViewAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // 데이터 불러오기
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -52,6 +66,9 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
                 }
             }
         })
+
+        // 처음 데이터 불러오기
+        fetchRequestList()
     }
 
     private fun fetchRequestList() {
@@ -63,14 +80,14 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val requestData = response.body()?.data
-                    Log.d("VolunteerCertificationListActivity", "RequestList: $requestData")
+                    Log.d("VolunteerCertificationListFragment", "RequestList: $requestData")
                     requestData?.let {
                         requestList.addAll(it)
                         volunteerCertificationRecyclerViewAdapter.notifyDataSetChanged()
                         page++
                     }
                 } else {
-                    Log.e("VolunteerCertificationListActivity", "Response not successful")
+                    Log.e("VolunteerCertificationListFragment", "Response not successful")
                 }
             }
 
@@ -78,8 +95,13 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
                 call: Call<ApiResponse<List<VolunteerRequestListResponse>>>,
                 t: Throwable
             ) {
-                Log.e("VolunteerCertificationListActivity", "Error: ${t.message}")
+                Log.e("VolunteerCertificationListFragment", "Error: ${t.message}")
             }
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
