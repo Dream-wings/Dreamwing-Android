@@ -6,27 +6,29 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.admin.model.request.AwardVolunteerPointRequest
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
+import com.sbsj.dreamwing.admin.ui.VolunteerRequestRecyclerViewAdapter.Companion
 import com.sbsj.dreamwing.databinding.ItemAdminBinding
 import com.sbsj.dreamwing.databinding.ItemAdminHeaderBinding
 import com.sbsj.dreamwing.volunteer.model.VolunteerType
 
 /**
- * 봉사활동 신청 대기 목록 View Adapter
+ * 봉사활동 인증 대기 목록 View Adapter
  * @author 정은지
- * @since 2024.08.04
+ * @since 2024.08.05
  * @version 1.0
  *
  * <pre>
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
- * 2024.08.04  	정은지       최초 생성
+ * 2024.08.05  	정은지       최초 생성
  * </pre>
  */
-class VolunteerRequestRecyclerViewAdapter(
+class VolunteerCertificationRecyclerViewAdapter (
     private val requestList: MutableList<VolunteerRequestListResponse>,
     private val context: Context
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_HEADER = 0
@@ -65,9 +67,12 @@ class VolunteerRequestRecyclerViewAdapter(
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     val item = requestList[position - 1]
-                    val intent = Intent(context, VolunteerRequestDetailActivity::class.java).apply {
+                    val intent = Intent(context, VolunteerCertificationDetailActivity::class.java).apply {
                         putExtra("volunteerId", item.volunteerId)
                         putExtra("userId", item.userId)
+                        putExtra("activityType", item.type)
+                        putExtra("activityTitle", item.title)
+                        putExtra("point", 5000)
                     }
                     context.startActivity(intent)
                 }
