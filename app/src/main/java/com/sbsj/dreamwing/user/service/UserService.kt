@@ -5,6 +5,7 @@ import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
 import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
+import com.sbsj.dreamwing.user.model.response.UpdateResponse
 import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import com.sbsj.dreamwing.user.model.vo.MyPointVO
 import com.sbsj.dreamwing.user.model.vo.MySupportVO
@@ -71,4 +72,16 @@ interface UserService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Call<ApiResponse<List<MySupportVO>>>
+
+    @Multipart
+    @POST("/user/update")
+    fun update(
+        @Header("Authorization") authHeader: String,
+        @Part("loginId") loginId: RequestBody,
+        @Part("password") password: RequestBody,
+        @Part("name") name: RequestBody,
+        @Part("phone") phone: RequestBody,
+        @Part imageFile: MultipartBody.Part?,  // Nullable type
+        @Part("profileImageUrl") profileImageUrl: RequestBody?
+    ): Call<UpdateResponse>
 }
