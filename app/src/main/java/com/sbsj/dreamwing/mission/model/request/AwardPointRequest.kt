@@ -1,7 +1,5 @@
 package com.sbsj.dreamwing.mission.model.request
 
-import com.sbsj.dreamwing.mission.model.ActivityType
-
 /**
  * 포인트 부여 요청 데이터 클래스
  * @author 정은지
