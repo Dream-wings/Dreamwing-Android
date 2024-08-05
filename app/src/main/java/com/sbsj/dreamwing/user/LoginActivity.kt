@@ -52,7 +52,10 @@ class LoginActivity : AppCompatActivity() {
 
         // Toolbar의 NavigationIcon 클릭 리스너 추가
         binding.toolbar.root.setNavigationOnClickListener {
-            onBackPressed() // 이전 페이지로 돌아갑니다.
+            // MainActivity로 이동
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish() // 현재 액티비티 종료
         }
         // 뷰 참조 가져오기
         val loginId = binding.editID

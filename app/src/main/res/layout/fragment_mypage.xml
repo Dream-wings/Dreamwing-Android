@@ -187,7 +187,7 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/btnDone"
+                android:id="@+id/logoutButton"
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"

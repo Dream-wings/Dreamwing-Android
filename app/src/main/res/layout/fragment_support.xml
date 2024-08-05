@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginTop="16dp"
+        android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -29,6 +30,7 @@
         android:drawablePadding="8dp"
         android:padding="10dp"
         android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/happiness_sans_title"
         android:textColor="@color/black" />
 
         <!-- 모금완료 button -->
@@ -38,73 +40,90 @@
             android:layout_height="wrap_content"
             android:text="모금완료"
             android:drawableLeft="@drawable/ic_recruit_end"
-        android:drawablePadding="8dp"
+            android:fontFamily="@font/happiness_sans_title"
+            android:drawablePadding="8dp"
         android:padding="10dp"
         android:layout_marginStart="16dp"
         android:background="?attr/selectableItemBackground"
         android:textColor="@color/black" />
     </LinearLayout>
 
-    <!-- Category buttons -->
-    <LinearLayout
-        android:id="@+id/categoryButtonGroup"
-        android:layout_width="wrap_content"
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="16dp"
+        android:fillViewport="true"
         android:layout_marginLeft="20dp"
-        app:layout_constraintTop_toBottomOf="@id/filterRadioGroup"
-        app:layout_constraintStart_toStartOf="parent">
+        android:layout_marginRight="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterRadioGroup">
 
-        <!-- 교육 button -->
-        <Button
-            android:id="@+id/btnEducation"
+        <!-- Category buttons -->
+        <LinearLayout
+            android:id="@+id/categoryButtonGroup"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="교육"
-            android:background="@drawable/button_jaeseong_selector"
-            android:textColor="#767676" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/filterRadioGroup">
 
-        <!-- 물품 button -->
-        <Button
-            android:id="@+id/btnSupplies"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="물품"
-            android:background="@drawable/button_jaeseong_selector"
-            android:textColor="#767676"
-            android:layout_marginStart="16dp" />
+            <!-- 교육 button -->
+            <Button
+                android:id="@+id/btnEducation"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/button_jaeseong_selector"
+                android:fontFamily="@font/happiness_sans_title"
+                android:text="교육"
+                android:textColor="#767676" />
 
-        <!-- 문화예술 button -->
-        <Button
-            android:id="@+id/btnArts"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="문화예술"
-            android:background="@drawable/button_jaeseong_selector"
-            android:textColor="#767676"
-            android:layout_marginStart="16dp" />
+            <!-- 물품 button -->
+            <Button
+                android:id="@+id/btnSupplies"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_jaeseong_selector"
+                android:fontFamily="@font/happiness_sans_title"
+                android:text="물품"
+                android:textColor="#767676" />
 
-        <!-- 주거개선 button -->
-        <Button
-            android:id="@+id/btnHousing"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="주거개선"
-            android:background="@drawable/button_jaeseong_selector"
-            android:textColor="#767676"
-            android:layout_marginStart="16dp" />
-    </LinearLayout>
+            <!-- 문화예술 button -->
+            <Button
+                android:id="@+id/btnArts"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_jaeseong_selector"
+                android:fontFamily="@font/happiness_sans_title"
+                android:text="문화예술"
+                android:textColor="#767676" />
+
+            <!-- 주거개선 button -->
+            <Button
+                android:id="@+id/btnHousing"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/button_jaeseong_selector"
+                android:fontFamily="@font/happiness_sans_title"
+                android:text="주거개선"
+                android:textColor="#767676" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/categoryButtonGroup"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="20dp"/>
+        app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

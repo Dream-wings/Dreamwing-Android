@@ -5,7 +5,7 @@ import android.content.SharedPreferences
 
 /**
  * SharedPreferences 유틸리티 클래스
- * JWT 토큰을 저장하고 가져오는 기능을 제공
+ * JWT 토큰을 저장, 삭제 가져오는 기능을 제공
  */
 object SharedPreferencesUtil {
     private const val PREFS_NAME = "app_prefs"
@@ -38,5 +38,14 @@ object SharedPreferencesUtil {
     fun getToken(context: Context): String? {
         val prefs = getPreferences(context)
         return prefs.getString(TOKEN_KEY, null)
+    }
+
+    /**
+     * JWT 토큰을 삭제합니다.
+     * @param context 애플리케이션 컨텍스트
+     */
+    fun clearToken(context: Context) {
+        val prefs = getPreferences(context)
+        prefs.edit().remove(TOKEN_KEY).apply()
     }
 }
