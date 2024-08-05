@@ -34,6 +34,14 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
         binding = ActivityVolunteerRequestDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 툴바
+        setSupportActionBar(binding.adminToolbar.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        binding.adminToolbar.toolbar.title = "봉사활동 승인 대기 목록"
+
+
         val volunteerId = intent.getLongExtra("volunteerId", 0)
         val userId = intent.getLongExtra("userId", 1L)
 
