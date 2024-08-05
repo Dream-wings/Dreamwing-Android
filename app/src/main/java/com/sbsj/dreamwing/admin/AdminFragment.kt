@@ -77,6 +77,15 @@ class AdminFragment : Fragment() {
                 Toast.makeText(requireContext(), "수정할 항목을 선택해 주세요.", Toast.LENGTH_SHORT).show()
             }
         }
+
+        // 삭제 버튼 클릭 리스너 설정
+        binding.deleteButton.setOnClickListener {
+            selectedVolunteerId?.let {
+                showDeleteConfirmationDialog(it)
+            } ?: run {
+                Toast.makeText(requireContext(), "삭제할 항목을 선택해 주세요.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -244,7 +253,6 @@ class AdminFragment : Fragment() {
             })
     }
 
-    // AdminFragment.kt
     private fun loadVolunteerDetail(volunteerId: Long) {
         // 선택된 봉사 ID에 대한 상세 정보 로드
         RetrofitClient.volunteerService.getVolunteerDetail(volunteerId)
@@ -267,7 +275,6 @@ class AdminFragment : Fragment() {
                 }
             })
     }
-
 
     private fun showEditVolunteerDialog(volunteer: VolunteerDetailDTO) {
         dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_add_volunteer, null)
@@ -396,6 +403,43 @@ class AdminFragment : Fragment() {
                         refreshVolunteerList()
                     } else {
                         Toast.makeText(requireContext(), "봉사 수정에 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        Log.e("AdminFragment", "Response Error: ${response.errorBody()?.string()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<ApiResponse<Void>>, t: Throwable) {
+                    Toast.makeText(requireContext(), "네트워크 오류: ${t.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("AdminFragment", "Network Error: ${t.message}")
+                }
+            })
+    }
+
+    private fun showDeleteConfirmationDialog(volunteerId: Long) {
+        AlertDialog.Builder(requireContext())
+            .setTitle("삭제 확인")
+            .setMessage("정말로 이 봉사를 삭제하시겠습니까?")
+            .setPositiveButton("삭제") { dialog, _ ->
+                deleteVolunteer(volunteerId)
+                dialog.dismiss()
+            }
+            .setNegativeButton("취소") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    private fun deleteVolunteer(volunteerId: Long) {
+        RetrofitClient.volunteerService.deleteVolunteer(volunteerId)
+            .enqueue(object : Callback<ApiResponse<Void>> {
+                override fun onResponse(
+                    call: Call<ApiResponse<Void>>,
+                    response: Response<ApiResponse<Void>>
+                ) {
+                    if (response.isSuccessful && response.body()?.success == true) {
+                        Toast.makeText(requireContext(), "봉사가 삭제되었습니다", Toast.LENGTH_SHORT).show()
+                        refreshVolunteerList()
+                    } else {
+                        Toast.makeText(requireContext(), "봉사 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show()
                         Log.e("AdminFragment", "Response Error: ${response.errorBody()?.string()}")
                     }
                 }

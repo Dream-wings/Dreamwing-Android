@@ -107,10 +107,14 @@ interface VolunteerService {
         @Body request: VolunteerDetailDTO
     ): Call<ApiResponse<Void>>
 
-    @DELETE("/admin/volunteer/{volunteerId}")
+    @DELETE("/admin/volunteer/delete/{volunteerId}")
     fun deleteVolunteer(
         @Path("volunteerId") volunteerId: Long
     ): Call<ApiResponse<Void>>
+
+
+
+
 
     @POST("/admin/volunteer/create")
     fun createVolunteer(
