@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="8dp"
-
     android:layout_marginBottom="20dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
     card_view:cardCornerRadius="16dp"
     card_view:cardElevation="4dp"
     android:fontFamily="@font/happiness_sans_title">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
         android:padding="16dp"
         android:background="@android:color/white">
 
@@ -22,56 +23,83 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/splash" />
+            android:src="@drawable/splash"
+            card_view:layout_constraintStart_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:fontFamily="@font/happiness_sans_title"
             android:text="결식 아동들에게 행복한 여름방학을 선물해주세요"
+            android:textColor="@color/black"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            card_view:layout_constraintTop_toBottomOf="@id/image"
+            tools:layout_editor_absoluteX="16dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8dp">
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/happiness_sans_title"
+            android:text="100,000,000"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toStartOf="@id/title"
+            card_view:layout_constraintTop_toBottomOf="@id/title" />
 
-            <TextView
-                android:id="@+id/amount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="100,000,000 WING"
-                android:textSize="16sp" />
+        <TextView
+            android:id="@+id/Wing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:fontFamily="@font/happiness_sans_title"
+            android:text="WING"
+            android:textColor="@color/main"
+            android:textSize="12sp"
+            card_view:layout_constraintBottom_toBottomOf="@+id/amount"
+            card_view:layout_constraintStart_toEndOf="@+id/amount"
+            card_view:layout_constraintTop_toTopOf="@+id/amount" />
 
-            <TextView
-                android:id="@+id/time_remaining"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="30일 8시간"
-                android:textSize="16sp"
-                android:drawableLeft="@drawable/ic_time"
-                android:drawablePadding="4dp"/>
-
-            <TextView
-                android:id="@+id/progress_percentage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="0%"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/time_remaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:drawableLeft="@drawable/ic_time"
+            android:drawablePadding="4dp"
+            android:fontFamily="@font/happiness_sans_title"
+            android:text="30일 8시간"
+            android:textColor="@color/gray"
+            android:textSize="14sp"
+            card_view:layout_constraintEnd_toEndOf="@+id/title"
+            card_view:layout_constraintTop_toBottomOf="@+id/title" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="match_parent"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:progress="82"
             android:progressDrawable="@drawable/progress_bar_custom"
-            style="@android:style/Widget.ProgressBar.Horizontal" />
-    </LinearLayout>
+            card_view:layout_constraintStart_toStartOf="@+id/amount"
+            card_view:layout_constraintTop_toBottomOf="@id/time_remaining" />
+
+        <TextView
+            android:id="@+id/progress_percentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/happiness_sans_title"
+            android:text="50%"
+            android:textColor="@color/main"
+            card_view:layout_constraintBottom_toBottomOf="@+id/progress_bar"
+            card_view:layout_constraintEnd_toEndOf="@+id/time_remaining"
+            card_view:layout_constraintLeft_toRightOf="@id/progress_bar"
+            card_view:layout_constraintTop_toTopOf="@+id/progress_bar" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
