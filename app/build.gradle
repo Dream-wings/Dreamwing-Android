@@ -1,20 +1,25 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    id("androidx.navigation.safeargs.kotlin") version "2.7.7" // 플러그인 버전 추가
+    id("androidx.navigation.safeargs.kotlin") version "2.7.7"
 }
 
-Properties properties = new Properties()
-rootProject.file('local.properties').withInputStream { stream ->
-    properties.load(stream)
+def properties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localPropertiesFile.withInputStream { stream ->
+        properties.load(stream)
+    }
 }
+
+// local.properties에서 kakaoApiKey 가져오기
+def kakaoApiKey = properties.getProperty('kakaoApiKey') ?: "" // 기본값으로 빈 문자열 사용
 
 android {
     namespace 'com.sbsj.dreamwing'
     compileSdk 34
 
     defaultConfig {
-
         buildConfigField "String", "BASE_URL", "\"${properties['BASE_URL']}\""
         applicationId "com.sbsj.dreamwing"
         minSdk 26
@@ -26,6 +31,9 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        // Manifest placeholder에 KAKAO_API_KEY 설정
+        manifestPlaceholders = [KAKAO_API_KEY: kakaoApiKey]
     }
     viewBinding {
         enabled = true
@@ -34,6 +42,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "KAKAO_API_KEY", "\"${kakaoApiKey}\""
+        }
+        debug {
+            buildConfigField "String", "KAKAO_API_KEY", "\"${kakaoApiKey}\""
         }
     }
     compileOptions {
@@ -48,7 +60,6 @@ android {
         buildConfig true
         dataBinding true
         viewBinding true
-
     }
     composeOptions {
         kotlinCompilerExtensionVersion '1.5.1'
@@ -61,23 +72,6 @@ android {
 }
 
 dependencies {
-//기본 gradle
-//    implementation libs.androidx.core.ktx
-//    implementation libs.androidx.lifecycle.runtime.ktx
-//    implementation libs.androidx.activity.compose
-//    implementation platform(libs.androidx.compose.bom)
-//    implementation libs.androidx.ui
-//    implementation libs.androidx.ui.graphics
-//    implementation libs.androidx.ui.tooling.preview
-//    implementation libs.androidx.material3
-//    testImplementation libs.junit
-//    androidTestImplementation libs.androidx.junit
-//    androidTestImplementation libs.androidx.espresso.core
-//    androidTestImplementation platform(libs.androidx.compose.bom)
-//    androidTestImplementation libs.androidx.ui.test.junit4
-//    debugImplementation libs.androidx.ui.tooling
-//    debugImplementation libs.androidx.ui.test.manifest
-
     implementation libs.androidx.core.ktx
     implementation libs.androidx.lifecycle.runtime.ktx
     implementation libs.androidx.activity.compose
@@ -86,7 +80,6 @@ dependencies {
     implementation libs.androidx.ui.graphics
     implementation libs.androidx.ui.tooling.preview
     implementation libs.androidx.material3
-  //  implementation libs.androidx.recyclerview
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation libs.androidx.activity
 
@@ -127,7 +120,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
-    implementation 'com.kakao.maps.open:android:2.6.0'// 카카오 맵 API
+    implementation 'com.kakao.maps.open:android:2.6.0' // 카카오 맵 API
 
     // lottie
     implementation 'com.airbnb.android:lottie:5.0.2'
