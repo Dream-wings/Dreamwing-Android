@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".user.MyVolunteerDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".admin.ui.AdminActivity"
             android:exported="true" />
         <activity

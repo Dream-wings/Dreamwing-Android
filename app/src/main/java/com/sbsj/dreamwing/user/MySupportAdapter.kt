@@ -12,7 +12,7 @@ class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder
 
     private val supports = mutableListOf<MySupportVO>()
 
-    fun addPoints(newSupports: List<MySupportVO>) {
+    fun addSupports(newSupports: List<MySupportVO>) {
         supports.addAll(newSupports)
         notifyDataSetChanged()
     }

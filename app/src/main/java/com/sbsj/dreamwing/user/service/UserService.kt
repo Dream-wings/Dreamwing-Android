@@ -9,6 +9,7 @@ import com.sbsj.dreamwing.user.model.response.UpdateResponse
 import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import com.sbsj.dreamwing.user.model.vo.MyPointVO
 import com.sbsj.dreamwing.user.model.vo.MySupportVO
+import com.sbsj.dreamwing.user.model.vo.MyVolunteerVO
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -72,6 +73,13 @@ interface UserService {
         @Query("page") page: Int,
         @Query("size") size: Int
     ): Call<ApiResponse<List<MySupportVO>>>
+
+    @GET("/user/getVolunteerList")
+    fun getUserVolunteerList(
+        @Header("Authorization") authHeader: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): Call<ApiResponse<List<MyVolunteerVO>>>
 
     @Multipart
     @POST("/user/update")
