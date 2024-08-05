@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/volunteer_board"
+        android:title="봉사활동 게시판 관리">
+    </item>
+    <item
+        android:id="@+id/volunteer_request"
+        android:title="봉사활동 승인 대기 목록">
+    </item>
+    <item
+        android:id="@+id/volunteer_certification"
+        android:title="봉사활동 인증 대기 목록">
+    </item>
+</menu>
