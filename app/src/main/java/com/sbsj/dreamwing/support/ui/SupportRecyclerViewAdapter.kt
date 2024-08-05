@@ -1,30 +1,49 @@
 package com.sbsj.dreamwing.support.ui
 
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.sbsj.dreamwing.databinding.ItemSupportBinding
+import com.sbsj.dreamwing.support.SupportDetailActivity
 import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.squareup.picasso.Picasso
 
+/**
+ * 후원 목록 View Adapter
+ * @author 정은지
+ * @since 2024.08.01
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.01  	정은지       최초 생성
+ * </pre>
+ */
 class SupportRecyclerViewAdapter(
-    private val supportList: MutableList<SupportListResponse>,
+    private val supportList: List<SupportListResponse>,
     private val context: Context
-)  : RecyclerView.Adapter<SupportRecyclerViewAdapter.SupportListViewHolder>() {
-
-         private lateinit var binding: ItemSupportBinding
+) : RecyclerView.Adapter<SupportRecyclerViewAdapter.SupportListViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SupportListViewHolder {
-        binding = ItemSupportBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = ItemSupportBinding.inflate(LayoutInflater.from(context), parent, false)
         return SupportListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: SupportListViewHolder, position: Int) {
         val item = supportList[position]
         holder.bind(item)
+
+        // Set click listener to launch SupportDetailActivity
+        holder.itemView.setOnClickListener {
+            val intent = Intent(context, SupportDetailActivity::class.java)
+            intent.putExtra("supportId", item.supportId)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

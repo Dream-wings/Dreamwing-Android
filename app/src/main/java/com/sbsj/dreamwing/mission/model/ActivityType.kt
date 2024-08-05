@@ -1,5 +1,15 @@
 package com.sbsj.dreamwing.mission.model
 
+/**
+ * ActivityType
+ * @author 정은지
+ * @since 2024.08.04
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.04   정은지        최초 생성
+ */
 enum class ActivityType(val type: Int, val title: String, val point : Int) {
     VOLUNTEERING(1, "봉사", 5000),
     MENTORING(2, "멘토링", 5000),

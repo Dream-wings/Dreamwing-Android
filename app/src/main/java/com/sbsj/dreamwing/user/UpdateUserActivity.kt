@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing
+package com.sbsj.dreamwing.user
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -12,16 +12,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.imageview.ShapeableImageView
+import com.sbsj.dreamwing.MainActivity
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.user.LoginActivity
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
-import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import com.sbsj.dreamwing.user.model.response.UpdateResponse
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
