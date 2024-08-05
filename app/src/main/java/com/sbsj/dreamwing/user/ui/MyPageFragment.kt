@@ -31,6 +31,16 @@ import java.io.IOException
 
 /**
  * 마이페이지 프래그먼트
+ * @author 정은지
+ * @since 2024.08.01
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.01  	정은지       최초 생성
+ * 2024.08.02   정은찬       사용자 정보를 가져와 UI 업데이트
+ * </pre>
  */
 class MyPageFragment : Fragment() {
     // ViewBinding을 사용하여 뷰 요소에 쉽게 접근하기 위한 변수
