@@ -6,56 +6,52 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.databinding.FragmentVolunteerRequestListBinding
+import com.sbsj.dreamwing.databinding.ActivityVolunteerRequestListBinding
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * 봉사활동 인증 대기 목록 화면
+ * 봉사활동 신청 대기 목록 화면
  * @author 정은지
- * @since 2024.08.05
+ * @since 2024.08.04
  * @version 1.0
  *
  * <pre>
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
- * 2024.08.05  	정은지       최초 생성
+ * 2024.08.04  	정은지       최초 생성
  * </pre>
  */
-class VolunteerCertificationListFragment : Fragment() {
+class VolunteerRequestListActivity : AppCompatActivity() {
 
-    private var _binding: FragmentVolunteerRequestListBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: ActivityVolunteerRequestListBinding
 
-    private lateinit var volunteerCertificationRecyclerViewAdapter: VolunteerCertificationRecyclerViewAdapter
+    private lateinit var volunteerRequestRecyclerViewAdapter: VolunteerRequestRecyclerViewAdapter
     private val requestList = mutableListOf<VolunteerRequestListResponse>()
     private var page = 0
     private val size = 10
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentVolunteerRequestListBinding.inflate(inflater, container, false)
-        setHasOptionsMenu(true)
-        return binding.root
-    }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityVolunteerRequestListBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        // 툴바
+        setSupportActionBar(binding.adminToolbar.toolbar)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        binding.adminToolbar.toolbar.title = "봉사활동 승인 대기 목록"
 
         // RecyclerView 설정
-        volunteerCertificationRecyclerViewAdapter = VolunteerCertificationRecyclerViewAdapter(requestList, requireContext())
-        binding.recyclerView.adapter = volunteerCertificationRecyclerViewAdapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        volunteerRequestRecyclerViewAdapter = VolunteerRequestRecyclerViewAdapter(requestList, this)
+        binding.recyclerView.adapter = volunteerRequestRecyclerViewAdapter
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         // 데이터 불러오기
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -66,13 +62,11 @@ class VolunteerCertificationListFragment : Fragment() {
                 }
             }
         })
-
-        // 처음 데이터 불러오기
         fetchRequestList()
     }
 
     private fun fetchRequestList() {
-        RetrofitClient.adminService.getVolunteerCertificationList(page, size).enqueue(object :
+        RetrofitClient.adminService.getVolunteerRequestList(page, size).enqueue(object :
             Callback<ApiResponse<List<VolunteerRequestListResponse>>> {
             override fun onResponse(
                 call: Call<ApiResponse<List<VolunteerRequestListResponse>>>,
@@ -80,14 +74,14 @@ class VolunteerCertificationListFragment : Fragment() {
             ) {
                 if (response.isSuccessful) {
                     val requestData = response.body()?.data
-                    Log.d("VolunteerCertificationListFragment", "RequestList: $requestData")
+                    Log.d("VolunteerRequestListActivity", "RequestList: $requestData")
                     requestData?.let {
                         requestList.addAll(it)
-                        volunteerCertificationRecyclerViewAdapter.notifyDataSetChanged()
+                        volunteerRequestRecyclerViewAdapter.notifyDataSetChanged()
                         page++
                     }
                 } else {
-                    Log.e("VolunteerCertificationListFragment", "Response not successful")
+                    Log.e("VolunteerRequestListActivity", "Response not successful")
                 }
             }
 
@@ -95,13 +89,8 @@ class VolunteerCertificationListFragment : Fragment() {
                 call: Call<ApiResponse<List<VolunteerRequestListResponse>>>,
                 t: Throwable
             ) {
-                Log.e("VolunteerCertificationListFragment", "Error: ${t.message}")
+                Log.e("VolunteerRequestListActivity", "Error: ${t.message}")
             }
         })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

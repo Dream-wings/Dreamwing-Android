@@ -7,25 +7,34 @@
         android:id="@+id/column1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.5"
         android:padding="8dp"
-        android:text="Column 1" />
+        android:text="Column 1"
+        android:gravity="center"
+        android:fontFamily="@font/happiness_sans_regular"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/column2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="0.8"
         android:padding="8dp"
-        android:text="Column 2" />
+        android:fontFamily="@font/happiness_sans_regular"
+        android:text="Column 2"
+        android:gravity="center"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/column3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:padding="8dp"
-        android:text="Column 3" />
+        android:fontFamily="@font/happiness_sans_regular"
+        android:text="Column 3"
+        android:gravity="center"
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/column4"
@@ -33,6 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:padding="8dp"
-        android:text="Column 4" />
+        android:fontFamily="@font/happiness_sans_regular"
+        android:text="Column 4"
+        android:gravity="center"
+        android:textColor="@color/black" />
 
 </TableRow>
