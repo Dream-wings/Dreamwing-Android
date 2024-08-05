@@ -63,7 +63,7 @@ class UpdateUserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_update_user)
 
         // UI 요소 초기화
-        val loginId = findViewById<EditText>(R.id.editID)
+//        val loginId = findViewById<EditText>(R.id.editID)
         val password = findViewById<EditText>(R.id.editPWD)
         val passwordConfirm = findViewById<EditText>(R.id.editPWDConfirm)
         val name = findViewById<EditText>(R.id.editName)
@@ -88,26 +88,24 @@ class UpdateUserActivity : AppCompatActivity() {
             getContent.launch(intentImage)
         }
 
-        // 중복 확인 버튼 클릭 시 실행되는 코드
-        checkExistIDButton.setOnClickListener {
-            val idText = loginId.text.toString()
-            checkExistLoginId(idText) // 아이디 중복 확인 요청
-        }
+//        // 중복 확인 버튼 클릭 시 실행되는 코드
+//        checkExistIDButton.setOnClickListener {
+//            val idText = loginId.text.toString()
+//            checkExistLoginId(idText) // 아이디 중복 확인 요청
+//        }
 
         // 회원가입 버튼 클릭 시 실행되는 코드
         updateButton.setOnClickListener {
-            val idText = loginId.text.toString()
+//            val idText = loginId.text.toString()
             val passwordText = password.text.toString()
             val nameText = name.text.toString()
             val phoneText = phone.text.toString()
 
-            // 입력된 값이 비어있는지 확인
-            if (idText.isEmpty() || passwordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()) {
-                showErrorDialog("빈 입력칸이 있습니다.")
-            } else if (!idCheckStatus) {
-                // 중복 확인이 안 되어 있으면 다이얼로그 표시
-                showIdCheckDialog(idText)
-            } else if (!passwordMatchStatus) {
+//            if (!idCheckStatus) {
+//                // 중복 확인이 안 되어 있으면 다이얼로그 표시
+//                showIdCheckDialog(idText)
+//            } else if (!passwordMatchStatus) {
+            if (!passwordMatchStatus) {
                 showErrorDialog("비밀번호가 일치하지 않습니다.")
             } else {
                 val imageFile = imageUri?.let { createImageFile(it) } // 이미지 파일 생성
@@ -116,6 +114,9 @@ class UpdateUserActivity : AppCompatActivity() {
                 val imagePart = requestFile?.let { MultipartBody.Part.createFormData("imageFile", imageFile.name, it) }
 
                 // 입력된 값을 RequestBody로 변환
+//                val loginIdRequestBody = idText.toRequestBody("text/plain".toMediaTypeOrNull())
+                // idText가 null로 설정되어서는 안 되므로, 적절한 값으로 설정하거나 빈 문자열을 사용할 수 있습니다.
+                val idText = ""
                 val loginIdRequestBody = idText.toRequestBody("text/plain".toMediaTypeOrNull())
                 val passwordRequestBody = passwordText.toRequestBody("text/plain".toMediaTypeOrNull())
                 val nameRequestBody = nameText.toRequestBody("text/plain".toMediaTypeOrNull())
@@ -128,7 +129,7 @@ class UpdateUserActivity : AppCompatActivity() {
         }
 
         // EditText에 TextWatcher 및 OnFocusChangeListener 설정
-        setEditTextListeners(loginId, underlineID)
+//        setEditTextListeners(loginId, underlineID)
         setEditTextListeners(password, underlinePWD)
         setEditTextListeners(passwordConfirm, underlinePWDConfirm)
         setEditTextListeners(name, underlineName)
