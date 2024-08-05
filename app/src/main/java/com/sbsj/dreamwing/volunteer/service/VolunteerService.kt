@@ -101,15 +101,20 @@ interface VolunteerService {
 //        @Query("volunteerId") volunteerId: Long
 //    ): Call<ApiResponse<AdminVolunteerDTO>>
 
-    @PUT("/admin/volunteer/update")
+    @PUT("/admin/volunteer/update/{id}")
     fun updateVolunteer(
-        @Body request: AdminVolunteerDTO
+        @Path("id") volunteerId: Long,
+        @Body request: VolunteerDetailDTO
     ): Call<ApiResponse<Void>>
 
-    @DELETE("/admin/volunteer/{volunteerId}")
+    @DELETE("/admin/volunteer/delete/{volunteerId}")
     fun deleteVolunteer(
         @Path("volunteerId") volunteerId: Long
     ): Call<ApiResponse<Void>>
+
+
+
+
 
     @POST("/admin/volunteer/create")
     fun createVolunteer(

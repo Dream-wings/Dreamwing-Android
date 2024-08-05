@@ -10,6 +10,7 @@ import com.sbsj.dreamwing.admin.model.response.VolunteerAdminListDTO
 
 class AdminItemAdapter(
     private val itemList: List<VolunteerAdminListDTO>,
+    private val onItemClickListener: (volunteerId: Long) -> Unit // 클릭 리스너 추가
 ) : RecyclerView.Adapter<AdminItemAdapter.AdminItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminItemViewHolder {
@@ -20,6 +21,9 @@ class AdminItemAdapter(
     override fun onBindViewHolder(holder: AdminItemViewHolder, position: Int) {
         val item = itemList[position]
         holder.bind(item)
+        holder.itemView.setOnClickListener {
+            onItemClickListener(item.volunteerId) // 클릭 시 리스너 호출
+        }
     }
 
     override fun getItemCount(): Int {
