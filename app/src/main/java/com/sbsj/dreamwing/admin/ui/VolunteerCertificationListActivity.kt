@@ -1,10 +1,15 @@
 package com.sbsj.dreamwing.admin.ui
 
+import android.content.BroadcastReceiver
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
@@ -39,6 +44,8 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
         binding = ActivityVolunteerRequestListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        fetchRequestList()
+
         // 툴바
         setSupportActionBar(binding.adminToolbar.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -59,9 +66,6 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
                 }
             }
         })
-
-        // 처음 데이터 불러오기
-        fetchRequestList()
     }
 
     private fun fetchRequestList() {
@@ -91,5 +95,28 @@ class VolunteerCertificationListActivity : AppCompatActivity() {
                 Log.e("VolunteerCertificationListActivity", "Error: ${t.message}")
             }
         })
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.admin_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.volunteer_board -> {
+                startActivity(Intent(this, AdminActivity::class.java))
+                return true
+            }
+            R.id.volunteer_request -> {
+                startActivity(Intent(this, VolunteerRequestListActivity::class.java))
+                return true
+            }
+            R.id.volunteer_certification -> {
+                startActivity(Intent(this, VolunteerCertificationListActivity::class.java))
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 }
