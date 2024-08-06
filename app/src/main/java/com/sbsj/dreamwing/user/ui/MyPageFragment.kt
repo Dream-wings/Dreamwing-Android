@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
@@ -256,32 +257,46 @@ class MyPageFragment : Fragment() {
      * 로그인 요청 다이얼로그를 표시하는 메서드
      */
     private fun showLoginRequestDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("로그인 요청")
-            .setMessage("로그인이 필요합니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 로그인 액티비티로 이동
-                val intent = Intent(activity, LoginActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그인이 필요합니다."
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(requireContext(), LoginActivity::class.java)
+            startActivity(intent)
+        }
+        dialog.show()
     }
 
     /**
      * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
      */
     private fun showLogoutSuccessDialog() {
-        AlertDialog.Builder(requireContext())
-            .setTitle("로그아웃 성공")
-            .setMessage("로그아웃 되었습니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // MainActivity로 이동
-                val intent = Intent(activity, MainActivity::class.java)
-                startActivity(intent)
-                activity?.finish() // 현재 액티비티 종료
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그아웃 되었습니다."
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(requireContext(), MainActivity::class.java)
+            startActivity(intent)
+        }
+        dialog.show()
     }
 
     /**

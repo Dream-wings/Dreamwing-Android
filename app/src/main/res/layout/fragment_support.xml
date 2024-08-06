@@ -73,7 +73,7 @@
                 android:id="@+id/btnEducation"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:background="@drawable/button_jaeseong_selector"
+                android:background="@drawable/button_selector"
                 android:fontFamily="@font/happiness_sans_title"
                 android:text="교육"
                 android:textColor="#767676" />
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/button_jaeseong_selector"
+                android:background="@drawable/button_selector"
                 android:fontFamily="@font/happiness_sans_title"
                 android:text="물품"
                 android:textColor="#767676" />
@@ -95,9 +95,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/button_jaeseong_selector"
+                android:background="@drawable/button_selector"
                 android:fontFamily="@font/happiness_sans_title"
-                android:text="문화예술"
+                android:text="급식나눔"
                 android:textColor="#767676" />
 
             <!-- 주거개선 button -->
@@ -106,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginStart="16dp"
-                android:background="@drawable/button_jaeseong_selector"
+                android:background="@drawable/button_selector"
                 android:fontFamily="@font/happiness_sans_title"
                 android:text="주거개선"
                 android:textColor="#767676" />

@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.kakao.vectormap.*
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
@@ -103,18 +103,31 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     private fun showCertificateDialog(volunteerTitle: String?) {
-        AlertDialog.Builder(this)
-            .setTitle("인증 하기")
-            .setMessage("인증하러 가시겠습니까?")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 인증액티비티로 이동
-                val intent = Intent(this, VolunteerCertificationActivity::class.java).apply {
-                    putExtra("volunteerTitle", volunteerTitle) // Pass the title to certification activity
-                }
-                startActivity(intent)
-                finish()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+        val noButton = dialogView.findViewById<Button>(R.id.noButton)
+
+        confirmTextView.text = "인증하러 가시겠습니까?"
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            // 인증액티비티로 이동
+            val intent = Intent(this, VolunteerCertificationActivity::class.java).apply {
+                putExtra("volunteerTitle", volunteerTitle) // Pass the title to certification activity
             }
-            .show()
+            startActivity(intent)
+            finish()
+        }
+
+        noButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
 
@@ -131,22 +144,27 @@ class VolunteerDetailActivity : AppCompatActivity() {
         }
         return true
     }
-    /**
-     * 로그인 요청 다이얼로그를 표시하는 메서드
-     */
-    private fun showLoginRequestDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("로그인 요청")
-            .setMessage("로그인이 필요합니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 로그인 액티비티로 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .show()
-    }
 
+    private fun showLoginRequestDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val message = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        message.text = "로그인이 필요합니다."
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+        dialog.show()
+    }
 
     private fun loadVolunteerDetails(volunteerId: Long) {
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -266,46 +284,59 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     private fun showConfirmationDialog() {
-        // Create a new AlertDialog.Builder instance
-        AlertDialog.Builder(this)
-            .setTitle("신청 확인") // Set the title of the dialog
-            .setMessage("신청을 확정합니다.") // Set the message of the dialog
-            .setPositiveButton("확인") { dialog, _ -> // Set the positive button and its click listener
-                // Log the volunteerId and userId before creating the request
-                Log.d("VolunteerDetailActivity", "Applying for volunteerId: ${volunteerDetailDTO.volunteerId}")
 
-                // Create the PostApplyVolunteerRequestDTO with the current volunteerId and userId
-                val requestDTO = PostApplyVolunteerRequestDTO(
-                    volunteerId = volunteerDetailDTO.volunteerId
+        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
+        val message = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+        val noButton = dialogView.findViewById<Button>(R.id.noButton)
 
-                )
+        message.text = "신청하시겠습니까?"
 
-                // Call the applyForVolunteer method with the requestDTO
-                applyForVolunteer(requestDTO)
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
 
-                // Dismiss the dialog
-                dialog.dismiss()
-            }
-            .setNegativeButton("취소") { dialog, _ -> // Set the negative button and its click listener
-                dialog.dismiss() // Dismiss the dialog on cancel
-            }
-            .create() // Create the dialog
-            .show() // Show the dialog
+        yesButton.setOnClickListener {
+            val requestDTO = PostApplyVolunteerRequestDTO(
+                volunteerId = volunteerDetailDTO.volunteerId
+            )
+            // Call the applyForVolunteer method with the requestDTO
+            applyForVolunteer(requestDTO)
+
+            // Dismiss the dialog
+            dialog.dismiss()
+        }
+
+        noButton.setOnClickListener {
+            dialog.dismiss() // Dismiss the dialog on cancel
+        }
+
+        dialog.show()
+
     }
 
     private fun showCancelApplicationDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("신청 취소")
-            .setMessage("신청을 취소하시겠습니까?")
-            .setPositiveButton("확인") { dialog, _ ->
-                cancelApplication()
-                dialog.dismiss()
-            }
-            .setNegativeButton("취소") { dialog, _ ->
-                dialog.dismiss()
-            }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
+        val message = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+        val noButton = dialogView.findViewById<Button>(R.id.noButton)
+
+        message.text = "신청을 취소하시겠습니까?"
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
             .create()
-            .show()
+
+        yesButton.setOnClickListener {
+            cancelApplication()
+            dialog.dismiss()
+        }
+
+        noButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun applyForVolunteer(request: PostApplyVolunteerRequestDTO) {
@@ -477,15 +508,21 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     private fun showSuccessDialog(message: String) {
-        AlertDialog.Builder(this)
-            .setTitle("성공")
-            .setMessage(message)
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-                // Removed finish() here to prevent the activity from closing
-            }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val messageView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        messageView.text = message
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
             .create()
-            .show()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
 
     private fun showErrorDialog(message: String) {

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Pressed state -->
-    <item android:state_pressed="true" android:drawable="@drawable/button_jaeseong"/>
+    <item android:state_pressed="true" android:drawable="@drawable/button"/>
     <!-- Default state -->
     <item android:drawable="@drawable/values_jaeseong"/>
 </selector>

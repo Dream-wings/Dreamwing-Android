@@ -101,7 +101,7 @@
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="40dp"
-            android:background="@drawable/bg_round_box2"
+            android:background="@drawable/bg_round_box_radius_10"
             android:backgroundTint="@color/white"
             android:elevation="5dp"
             android:gravity="center"
@@ -124,7 +124,7 @@
         android:layout_margin="20dp"
         android:text="윙 받기"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@drawable/bg_round_box2"
+        android:background="@drawable/bg_round_box_radius_10"
         android:stateListAnimator="@null"
         style="@style/title"
         android:textColor="@color/white" />

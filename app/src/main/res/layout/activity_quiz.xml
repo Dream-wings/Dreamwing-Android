@@ -88,7 +88,7 @@
 
     <Button
         android:id="@+id/submit_button"
-        android:background="@drawable/bg_round_box2"
+        android:background="@drawable/bg_round_box_radius_10"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:text="정답 제출하기"

@@ -25,8 +25,8 @@
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profileImage"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_marginTop="32dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/default_profile_image"
@@ -41,7 +41,6 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/happiness_sans_title"
                     android:text="로그인이 필요합니다."
@@ -56,8 +55,8 @@
                 <Button
                     android:id="@+id/updateButton"
                     android:background="@drawable/button_update"
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
                     android:text="프로필 수정"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/profileImage"
@@ -187,6 +186,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/happiness_sans_title"/>
@@ -197,6 +198,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/happiness_sans_title"/>
@@ -207,6 +210,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/happiness_sans_title"/>
@@ -218,10 +223,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="로그아웃"
+                android:stateListAnimator="@null"
+                style="@style/title"
                 android:textColor="@color/black"
                 android:fontFamily="@font/happiness_sans_title"
                 android:background="@drawable/button_logout"
                 />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>
