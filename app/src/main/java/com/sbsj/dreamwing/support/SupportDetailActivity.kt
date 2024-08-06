@@ -11,6 +11,7 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivitySupportDetailBinding
+import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.support.model.SupportDetailDTO
 import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
 import com.sbsj.dreamwing.user.LoginActivity
@@ -181,28 +182,32 @@ class SupportDetailActivity : AppCompatActivity() {
 
     private fun donateToSupport(amount: Int) {
         val supportId = supportDetailDTO.supportId
+        val activityTitle = supportDetailDTO.title
+        val activityType = ActivityType.SUPPORT.type
         //val userId = 2L // Replace with actual user ID retrieval logic
         // 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)
         val authHeader = "$jwtToken" // 헤더에 넣을 변수
 
-        RetrofitClient.supportService.donateForSupport(authHeader,supportId,amount)
-            .enqueue(object : Callback<ApiResponse<Unit>> {
-                override fun onResponse(call: Call<ApiResponse<Unit>>, response: Response<ApiResponse<Unit>>) {
-                    if (response.isSuccessful && response.body()?.success == true) {
-                        Toast.makeText(this@SupportDetailActivity, "기부가 완료되었습니다.", Toast.LENGTH_SHORT).show()
-                        loadSupportDetails(supportId) // Reload details to update current points
-                    } else {
-                        Log.e("SupportDetailActivity", "Donation failed: ${response.errorBody()?.string()}")
-                        showErrorDialog("기부 실패: ${response.errorBody()?.string()}")
+        if (activityTitle != null) {
+            RetrofitClient.supportService.donateForSupport(authHeader,supportId,amount,activityTitle,activityType)
+                .enqueue(object : Callback<ApiResponse<Unit>> {
+                    override fun onResponse(call: Call<ApiResponse<Unit>>, response: Response<ApiResponse<Unit>>) {
+                        if (response.isSuccessful && response.body()?.success == true) {
+                            Toast.makeText(this@SupportDetailActivity, "기부가 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                            loadSupportDetails(supportId) // Reload details to update current points
+                        } else {
+                            Log.e("SupportDetailActivity", "Donation failed: ${response.errorBody()?.string()}")
+                            showErrorDialog("기부 실패: ${response.errorBody()?.string()}")
+                        }
                     }
-                }
 
-                override fun onFailure(call: Call<ApiResponse<Unit>>, t: Throwable) {
-                    Log.e("SupportDetailActivity", "Network request failed", t)
-                    showErrorDialog("기부 실패: 네트워크 오류")
-                }
-            })
+                    override fun onFailure(call: Call<ApiResponse<Unit>>, t: Throwable) {
+                        Log.e("SupportDetailActivity", "Network request failed", t)
+                        showErrorDialog("기부 실패: 네트워크 오류")
+                    }
+                })
+        }
     }
 
     private fun showErrorDialog(message: String) {

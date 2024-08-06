@@ -44,7 +44,9 @@ interface SupportService {
     fun donateForSupport(
         @Header("Authorization") authHeader: String,
         @Query("supportId") supportId: Long,
-        @Query("amount") amount: Int
+        @Query("amount") amount: Int,
+        @Query("activityTitle") title: String,
+        @Query("activityType") type: Int
     ): Call<ApiResponse<Unit>>
 
 }
