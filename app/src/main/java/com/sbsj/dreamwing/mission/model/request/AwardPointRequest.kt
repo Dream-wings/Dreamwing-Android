@@ -11,7 +11,6 @@ package com.sbsj.dreamwing.mission.model.request
  * 2024.08.02   정은지        최초 생성
  */
 data class AwardPointRequest(
-    val userId : Long,
     val activityType: Int,
     val activityTitle: String,
     val point: Int

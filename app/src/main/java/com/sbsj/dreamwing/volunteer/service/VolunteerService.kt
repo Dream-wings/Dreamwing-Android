@@ -13,6 +13,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.Part
@@ -86,7 +87,8 @@ interface VolunteerService {
      */
     @Multipart
     @PATCH("/volunteer/certification")
-    fun certificationVolunteer(@Part("request") request: RequestBody,
+    fun certificationVolunteer(@Header("Authorization") authHeader: String,
+                               @Part("request") request: RequestBody,
                                @Part imageFile: MultipartBody.Part?) : Call<ApiResponse<Void>>
 
 

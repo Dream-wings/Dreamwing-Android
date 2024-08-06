@@ -10,6 +10,7 @@ import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 /**
@@ -28,5 +29,6 @@ interface MissionService {
     fun getDailyQuiz(): Call<ApiResponse<QuizResponse>>
 
     @POST("/mission/point")
-    fun awardPoints(@Body request : AwardPointRequest): Call<ApiResponse<Any>>
+    fun awardPoints(@Header("Authorization") authHeader: String,
+                    @Body request : AwardPointRequest): Call<ApiResponse<Any>>
 }

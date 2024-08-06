@@ -17,6 +17,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.sbsj.dreamwing.MainActivity
@@ -27,6 +28,8 @@ import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityWalkBinding
 import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
+import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -59,6 +62,8 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     private lateinit var walk10000Button: Button
     private lateinit var requestPointButton: Button
     private lateinit var request: AwardPointRequest
+    private lateinit var authHeader : String
+    private var isLoading = false
 
     private val TYPE = Sensor.TYPE_STEP_COUNTER // 보행 계수기
 
@@ -94,14 +99,14 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         Log.d(TAG, "onCrate previousTotalSteps: ${previousTotalSteps}")
 
         if (stepCountSensor == null) {
-            Toast.makeText(this, "센서 없음", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "센서가 없습니다.", Toast.LENGTH_SHORT).show()
         } else {
             if (ContextCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACTIVITY_RECOGNITION
                 ) == PackageManager.PERMISSION_DENIED
             ) {
-//                Toast.makeText(this, "No Permission!!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "권한이 없습니다.", Toast.LENGTH_SHORT).show()
                 requestPermissionLauncher.launch(arrayOf(Manifest.permission.ACTIVITY_RECOGNITION))
             }
         }
@@ -121,6 +126,36 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         requestPointButton.setOnClickListener {
             onRequestPointButtonClick()
         }
+    }
+
+    /**
+     * 로그인 여부 확인 메서드
+     */
+    private fun checkUserLoggedIn(): Boolean {
+        // 전역 저장소에서 jwt 토큰을 가져옴
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        if (jwtToken.isNullOrEmpty()) {
+            // 로그인되어 있지 않으면 로그인 요청 다이얼로그를 표시
+            showLoginRequestDialog()
+            return false
+        }
+        return true
+    }
+
+    /**
+     * 로그인 요청 다이얼로그를 표시하는 메서드
+     */
+    private fun showLoginRequestDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("로그인 요청")
+            .setMessage("로그인이 필요합니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 로그인 액티비티로 이동
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .show()
     }
 
     // 툴바 뒤로가기 버튼
@@ -194,7 +229,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         requestPointButton.isEnabled = true
 
         request = AwardPointRequest(
-            userId = 3,
             activityType = ActivityType.WALK_4000.type,
             activityTitle = ActivityType.WALK_4000.title,
             point = ActivityType.WALK_4000.point
@@ -209,7 +243,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         requestPointButton.isEnabled = true
 
         request = AwardPointRequest(
-            userId = 3,
             activityType = ActivityType.WALK_7000.type,
             activityTitle = ActivityType.WALK_7000.title,
             point = ActivityType.WALK_7000.point
@@ -223,7 +256,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         requestPointButton.isEnabled = true
 
         request = AwardPointRequest(
-            userId = 3,
             activityType = ActivityType.WALK_10000.type,
             activityTitle = ActivityType.WALK_10000.title,
             point = ActivityType.WALK_10000.point
@@ -272,40 +304,56 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     private fun calculateProgressPercentage(goalSteps: Int, currentSteps: Int): Int {
         return if (goalSteps == 0 || currentSteps == 0) {
             0
+
         } else {
             (currentSteps * 100) / goalSteps
         }
     }
 
     private fun awardPoints(request: AwardPointRequest) {
+        if (checkUserLoggedIn()) {
+            // 토큰 가져오기
+            val jwtToken = SharedPreferencesUtil.getToken(this)
+            authHeader = "$jwtToken" // 헤더에 넣을 변수
+            isLoading = true
 
-        RetrofitClient.missionService.awardPoints(request).enqueue(object :
-            Callback<ApiResponse<Any>> {
-            override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
-                if (response.isSuccessful) {
-                    val intent = Intent(this@WalkActivity, WalkAwardActivity::class.java)
+            RetrofitClient.missionService.awardPoints(authHeader = authHeader, request)
+                .enqueue(object :
+                    Callback<ApiResponse<Any>> {
+                    override fun onResponse(
+                        call: Call<ApiResponse<Any>>,
+                        response: Response<ApiResponse<Any>>
+                    ) {
+                        isLoading = false
+                        if (response.isSuccessful) {
+                            val intent = Intent(this@WalkActivity, WalkAwardActivity::class.java)
 
-                    intent.putExtra("point", request.point)
-                    intent.putExtra("activityTitle", request.activityTitle)
+                            intent.putExtra("point", request.point)
+                            intent.putExtra("activityTitle", request.activityTitle)
 
-                    startActivity(intent)
-                } else {
-                    val errorResponse = convertErrorBody(response)
-                    val errorMessage = errorResponse?.message ?: "Unknown error"
+                            startActivity(intent)
+                        } else {
+                            val errorResponse = convertErrorBody(response)
+                            val errorMessage = errorResponse?.message ?: "Unknown error"
 
-                    if (errorMessage == "이미 포인트를 받았습니다.") {
-                        Log.d("WalkActivity", "$errorResponse")
-                        Toast.makeText(this@WalkActivity, "이미 포인트를 받았어요!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Log.e("WalkActivity", "서버 오류: $errorResponse")
+                            if (errorMessage == "이미 포인트를 받았습니다.") {
+                                Log.d("WalkActivity", "$errorResponse")
+                                Toast.makeText(
+                                    this@WalkActivity,
+                                    "이미 포인트를 받았어요!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                Log.e("WalkActivity", "서버 오류: $errorResponse")
+                            }
+                        }
                     }
-                }
-            }
 
-            override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
-                Log.e("QuizActivity", "Request failed: ${t.message}")
-            }
-        })
+                    override fun onFailure(call: Call<ApiResponse<Any>>, t: Throwable) {
+                        Log.e("QuizActivity", "Request failed: ${t.message}")
+                    }
+                })
+        }
     }
 
     // 에러메세지

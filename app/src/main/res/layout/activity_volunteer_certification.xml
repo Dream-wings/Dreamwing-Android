@@ -31,7 +31,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/comment_1"
+                android:id="@+id/volunteer_title"
                 style="@style/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,7 +100,6 @@
             android:id="@+id/activity_main_button_gallery"
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:layout_marginHorizontal="100dp"
             android:layout_marginTop="40dp"
             android:background="@drawable/bg_round_box2"
             android:backgroundTint="@color/white"

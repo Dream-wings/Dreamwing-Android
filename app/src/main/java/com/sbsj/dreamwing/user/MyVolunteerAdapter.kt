@@ -66,7 +66,12 @@ class MyVolunteerAdapter : RecyclerView.Adapter<MyVolunteerAdapter.VolunteerView
                 // 인증 필요 텍스트 클릭 시 인증 액티비티로 이동
                 verifiedButton.setOnClickListener {
                     val context = itemView.context
-                    val intent = Intent(context, VolunteerCertificationActivity::class.java)
+                    val volunteerId = myVolunteerVO.volunteerId
+                    val title = myVolunteerVO.title
+                    val intent = Intent(context, VolunteerCertificationActivity::class.java).apply {
+                        putExtra("volunteerId", volunteerId)
+                        putExtra("title", title)
+                    }
                     context.startActivity(intent)
                 }
             }
