@@ -1,5 +1,6 @@
 package com.sbsj.dreamwing.admin.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -27,8 +28,6 @@ import retrofit2.Response
 class VolunteerCertificationDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVolunteerCertificationDetailBinding
-    private lateinit var request: AwardVolunteerPointRequest
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +57,7 @@ class VolunteerCertificationDetailActivity : AppCompatActivity() {
                 activityTitle = activityTitle?: "null",
                 point = point
             )
-            awardPoint(request)
+            showDialog(request)
         }
     }
 
@@ -90,14 +89,17 @@ class VolunteerCertificationDetailActivity : AppCompatActivity() {
             .enqueue(object : Callback<ApiResponse<Void>> {
                 override fun onResponse(call: Call<ApiResponse<Void>>, response: Response<ApiResponse<Void>>) {
                     if (response.isSuccessful) {
-                        showSuccessDialog()
+                        Toast.makeText(this@VolunteerCertificationDetailActivity, "승인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@VolunteerCertificationDetailActivity, VolunteerCertificationListActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
-                        showFailureDialog()
+                        Toast.makeText(this@VolunteerCertificationDetailActivity, "실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
                 override fun onFailure(call: Call<ApiResponse<Void>>, t: Throwable) {
-                    showFailureDialog()
+                    Toast.makeText(this@VolunteerCertificationDetailActivity, "Error: ${t.message}", Toast.LENGTH_SHORT).show()
                 }
             })
     }
@@ -114,24 +116,19 @@ class VolunteerCertificationDetailActivity : AppCompatActivity() {
             .into(binding.image)
     }
 
-    private fun showSuccessDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("승인 완료")
-            .setMessage("승인이 완료되었습니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-                finish()
-            }
-            .show()
-    }
+    private fun showDialog(request : AwardVolunteerPointRequest) {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("요청 승인")
+        builder.setMessage("승인하시겠습니까?")
+        builder.setPositiveButton("예") { dialog, _ ->
+            awardPoint(request)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("아니오") { dialog, _ ->
+            dialog.dismiss()
+        }
 
-    private fun showFailureDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("승인 실패")
-            .setMessage("승인에 실패하였습니다. 다시 시도해 주세요.")
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        val dialog = builder.create()
+        dialog.show()
     }
 }

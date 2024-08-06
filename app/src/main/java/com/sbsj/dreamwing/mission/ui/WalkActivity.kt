@@ -278,16 +278,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         editor.apply()
     }
 
-//    class ResetStepReceiver : BroadcastReceiver() {
-//        override fun onReceive(context: Context, intent: Intent?) {
-//            val sharedPreferences = context.getSharedPreferences("myPrefs", Context.MODE_PRIVATE)
-//            val editor = sharedPreferences.edit()
-//            val currentSteps = sharedPreferences.getFloat("currentSteps", 0f)
-//            editor.putFloat("previousTotalSteps", currentSteps)
-//            editor.apply()
-//        }
-//    }
-
     override fun onResume() {
         super.onResume()
         sensorManager.registerListener(this, stepCountSensor, SensorManager.SENSOR_DELAY_NORMAL)

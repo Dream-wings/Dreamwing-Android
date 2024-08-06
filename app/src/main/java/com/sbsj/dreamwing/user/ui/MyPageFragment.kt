@@ -2,6 +2,7 @@ package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.icu.text.DecimalFormat
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -206,8 +207,11 @@ class MyPageFragment : Fragment() {
     private fun updateUI(myPageDTO: MyPageDTO) {
         binding.name.text = myPageDTO.name
         Picasso.get().load(myPageDTO.profileImageUrl).into(binding.profileImage)
-        binding.userPoint.text = myPageDTO.totalPoint.toString()
-        binding.totalSupportPoit.text = myPageDTO.totalSupportPoint.toString()
+
+        val decimalFormat = DecimalFormat("#,###")
+
+        binding.userPoint.text = decimalFormat.format(myPageDTO.totalPoint)
+        binding.totalSupportPoit.text = decimalFormat.format(myPageDTO.totalSupportPoint)
     }
 
     /**

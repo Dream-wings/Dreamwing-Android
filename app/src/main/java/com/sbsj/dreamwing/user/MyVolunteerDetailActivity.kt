@@ -37,7 +37,7 @@ class MyVolunteerDetailActivity : AppCompatActivity() {
 
         // Toolbar 설정
         setSupportActionBar(binding.toolbar.root)
-        supportActionBar?.title = "봉사 활동 내역"
+        supportActionBar?.title = "봉사활동 내역"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // Toolbar의 NavigationIcon 클릭 리스너 추가

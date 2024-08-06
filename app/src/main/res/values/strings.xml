@@ -20,9 +20,9 @@
     <string name="quiz_title">데일리 퀴즈</string>
     <string name="volunteer_title">봉사활동</string>
     <string name="view_all">전체보기</string>
-    <string name="walk_description">걸음으로 후원해요</string>
-    <string name="quiz_description">어쩌구 저쩌구</string>
-    <string name="volunteer_description">어쩌구 저쩌구</string>
+    <string name="walk_description">걸음이 모여 만드는 따뜻한 기적</string>
+    <string name="quiz_description">매일 매일 복지 퀴즈</string>
+    <string name="volunteer_description">봉사활동 인증 후 포인트 적립</string>
     <string name="title_activity_walk">WalkActivity</string>
     <string name="wing">WING</string>
     <string name="login">로그인</string>

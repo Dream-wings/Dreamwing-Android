@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.databinding.FragmentMissionBinding
+import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.MyVolunteerDetailActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.ui.VolunteerCertificationActivity
 
 /**
@@ -35,6 +39,34 @@ class MissionFragment : Fragment() {
         return binding.root
     }
 
+    /**
+     * 로그인 여부 확인 메서드
+     */
+    private fun checkUserLoggedIn(): Boolean {
+        val jwtToken = SharedPreferencesUtil.getToken(requireContext())
+        if (jwtToken.isNullOrEmpty()) {
+            showLoginRequestDialog()
+            return false
+        }
+        return true
+    }
+
+    /**
+     * 로그인 요청 다이얼로그를 표시하는 메서드
+     */
+    private fun showLoginRequestDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle("로그인 요청")
+            .setMessage("로그인이 필요합니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 로그인 액티비티로 이동
+                val intent = Intent(activity, LoginActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
+            }
+            .show()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,8 +81,10 @@ class MissionFragment : Fragment() {
         }
 
         binding.cardVolunteer.setOnClickListener {
-            val intent = Intent(activity, VolunteerCertificationActivity::class.java)
-            startActivity(intent)
+            if (checkUserLoggedIn()) {
+                val intent = Intent(activity, MyVolunteerDetailActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
