@@ -1,8 +1,11 @@
 package com.sbsj.dreamwing.admin.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.admin.model.request.ApproveRequest
 import com.sbsj.dreamwing.admin.model.response.VolunteerRequestDetailResponse
@@ -37,10 +40,8 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
         // 툴바
         setSupportActionBar(binding.adminToolbar.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.adminToolbar.toolbar.title = "봉사활동 승인 대기 목록"
-
 
         val volunteerId = intent.getLongExtra("volunteerId", 0)
         val userId = intent.getLongExtra("userId", 1L)
@@ -81,9 +82,9 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
             .enqueue(object : Callback<ApiResponse<Void>> {
                 override fun onResponse(call: Call<ApiResponse<Void>>, response: Response<ApiResponse<Void>>) {
                     if (response.isSuccessful) {
-                        Toast.makeText(this@VolunteerRequestDetailActivity, "승인되었습니다.", Toast.LENGTH_SHORT).show()
+                        showSuccessDialog()
                     } else {
-                        Toast.makeText(this@VolunteerRequestDetailActivity, "승인 실패하였습니다.", Toast.LENGTH_SHORT).show()
+                        showFailureDialog()
                     }
                 }
 
@@ -99,4 +100,26 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
         binding.name.text = detail.name
         binding.phone.text = detail.phone
     }
+
+    private fun showSuccessDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("승인 완료")
+            .setMessage("승인이 완료되었습니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                dialog.dismiss()
+                finish()
+            }
+            .show()
+    }
+
+    private fun showFailureDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("승인 실패")
+            .setMessage("승인에 실패하였습니다. 다시 시도해 주세요.")
+            .setPositiveButton("확인") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
 }

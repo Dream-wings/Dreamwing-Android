@@ -39,7 +39,6 @@ class VolunteerCertificationDetailActivity : AppCompatActivity() {
         // 툴바
         setSupportActionBar(binding.adminToolbar.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         binding.adminToolbar.toolbar.title = "봉사활동 인증 대기 목록"
 

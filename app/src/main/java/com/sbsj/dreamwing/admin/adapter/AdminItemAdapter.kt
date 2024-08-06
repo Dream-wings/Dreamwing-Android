@@ -14,7 +14,7 @@ class AdminItemAdapter(
 ) : RecyclerView.Adapter<AdminItemAdapter.AdminItemViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AdminItemViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_admin2, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_admin, parent, false)
         return AdminItemViewHolder(view)
     }
 
@@ -31,20 +31,27 @@ class AdminItemAdapter(
     }
 
     inner class AdminItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val numberTextView: TextView = itemView.findViewById(R.id.numberTextView)
-        private val typeTextView: TextView = itemView.findViewById(R.id.typeTextView)
-        private val titleTextView: TextView = itemView.findViewById(R.id.titleTextView)
-        private val countTextView: TextView = itemView.findViewById(R.id.countTextView)
+        private val column1TextView: TextView = itemView.findViewById(R.id.column1)
+        private val column2TextView: TextView = itemView.findViewById(R.id.column2)
+        private val column3TextView: TextView = itemView.findViewById(R.id.column3)
+        private val column4TextView: TextView = itemView.findViewById(R.id.column4)
 
         fun bind(item: VolunteerAdminListDTO) {
-            numberTextView.text = item.volunteerId.toString()
-            typeTextView.text = when (item.type) {
+            // Assuming volunteerId maps to column1
+            column1TextView.text = item.volunteerId.toString()
+
+            // Assuming type maps to column2
+            column2TextView.text = when (item.type) {
                 0 -> "봉사"
                 1 -> "멘토링"
                 else -> "기타"
             }
-            titleTextView.text = item.title ?: "제목 없음"
-            countTextView.text = "${item.currentCount}/${item.totalCount}"
+
+            // Assuming title maps to column3
+            column3TextView.text = item.title ?: "제목 없음"
+
+            // Assuming currentCount and totalCount maps to column4
+            column4TextView.text = "${item.currentCount}/${item.totalCount}"
         }
     }
 }
