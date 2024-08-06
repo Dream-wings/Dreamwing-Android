@@ -43,7 +43,7 @@ class MyPointAdapter : RecyclerView.Adapter<MyPointAdapter.PointViewHolder>() {
                 point.text = "+ " + pointVO.point.toString()
             }
             else {
-                point.text = "- " + pointVO.point.toString()
+                point.text = pointVO.point.toString()
             }
 
             createdDate.text = pointVO.createdDate
