@@ -85,7 +85,7 @@ interface UserService {
     @POST("/user/update")
     fun update(
         @Header("Authorization") authHeader: String,
-        @Part("loginId") loginId: RequestBody,
+        @Part("loginId") loginId: RequestBody?,
         @Part("password") password: RequestBody,
         @Part("name") name: RequestBody,
         @Part("phone") phone: RequestBody,
