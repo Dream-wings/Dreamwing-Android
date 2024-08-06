@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.MainActivity
+import com.sbsj.dreamwing.admin.ui.AdminActivity
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityLoginBinding
 import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
@@ -147,19 +149,16 @@ class LoginActivity : AppCompatActivity() {
             .setTitle("로그인 성공")
             .setMessage("로그인이 성공적으로 완료되었습니다.")
             .setPositiveButton("확인") { dialog, _ ->
-
+                Log.d("Loginactiviy", "$token")
                 val roles = getRolesFromToken(token)
 
-                if ("USER" in roles) {
-                    // MainActivity로 이동
-                    val intent = Intent(this, MainActivity::class.java)
+                if ("ROLE_USER" in roles) {
+                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
                     startActivity(intent)
-                    finish() // 현재 액티비티 종료
-                } else if ("ADMIN" in roles) {
-//                    val intent = Intent(this, AdminPageActivity::class.java)
+                } else if ("ROLE_ADMIN" in roles) {
+                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
                     startActivity(intent)
                 }
-
             }
             .show()
     }
