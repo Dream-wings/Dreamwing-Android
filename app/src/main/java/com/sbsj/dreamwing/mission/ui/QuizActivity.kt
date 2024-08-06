@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.common.model.ErrorResponse
@@ -15,6 +17,8 @@ import com.sbsj.dreamwing.databinding.ActivityQuizBinding
 import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
 import com.sbsj.dreamwing.mission.model.response.QuizResponse
+import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,6 +43,8 @@ class QuizActivity : AppCompatActivity() {
     private var correctAnswer: Int? = null
     private var selectedAnswer: Int? = null
     private var responseMessage: String? = null
+    private var isLoading = false
+    private lateinit var authHeader : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +61,36 @@ class QuizActivity : AppCompatActivity() {
         binding.submitButton.setOnClickListener {
             submitAnswer()
         }
+    }
+
+    /**
+     * 로그인 여부 확인 메서드
+     */
+    private fun checkUserLoggedIn(): Boolean {
+        // 전역 저장소에서 jwt 토큰을 가져옴
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        if (jwtToken.isNullOrEmpty()) {
+            // 로그인되어 있지 않으면 로그인 요청 다이얼로그를 표시
+            showLoginRequestDialog()
+            return false
+        }
+        return true
+    }
+
+    /**
+     * 로그인 요청 다이얼로그를 표시하는 메서드
+     */
+    private fun showLoginRequestDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("로그인 요청")
+            .setMessage("로그인이 필요합니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 로그인 액티비티로 이동
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .show()
     }
 
     // 툴바 뒤로가기 버튼
@@ -114,28 +150,34 @@ class QuizActivity : AppCompatActivity() {
     }
 
     private fun submitAnswer() {
-        if (selectedAnswer == correctAnswer) {
-            // 정답일 경우 QuizCorrectActivity
-            awardPoints()
-        } else if (selectedAnswer == null ) {
-            // 모달 창 띄우기
-            Toast.makeText(this, "정답을 선택해 주세요", Toast.LENGTH_SHORT).show()
-        } else {
-            // 오답일 경우 QuizIncorrectActivity
-            startActivity(Intent(this, QuizIncorrectActivity::class.java))
+        if (checkUserLoggedIn()) {
+            // 토큰 가져오기
+            val jwtToken = SharedPreferencesUtil.getToken(this)
+            authHeader = "$jwtToken" // 헤더에 넣을 변수
+            isLoading = true
+
+            if (selectedAnswer == correctAnswer) {
+                // 정답일 경우 QuizCorrectActivity
+                awardPoints()
+            } else if (selectedAnswer == null ) {
+                // 모달 창 띄우기
+                Toast.makeText(this, "정답을 선택해 주세요", Toast.LENGTH_SHORT).show()
+            } else {
+                // 오답일 경우 QuizIncorrectActivity
+                startActivity(Intent(this, QuizIncorrectActivity::class.java))
+            }
         }
     }
 
     private fun awardPoints() {
         val request = AwardPointRequest(
-            userId = 1,
             activityType = ActivityType.QUIZ.type,
             activityTitle = ActivityType.QUIZ.title,
             point = ActivityType.QUIZ.point
         )
-
-        RetrofitClient.missionService.awardPoints(request).enqueue(object : Callback<ApiResponse<Any>> {
+        RetrofitClient.missionService.awardPoints(authHeader =  authHeader, request).enqueue(object : Callback<ApiResponse<Any>> {
             override fun onResponse(call: Call<ApiResponse<Any>>, response: Response<ApiResponse<Any>>) {
+                isLoading = false
                 if (response.isSuccessful) {
                     startActivity(Intent(this@QuizActivity, QuizCorrectActivity::class.java))
                 } else {

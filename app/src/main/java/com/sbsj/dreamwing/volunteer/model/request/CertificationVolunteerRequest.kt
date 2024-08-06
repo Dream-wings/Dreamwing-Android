@@ -13,7 +13,6 @@ import okhttp3.MultipartBody
  * 2024.08.03   정은지        최초 생성
  */
 data class CertificationVolunteerRequest(
-    val userId: Long,
     val volunteerId: Long,
     val imageUrl: String?,
     val imageFile: MultipartBody.Part?
