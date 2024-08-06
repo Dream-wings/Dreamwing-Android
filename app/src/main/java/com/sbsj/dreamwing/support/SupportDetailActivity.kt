@@ -5,6 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.R
@@ -155,16 +158,22 @@ class SupportDetailActivity : AppCompatActivity() {
     }
 
     private fun showDonationDialog() {
-        val donationDialog = AlertDialog.Builder(this)
-        donationDialog.setTitle("기부하기")
-        donationDialog.setMessage("기부할 금액을 입력하세요:")
+        val dialogView = layoutInflater.inflate(R.layout.dialog_text, null)
+        val message = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+        val noButton = dialogView.findViewById<Button>(R.id.noButton)
+        val editText = dialogView.findViewById<EditText>(R.id.edit_text)
 
-        val input = android.widget.EditText(this)
-        input.inputType = android.text.InputType.TYPE_CLASS_NUMBER
-        donationDialog.setView(input)
+        message.text = "기부할 금액을 입력하세요."
+        editText.inputType = android.text.InputType.TYPE_CLASS_NUMBER
 
-        donationDialog.setPositiveButton("확인") { dialog, _ ->
-            val amount = input.text.toString().toIntOrNull()
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            val amount = editText.text.toString().toIntOrNull()
             if (amount != null && amount > 0) {
                 donateToSupport(amount)
             } else {
@@ -173,11 +182,11 @@ class SupportDetailActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-        donationDialog.setNegativeButton("취소") { dialog, _ ->
-            dialog.cancel()
+        noButton.setOnClickListener {
+            dialog.dismiss()
         }
 
-        donationDialog.show()
+        dialog.show()
     }
 
     private fun donateToSupport(amount: Int) {

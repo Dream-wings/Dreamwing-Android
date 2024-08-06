@@ -17,7 +17,6 @@ import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
-import com.sbsj.dreamwing.util.SharedPreferencesUtil.getToken
 import com.sbsj.dreamwing.volunteer.VolunteerAdapter
 import com.sbsj.dreamwing.volunteer.VolunteerDetailActivity
 import com.sbsj.dreamwing.volunteer.model.PostApplyVolunteerRequestDTO
@@ -131,11 +130,11 @@ class VolunteerFragment : Fragment() {
 
     private fun updateButtonStates(selectedButton: Button, unselectedButton: Button) {
         selectedButton.apply {
-            setBackgroundResource(R.drawable.button_jaeseong)
+            setBackgroundResource(R.drawable.button)
             setTextColor(Color.WHITE)
         }
         unselectedButton.apply {
-            setBackgroundResource(R.drawable.button_jaeseong_selector)
+            setBackgroundResource(R.drawable.button_selector)
             setTextColor(Color.parseColor("#767676"))
         }
     }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -81,16 +82,25 @@ class QuizActivity : AppCompatActivity() {
      * 로그인 요청 다이얼로그를 표시하는 메서드
      */
     private fun showLoginRequestDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("로그인 요청")
-            .setMessage("로그인이 필요합니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 로그인 액티비티로 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그인이 필요합니다."
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        dialog.show()
     }
 
     // 툴바 뒤로가기 버튼
@@ -151,16 +161,15 @@ class QuizActivity : AppCompatActivity() {
 
     private fun submitAnswer() {
         if (checkUserLoggedIn()) {
-            // 토큰 가져오기
             val jwtToken = SharedPreferencesUtil.getToken(this)
-            authHeader = "$jwtToken" // 헤더에 넣을 변수
+            authHeader = "$jwtToken"
             isLoading = true
 
             if (selectedAnswer == correctAnswer) {
                 // 정답일 경우 QuizCorrectActivity
                 awardPoints()
             } else if (selectedAnswer == null ) {
-                // 모달 창 띄우기
+                // 토스트 띄우기
                 Toast.makeText(this, "정답을 선택해 주세요", Toast.LENGTH_SHORT).show()
             } else {
                 // 오답일 경우 QuizIncorrectActivity
@@ -183,7 +192,6 @@ class QuizActivity : AppCompatActivity() {
                 } else {
                     val errorResponse = convertErrorBody(response)
                     val errorMessage = errorResponse?.message ?: "Unknown error"
-
                     if (errorMessage == "이미 포인트를 받았습니다.") {
                         Log.d("QuizActivity", "$errorResponse")
                         Toast.makeText(this@QuizActivity, "이미 데일리 퀴즈를 풀었어요!", Toast.LENGTH_SHORT).show()

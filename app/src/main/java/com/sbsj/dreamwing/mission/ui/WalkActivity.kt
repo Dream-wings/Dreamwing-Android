@@ -19,8 +19,8 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.common.model.ErrorResponse
@@ -142,20 +142,25 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         return true
     }
 
-    /**
-     * 로그인 요청 다이얼로그를 표시하는 메서드
-     */
     private fun showLoginRequestDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("로그인 요청")
-            .setMessage("로그인이 필요합니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 로그인 액티비티로 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그인이 필요합니다."
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+        dialog.show()
     }
 
     // 툴바 뒤로가기 버튼
@@ -223,7 +228,7 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun onWalk4000ButtonClick() {
-        walk4000Button.setBackgroundResource(R.drawable.bg_round_box2)
+        walk4000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk10000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true
@@ -237,7 +242,7 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun onWalk7000ButtonClick() {
-        walk7000Button.setBackgroundResource(R.drawable.bg_round_box2)
+        walk7000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk4000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk10000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true
@@ -250,7 +255,7 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun onWalk10000ButtonClick() {
-        walk10000Button.setBackgroundResource(R.drawable.bg_round_box2)
+        walk10000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
         walk4000Button.setBackgroundResource(R.drawable.selector_walk_button)
         requestPointButton.isEnabled = true

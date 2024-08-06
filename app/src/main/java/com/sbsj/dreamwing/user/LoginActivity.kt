@@ -6,8 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.sbsj.dreamwing.MainActivity
+import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.ui.AdminActivity
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityLoginBinding
@@ -142,25 +146,70 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
+     * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     */
+    private fun showLogoutSuccessDialog() {
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그아웃 되었습니다."
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        dialog.show()
+    }
+
+    /**
      * 로그인 성공 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
      */
     private fun showLoginSuccessDialog(token : String) {
-        AlertDialog.Builder(this)
-            .setTitle("로그인 성공")
-            .setMessage("로그인이 성공적으로 완료되었습니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                Log.d("Loginactiviy", "$token")
-                val roles = getRolesFromToken(token)
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
 
-                if ("ROLE_USER" in roles) {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    startActivity(intent)
-                } else if ("ROLE_ADMIN" in roles) {
-                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
-                    startActivity(intent)
-                }
+        confirmTextView.text = "로그인 되었습니다."
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            val roles = getRolesFromToken(token)
+            if ("ROLE_USER" in roles) {
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                startActivity(intent)
+            } else if ("ROLE_ADMIN" in roles) {
+                val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+                startActivity(intent)
             }
-            .show()
+        }
+
+        dialog.show()
+
+//        AlertDialog.Builder(this)
+//            .setTitle("로그인 성공")
+//            .setMessage("로그인이 성공적으로 완료되었습니다.")
+//            .setPositiveButton("확인") { dialog, _ ->
+//                Log.d("Loginactiviy", "$token")
+//                val roles = getRolesFromToken(token)
+//
+//                if ("ROLE_USER" in roles) {
+//                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
+//                    startActivity(intent)
+//                } else if ("ROLE_ADMIN" in roles) {
+//                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
+//                    startActivity(intent)
+//                }
+//            }
+//            .show()
     }
 
     /**

@@ -62,7 +62,7 @@
             android:layout_height="40dp"
             android:text="봉사"
             android:fontFamily="@font/happiness_sans_title"
-            android:background="@drawable/button_jaeseong_selector"
+            android:background="@drawable/button_selector"
             android:textColor="#767676" />
 
         <Button
@@ -71,7 +71,7 @@
             android:layout_height="40dp"
             android:text="멘토링"
             android:fontFamily="@font/happiness_sans_title"
-            android:background="@drawable/button_jaeseong_selector"
+            android:background="@drawable/button_selector"
             android:textColor="#767676"
             android:layout_marginStart="16dp" />
     </LinearLayout>
