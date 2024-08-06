@@ -1,11 +1,13 @@
 package com.sbsj.dreamwing.volunteer
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.kakao.vectormap.*
 import com.kakao.vectormap.camera.CameraAnimation
 import com.kakao.vectormap.camera.CameraUpdateFactory
@@ -16,9 +18,12 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityVolunteerDetailBinding
+import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.model.PostApplyVolunteerRequestDTO
 import com.sbsj.dreamwing.volunteer.model.VolunteerDetailDTO
 import com.sbsj.dreamwing.volunteer.model.response.VolunteerDetailResponse
+import com.sbsj.dreamwing.volunteer.ui.VolunteerCertificationActivity
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -46,7 +51,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         "Sat" to "토"
     )
 
-    private var userId: Long = 2L // Replace with method to get the actual user ID
+//    private var userId: Long = 2L // Replace with method to get the actual user ID
     private var isApplied = false
     private var isVerified = false // Variable for verification status
 
@@ -56,33 +61,97 @@ class VolunteerDetailActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val volunteerId = intent.getLongExtra("volunteerId", -1)
-        userId = intent.getLongExtra("userId", 2L) // Fetch userId from Intent
+        val volunteerTitle = intent.getStringExtra("volunteerTitle") // Get volunteer title from intent
+
+        //userId = intent.getLongExtra("userId", 2L) // Fetch userId from Intent
+
 
         binding.backButton.setOnClickListener {
             finish()
+
         }
 
         binding.applyButton.setOnClickListener {
-            showConfirmationDialog()
+            val hasLogin = checkUserLoggedIn()
+            if(hasLogin){
+            showConfirmationDialog()}
+            else{
+                    showLoginRequestDialog()
+                }
         }
 
         binding.cancelApplyButton.setOnClickListener {
             showCancelApplicationDialog()
         }
+        binding.certificateButton.setOnClickListener{
+            showCertificateDialog(volunteerTitle)
+        }
 
         if (volunteerId != -1L) {
+            // 토큰 가져오기
+            val jwtToken = SharedPreferencesUtil.getToken(this)
+            val authHeader = "$jwtToken" // 헤더에 넣을 변수
             loadVolunteerDetails(volunteerId)
             initializeMapView()
-            checkApplicationStatus(volunteerId, userId) // Check if the user has applied
-            checkStatus(volunteerId, userId) // Check if the application is approved
+            checkApplicationStatus(volunteerId) // Check if the user has applied
+            checkStatus(volunteerId) // Check if the application is approved
         } else {
             Log.e("VolunteerDetailActivity", "Invalid volunteerId")
             finish()
         }
+
     }
 
+    private fun showCertificateDialog(volunteerTitle: String?) {
+        AlertDialog.Builder(this)
+            .setTitle("인증 하기")
+            .setMessage("인증하러 가시겠습니까?")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 인증액티비티로 이동
+                val intent = Intent(this, VolunteerCertificationActivity::class.java).apply {
+                    putExtra("volunteerTitle", volunteerTitle) // Pass the title to certification activity
+                }
+                startActivity(intent)
+                finish()
+            }
+            .show()
+    }
+
+
+    /**
+     * 로그인 여부 확인 메서드
+     */
+    private fun checkUserLoggedIn(): Boolean {
+        // 전역 저장소에서 jwt 토큰을 가져옴
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        if (jwtToken.isNullOrEmpty()) {
+            // 로그인되어 있지 않으면 로그인 요청 다이얼로그를 표시
+            showLoginRequestDialog()
+            return false
+        }
+        return true
+    }
+    /**
+     * 로그인 요청 다이얼로그를 표시하는 메서드
+     */
+    private fun showLoginRequestDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("로그인 요청")
+            .setMessage("로그인이 필요합니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 로그인 액티비티로 이동
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .show()
+    }
+
+
     private fun loadVolunteerDetails(volunteerId: Long) {
-        RetrofitClient.volunteerService.getVolunteerDetail(volunteerId)
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+        RetrofitClient.volunteerService.getVolunteerDetail(authHeader,volunteerId)
             .enqueue(object : Callback<VolunteerDetailResponse> {
                 override fun onResponse(
                     call: Call<VolunteerDetailResponse>,
@@ -203,12 +272,12 @@ class VolunteerDetailActivity : AppCompatActivity() {
             .setMessage("신청을 확정합니다.") // Set the message of the dialog
             .setPositiveButton("확인") { dialog, _ -> // Set the positive button and its click listener
                 // Log the volunteerId and userId before creating the request
-                Log.d("VolunteerDetailActivity", "Applying for volunteerId: ${volunteerDetailDTO.volunteerId}, userId: $userId")
+                Log.d("VolunteerDetailActivity", "Applying for volunteerId: ${volunteerDetailDTO.volunteerId}")
 
                 // Create the PostApplyVolunteerRequestDTO with the current volunteerId and userId
                 val requestDTO = PostApplyVolunteerRequestDTO(
-                    volunteerId = volunteerDetailDTO.volunteerId,
-                    userId = userId
+                    volunteerId = volunteerDetailDTO.volunteerId
+
                 )
 
                 // Call the applyForVolunteer method with the requestDTO
@@ -240,7 +309,11 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     private fun applyForVolunteer(request: PostApplyVolunteerRequestDTO) {
-        RetrofitClient.volunteerService.applyForVolunteer(request)
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+
+        RetrofitClient.volunteerService.applyForVolunteer(authHeader,request)
             .enqueue(object : Callback<ApiResponse<Unit>> {
                 override fun onResponse(
                     call: Call<ApiResponse<Unit>>,
@@ -272,10 +345,13 @@ class VolunteerDetailActivity : AppCompatActivity() {
 
     private fun cancelApplication() {
         val requestDTO = PostApplyVolunteerRequestDTO(
-            volunteerId = volunteerDetailDTO.volunteerId,
-            userId = userId
+            volunteerId = volunteerDetailDTO.volunteerId
+
         )
-        RetrofitClient.volunteerService.cancelApplication(requestDTO)
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+        RetrofitClient.volunteerService.cancelApplication(authHeader,requestDTO)
             .enqueue(object : Callback<ApiResponse<Unit>> {
                 override fun onResponse(
                     call: Call<ApiResponse<Unit>>,
@@ -306,10 +382,14 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     // Method to check if the user has applied
-    private fun checkApplicationStatus(volunteerId: Long, userId: Long) {
+    private fun checkApplicationStatus(volunteerId: Long) {
+
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+
         RetrofitClient.volunteerService.checkApplicationStatus(
-            volunteerId,
-            userId
+            authHeader,volunteerId
         ).enqueue(object : Callback<ApiResponse<Boolean>> {
             override fun onResponse(
                 call: Call<ApiResponse<Boolean>>,
@@ -338,8 +418,11 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
     // Method to fetch application approval status from server
-    private fun checkStatus(volunteerId: Long, userId: Long) {
-        RetrofitClient.volunteerService.checkStatus(volunteerId, userId)
+    private fun checkStatus(volunteerId: Long) {
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+        RetrofitClient.volunteerService.checkStatus(authHeader,volunteerId)
             .enqueue(object : Callback<ApiResponse<Int>> {
                 override fun onResponse(
                     call: Call<ApiResponse<Int>>,

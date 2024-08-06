@@ -16,6 +16,8 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentVolunteerBinding
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
+import com.sbsj.dreamwing.util.SharedPreferencesUtil.getToken
 import com.sbsj.dreamwing.volunteer.VolunteerAdapter
 import com.sbsj.dreamwing.volunteer.VolunteerDetailActivity
 import com.sbsj.dreamwing.volunteer.model.PostApplyVolunteerRequestDTO
@@ -34,7 +36,7 @@ class VolunteerFragment : Fragment() {
     private var volunteerList: MutableList<VolunteerListDTO> = mutableListOf()
     private var page = 0
     private val size = 2
-    private var userId: Long = 2L // Replace with the actual user ID
+    //private var userId: Long = 2L // Replace with the actual user ID
 
     private var selectedStatus = 0 // Default to "모집중"
     private var selectedType = 0 // Default to "봉사"
@@ -53,7 +55,8 @@ class VolunteerFragment : Fragment() {
             checkIfUserApplied(volunteer.volunteerId) { hasApplied ->
                 val intent = Intent(requireContext(), VolunteerDetailActivity::class.java).apply {
                     putExtra("volunteerId", volunteer.volunteerId)
-                    putExtra("userId", userId) // Pass the userId to detail page
+                    putExtra("volunteerTitle",volunteer.title)
+//                    putExtra("userId", userId) // Pass the userId to detail page
                     putExtra("hasApplied", hasApplied) // Pass the apply status
                 }
                 startActivity(intent)
@@ -170,8 +173,11 @@ class VolunteerFragment : Fragment() {
     }
 
     private fun checkIfUserApplied(volunteerId: Long, callback: (Boolean) -> Unit) {
+        val jwtToken = SharedPreferencesUtil.getToken(requireContext())
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
         RetrofitClient.volunteerService.checkIfAlreadyApplied(
-            PostApplyVolunteerRequestDTO(volunteerId, userId)
+            authHeader,
+            PostApplyVolunteerRequestDTO(volunteerId)
         ).enqueue(object : Callback<ApiResponse<Boolean>> {
             override fun onResponse(
                 call: Call<ApiResponse<Boolean>>,

@@ -13,6 +13,7 @@ import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.Part
@@ -46,29 +47,32 @@ interface VolunteerService {
 //    ): Call<VolunteerAdminListResponse>
 //
     @GET("/volunteer/detail")
-    fun getVolunteerDetail(@Query("volunteerId") volunteerId: Long): Call<VolunteerDetailResponse>
+    fun getVolunteerDetail( @Header("Authorization") authHeader: String, @Query("volunteerId") volunteerId: Long): Call<VolunteerDetailResponse>
 
     @POST("/volunteer/apply")
-    fun applyForVolunteer(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
+    fun applyForVolunteer(@Header("Authorization") authHeader: String,@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
 
     @GET("/volunteer/check-application")
     fun checkApplicationStatus(
-        @Query("volunteerId") volunteerId: Long,
-        @Query("userId") userId: Long
+        @Header("Authorization") authHeader: String,
+        @Query("volunteerId") volunteerId: Long
+
     ): Call<ApiResponse<Boolean>>
 
     @POST("/volunteer/check-application")
-        fun checkIfAlreadyApplied(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Boolean>>
+        fun checkIfAlreadyApplied(  @Header("Authorization") authHeader: String,
+                                    @Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Boolean>>
 
     // New method for canceling application
     @POST("/volunteer/cancel-application")
-    fun cancelApplication(@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
+    fun cancelApplication(@Header("Authorization") authHeader: String,@Body request: PostApplyVolunteerRequestDTO): Call<ApiResponse<Unit>>
 
 
     @GET("/volunteer/check-status")
     fun checkStatus(
+        @Header("Authorization") authHeader: String,
         @Query("volunteerId") volunteerId: Long,
-        @Query("userId") userId: Long
+
     ): Call<ApiResponse<Int>>
 
 

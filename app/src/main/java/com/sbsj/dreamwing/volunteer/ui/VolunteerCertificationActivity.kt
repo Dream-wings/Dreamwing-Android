@@ -52,6 +52,9 @@ class VolunteerCertificationActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar.root)
         supportActionBar?.title = "봉사활동 인증"
+        val volunteerTitle = intent.getStringExtra("volunteerTitle")
+        binding.comment1.text = volunteerTitle ?: "봉사활동 제목"
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // 권한 요청

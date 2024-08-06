@@ -25,6 +25,7 @@ import com.sbsj.dreamwing.admin.model.response.VolunteerAdminListResponse
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityAdminBinding
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.model.VolunteerDetailDTO
 import com.sbsj.dreamwing.volunteer.model.response.VolunteerDetailResponse
 import retrofit2.Call
@@ -56,6 +57,7 @@ class AdminActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.adminToolbar.toolbar.title = "봉사활동 게시판 관리"
+        //binding.headerTable.column4.text = "인원"
         // RecyclerView 초기화
         setupRecyclerView()
 
@@ -270,7 +272,11 @@ class AdminActivity : AppCompatActivity() {
     }
 
     private fun loadVolunteerDetail(volunteerId: Long) {
-        RetrofitClient.volunteerService.getVolunteerDetail(volunteerId)
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+
+        RetrofitClient.volunteerService.getVolunteerDetail(authHeader,volunteerId)
             .enqueue(object : Callback<VolunteerDetailResponse> {
                 override fun onResponse(call: Call<VolunteerDetailResponse>, response: Response<VolunteerDetailResponse>) {
                     if (response.isSuccessful) {
