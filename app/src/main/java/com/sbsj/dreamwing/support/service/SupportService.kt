@@ -7,6 +7,7 @@ import com.sbsj.dreamwing.support.model.response.TotalSupportResponse
 import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -41,8 +42,8 @@ interface SupportService {
 
     @POST("/support/donate")
     fun donateForSupport(
+        @Header("Authorization") authHeader: String,
         @Query("supportId") supportId: Long,
-        @Query("userId") userId: Long,
         @Query("amount") amount: Int
     ): Call<ApiResponse<Unit>>
 
