@@ -18,6 +18,7 @@ import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient.volunteerService
 import com.sbsj.dreamwing.databinding.ActivityVolunteerCertificationBinding
 import com.sbsj.dreamwing.mission.ui.QuizCorrectActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.model.request.CertificationVolunteerRequest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
@@ -45,6 +46,7 @@ class VolunteerCertificationActivity : AppCompatActivity() {
     private lateinit var binding: ActivityVolunteerCertificationBinding
     private var imageUri: Uri? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVolunteerCertificationBinding.inflate(layoutInflater)
@@ -57,6 +59,11 @@ class VolunteerCertificationActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        val volunteerId = intent.getLongExtra("volunteerId", 0L)
+        val title = intent.getStringExtra("title")
+
+        binding.volunteerTitle.text = title
+
         // 권한 요청
         requestPermission()
 
@@ -67,7 +74,7 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         binding.uploadImage.setOnClickListener {
             imageUri?.let { uri ->
                 val imageFile = createImageFile(uri)
-                uploadImage(imageFile)
+                uploadImage(volunteerId, imageFile)
             } ?: Toast.makeText(this, "이미지를 선택하세요.", Toast.LENGTH_SHORT).show()
         }
     }
@@ -131,13 +138,12 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         return file
     }
 
-    private fun uploadImage(file: File) {
+    private fun uploadImage(volunteerId: Long, file: File) {
         val requestFile = file.asRequestBody("image/png".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("imageFile", file.name, requestFile)
 
         val requestDTO = CertificationVolunteerRequest(
-            userId = 3,
-            volunteerId = 1,
+            volunteerId = volunteerId,
             imageUrl = null,
             imageFile = null
         )
@@ -145,7 +151,10 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         val requestJson = Gson().toJson(requestDTO)
         val requestBody = requestJson.toRequestBody("application/json".toMediaTypeOrNull())
 
-        val call = volunteerService.certificationVolunteer(requestBody, imagePart)
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
+
+        val call = volunteerService.certificationVolunteer(authHeader=authHeader, requestBody, imagePart)
         call.enqueue(object : Callback<ApiResponse<Void>> {
             override fun onResponse(call: Call<ApiResponse<Void>>, response: Response<ApiResponse<Void>>) {
                 if (response.isSuccessful) {

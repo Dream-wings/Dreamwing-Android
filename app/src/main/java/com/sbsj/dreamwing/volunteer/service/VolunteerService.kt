@@ -90,7 +90,8 @@ interface VolunteerService {
      */
     @Multipart
     @PATCH("/volunteer/certification")
-    fun certificationVolunteer(@Part("request") request: RequestBody,
+    fun certificationVolunteer(@Header("Authorization") authHeader: String,
+                               @Part("request") request: RequestBody,
                                @Part imageFile: MultipartBody.Part?) : Call<ApiResponse<Void>>
 
 
