@@ -154,11 +154,7 @@ class HomeFragment : Fragment() {
         fetchTotalSupport()
 
 
-        // Admin 버튼 클릭 리스너 설정
-        binding.buttonAdminNavigation.setOnClickListener {
-            // NavController를 사용하여 AdminFragment로 이동
-            findNavController().navigate(R.id.action_homeFragment_to_adminFragment)
-        }
+
     }
 
     override fun onDestroyView() {

@@ -54,10 +54,12 @@ class VolunteerCertificationActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar.root)
         supportActionBar?.title = "봉사활동 인증"
+//        val volunteerTitle = intent.getStringExtra("volunteerTitle")
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val volunteerId = intent.getLongExtra("volunteerId", 0L)
-        val title = intent.getStringExtra("title")
+        val title = intent.getStringExtra("volunteerTitle")
 
         binding.volunteerTitle.text = title
 
