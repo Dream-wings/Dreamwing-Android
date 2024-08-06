@@ -49,7 +49,7 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
         fetchDetails(volunteerId, userId)
 
         binding.button.setOnClickListener {
-            approveVolunteer(volunteerId, userId)
+            showDialog(volunteerId, userId)
         }
     }
 
@@ -76,15 +76,18 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
             })
     }
 
-    private fun approveVolunteer(volunteerId: Long, userId: Long) {
+    private fun approveRequest(volunteerId: Long, userId: Long) {
         val request = ApproveRequest(volunteerId, userId)
         RetrofitClient.adminService.approveVolunteerRequest(request)
             .enqueue(object : Callback<ApiResponse<Void>> {
                 override fun onResponse(call: Call<ApiResponse<Void>>, response: Response<ApiResponse<Void>>) {
                     if (response.isSuccessful) {
-                        showSuccessDialog()
+                        Toast.makeText(this@VolunteerRequestDetailActivity, "승인이 완료되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@VolunteerRequestDetailActivity, VolunteerRequestListActivity::class.java)
+                        startActivity(intent)
+                        finish()
                     } else {
-                        showFailureDialog()
+                        Toast.makeText(this@VolunteerRequestDetailActivity, "실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -101,25 +104,20 @@ class VolunteerRequestDetailActivity : AppCompatActivity() {
         binding.phone.text = detail.phone
     }
 
-    private fun showSuccessDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("승인 완료")
-            .setMessage("승인이 완료되었습니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-                finish()
-            }
-            .show()
-    }
+    private fun showDialog(volunteerId: Long, userId: Long) {
+        val builder = android.app.AlertDialog.Builder(this)
+        builder.setTitle("요청 승인")
+        builder.setMessage("승인하시겠습니까?")
+        builder.setPositiveButton("예") { dialog, _ ->
+            approveRequest(volunteerId, userId)
+            dialog.dismiss()
+        }
+        builder.setNegativeButton("아니오") { dialog, _ ->
+            dialog.dismiss()
+        }
 
-    private fun showFailureDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("승인 실패")
-            .setMessage("승인에 실패하였습니다. 다시 시도해 주세요.")
-            .setPositiveButton("확인") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
+        val dialog = builder.create()
+        dialog.show()
     }
 
 }
