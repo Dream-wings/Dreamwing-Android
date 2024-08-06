@@ -61,8 +61,6 @@ class SupportDetailActivity : AppCompatActivity() {
         }
     }
 
-
-
     /**
      * 로그인 여부 확인 메서드
      */
@@ -80,16 +78,25 @@ class SupportDetailActivity : AppCompatActivity() {
      * 로그인 요청 다이얼로그를 표시하는 메서드
      */
     private fun showLoginRequestDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("로그인 요청")
-            .setMessage("로그인이 필요합니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 로그인 액티비티로 이동
-                val intent = Intent(this, LoginActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "로그인이 필요합니다."
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+            // 로그인 액티비티로 이동
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        dialog.show()
     }
 
     private fun loadSupportDetails(supportId: Long) {
@@ -167,23 +174,25 @@ class SupportDetailActivity : AppCompatActivity() {
         message.text = "기부할 금액을 입력하세요."
         editText.inputType = android.text.InputType.TYPE_CLASS_NUMBER
 
-
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .create()
 
         yesButton.setOnClickListener {
-            val amount = editText.text.toString().toIntOrNull()
+            val amountStr = editText.text.toString()
+            Log.d("SupportDetailActivity", "Entered amount: $amountStr") // 로그 추가
+
+            val amount = amountStr.toIntOrNull()
             if (amount != null && amount > 0) {
                 donateToSupport(amount)
+                dialog.dismiss()
             } else {
                 Toast.makeText(this, "유효한 금액을 입력하세요.", Toast.LENGTH_SHORT).show()
             }
-            dialog.dismiss()
         }
 
         noButton.setOnClickListener {
-            dialog.dismiss()
+            dialog.cancel()
         }
 
         dialog.show()

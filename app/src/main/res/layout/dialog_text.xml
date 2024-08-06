@@ -40,7 +40,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/noButton"
+            android:id="@+id/yesButton"
             android:background="@drawable/bg_round_box_radius_10"
             android:backgroundTint="@color/main"
             android:textColor="@color/white"
@@ -53,7 +53,7 @@
             android:textSize="14sp" />
 
         <Button
-            android:id="@+id/yesButton"
+            android:id="@+id/noButton"
             android:background="@drawable/bg_round_box_radius_10"
             android:fontFamily="@font/happiness_sans_title"
             android:backgroundTint="@color/light_gray"

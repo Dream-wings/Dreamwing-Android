@@ -82,6 +82,7 @@ dependencies {
     implementation libs.androidx.material3
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation libs.androidx.activity
+    implementation 'pl.droidsonroids.gif:android-gif-drawable:1.2.19'
 
     testImplementation libs.junit
     androidTestImplementation libs.androidx.junit

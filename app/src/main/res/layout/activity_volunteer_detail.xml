@@ -192,6 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="내용"
+                    android:lineSpacingExtra="3.6sp"
                     android:fontFamily="@font/happiness_sans_regular"
                     android:textSize="14sp"
                     android:textColor="@color/black"
