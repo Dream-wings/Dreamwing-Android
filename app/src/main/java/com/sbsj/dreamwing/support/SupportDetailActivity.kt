@@ -1,6 +1,7 @@
 package com.sbsj.dreamwing.support
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,8 @@ import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivitySupportDetailBinding
 import com.sbsj.dreamwing.support.model.SupportDetailDTO
 import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
+import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
@@ -40,7 +43,10 @@ class SupportDetailActivity : AppCompatActivity() {
         }
 
         binding.donateButton.setOnClickListener {
-            showDonationDialog()
+            val hasLogin = checkUserLoggedIn()
+            if(hasLogin) {
+                showDonationDialog()
+            }
         }
 
         if (supportId != -1L) {
@@ -49,6 +55,37 @@ class SupportDetailActivity : AppCompatActivity() {
             Log.e("SupportDetailActivity", "Invalid supportId")
             finish()
         }
+    }
+
+
+
+    /**
+     * 로그인 여부 확인 메서드
+     */
+    private fun checkUserLoggedIn(): Boolean {
+        // 전역 저장소에서 jwt 토큰을 가져옴
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        if (jwtToken.isNullOrEmpty()) {
+            // 로그인되어 있지 않으면 로그인 요청 다이얼로그를 표시
+            showLoginRequestDialog()
+            return false
+        }
+        return true
+    }
+    /**
+     * 로그인 요청 다이얼로그를 표시하는 메서드
+     */
+    private fun showLoginRequestDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("로그인 요청")
+            .setMessage("로그인이 필요합니다.")
+            .setPositiveButton("확인") { dialog, _ ->
+                // 로그인 액티비티로 이동
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+            .show()
     }
 
     private fun loadSupportDetails(supportId: Long) {
@@ -144,9 +181,12 @@ class SupportDetailActivity : AppCompatActivity() {
 
     private fun donateToSupport(amount: Int) {
         val supportId = supportDetailDTO.supportId
-        val userId = 2L // Replace with actual user ID retrieval logic
+        //val userId = 2L // Replace with actual user ID retrieval logic
+        // 토큰 가져오기
+        val jwtToken = SharedPreferencesUtil.getToken(this)
+        val authHeader = "$jwtToken" // 헤더에 넣을 변수
 
-        RetrofitClient.supportService.donateForSupport(supportId, userId, amount)
+        RetrofitClient.supportService.donateForSupport(authHeader,supportId,amount)
             .enqueue(object : Callback<ApiResponse<Unit>> {
                 override fun onResponse(call: Call<ApiResponse<Unit>>, response: Response<ApiResponse<Unit>>) {
                     if (response.isSuccessful && response.body()?.success == true) {
