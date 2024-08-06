@@ -97,7 +97,7 @@
                 android:layout_marginStart="16dp"
                 android:background="@drawable/button_selector"
                 android:fontFamily="@font/happiness_sans_title"
-                android:text="문화예술"
+                android:text="급식나눔"
                 android:textColor="#767676" />
 
             <!-- 주거개선 button -->
