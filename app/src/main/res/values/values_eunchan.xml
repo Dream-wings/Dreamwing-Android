@@ -1,5 +1,7 @@
 <resources>
     <string name="eunchan">정은찬</string>
-    <color name="sub_lightGray">#F1EFE6</color>
+    <color name="sub_lightGray1">#F1EFE6</color>
+    <color name="sub_lightGray2">#E7E9EA</color>
     <string name="update">회원 정보 수정</string>
+
 </resources>

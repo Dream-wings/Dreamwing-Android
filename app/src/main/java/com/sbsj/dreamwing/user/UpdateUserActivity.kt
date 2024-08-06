@@ -32,13 +32,14 @@ import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
+import androidx.appcompat.widget.Toolbar
 
 class UpdateUserActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수
     private lateinit var idCheckMessage: TextView // 아이디 중복 확인 메시지를 표시하는 TextView
     private lateinit var passwordMatchMessage: TextView // 비밀번호 일치 여부를 표시하는 TextView
-    private var idCheckStatus = false // 아이디 중복 여부 상태, 초기값은 중복
-    private var passwordMatchStatus = false // 비밀번호 일치 여부 상태, 초기값은 불일치
+    private var idCheckStatus = true // 아이디 중복 여부 상태
+    private var passwordMatchStatus = true // 비밀번호 일치 여부 상태
 
     // 각 입력 필드 밑에 있는 밑줄 View를 위한 변수 선언
     private lateinit var underlineID: View
@@ -61,6 +62,20 @@ class UpdateUserActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_user)
+
+        // Toolbar를 findViewById로 참조
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
+        // Toolbar 설정
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "후원 내역"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Toolbar의 NavigationIcon 클릭 리스너 추가
+        toolbar.setNavigationOnClickListener {
+            onBackPressed() // 이전 페이지로 돌아갑니다.
+        }
+
 
         // UI 요소 초기화
         val loginId = findViewById<EditText>(R.id.editID)
@@ -101,10 +116,11 @@ class UpdateUserActivity : AppCompatActivity() {
             val nameText = name.text.toString()
             val phoneText = phone.text.toString()
 
-            // 입력된 값이 비어있는지 확인
-            if (idText.isEmpty() || passwordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()) {
-                showErrorDialog("빈 입력칸이 있습니다.")
-            } else if (!idCheckStatus) {
+//            // 입력된 값이 비어있는지 확인
+//            if (idText.isEmpty() || passwordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()) {
+//                showErrorDialog("빈 입력칸이 있습니다.")
+//            } else
+            if (!idCheckStatus) {
                 // 중복 확인이 안 되어 있으면 다이얼로그 표시
                 showIdCheckDialog(idText)
             } else if (!passwordMatchStatus) {
