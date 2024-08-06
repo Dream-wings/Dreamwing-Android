@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="20dp">
+    android:layout_height="match_parent">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|top"
                     android:layout_margin="16dp"
-                    android:src="@drawable/ic_arrow_back"
+                    android:src="@drawable/ic_arrow_back_white"
                     android:background="@android:color/transparent" />
 
                 <!-- Category and Title -->
@@ -65,9 +64,11 @@
             <TextView
                 android:id="@+id/fundraisingPeriodTextView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_marginTop="16dp"
                 android:padding="8dp"
+                android:layout_margin="20dp"
+                android:gravity="center_vertical"
                 android:text="모금 기간 : 2024.00.00 ~ 2024.00.00"
                 android:textSize="14sp"
                 android:textColor="@color/black"
@@ -80,8 +81,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="16dp"
-                android:padding="8dp">
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp">
 
                 <TextView
                     android:id="@+id/progressPercentageTextView"
@@ -133,11 +134,11 @@
                 </LinearLayout>
             </LinearLayout>
             <View
-                android:layout_width="416dp"
-                android:layout_marginLeft="16dp"
-                android:layout_height="1dp"
-                android:background="#D9D9D9"
-                android:layout_marginBottom="5dp"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@color/light_gray"
+                android:layout_marginBottom="5dp"
+                android:layout_margin="20dp"/>
             <!-- Content -->
             <TextView
                 android:id="@+id/contentTextView"
@@ -146,6 +147,8 @@
                 android:layout_marginTop="16dp"
                 android:text="내용"
                 android:textSize="14sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 android:textColor="@color/black"
                 android:fontFamily="@font/happiness_sans_regular" />
         </LinearLayout>
@@ -153,14 +156,18 @@
 
     <!-- Donate Button -->
     <Button
+        android:layout_marginLeft="20dp"
+        android:layout_margin="20dp"
+        android:layout_marginBottom="20dp"
         android:id="@+id/donateButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="기부하기"
+        android:text="후원하기"
         android:textSize="16sp"
         android:padding="16dp"
-        android:background="#00AEFF"
+        android:stateListAnimator="@null"
+        android:background="@drawable/bg_round_box_radius_10"
         android:textColor="#FFFFFF"
         android:fontFamily="@font/happiness_sans_title" />
 </RelativeLayout>

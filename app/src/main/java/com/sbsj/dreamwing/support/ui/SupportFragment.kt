@@ -15,7 +15,6 @@ import com.sbsj.dreamwing.databinding.FragmentSupportBinding
 import com.sbsj.dreamwing.support.model.response.GetSupportListResponse
 import com.sbsj.dreamwing.support.model.response.SupportListResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.support.ui.SupportRecyclerViewAdapter
 import android.graphics.Color
 import retrofit2.Call
 import retrofit2.Callback
@@ -110,10 +109,10 @@ class SupportFragment : Fragment() {
     private fun updateButtonStates(selectedButton: Button, allButtons: List<Button>) {
         allButtons.forEach { button ->
             if (button == selectedButton) {
-                button.setBackgroundResource(R.drawable.button_jaeseong)
+                button.setBackgroundResource(R.drawable.button)
                 button.setTextColor(Color.WHITE)
             } else {
-                button.setBackgroundResource(R.drawable.button_jaeseong_selector)
+                button.setBackgroundResource(R.drawable.button_selector)
                 button.setTextColor(Color.parseColor("#767676"))
             }
         }

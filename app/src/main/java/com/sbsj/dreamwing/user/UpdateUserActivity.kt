@@ -315,13 +315,23 @@ class UpdateUserActivity : AppCompatActivity() {
 
     // 아이디 중복 확인 다이얼로그를 띄우는 메서드
     private fun showIdCheckDialog(id: String) {
-        AlertDialog.Builder(this)
-            .setTitle("아이디 중복 확인")
-            .setMessage("아이디 중복 확인이 필요합니다.")
-            .setPositiveButton("확인") {  dialog, _ -> dialog.dismiss()
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "아이디 중복 확인이 필요합니다."
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            dialog.dismiss()
+        }
+
+        dialog.show()
     }
+
 
     // 오류 다이얼로그를 표시하는 메서드
     private fun showErrorDialog(message: String) {
@@ -334,15 +344,22 @@ class UpdateUserActivity : AppCompatActivity() {
 
     // 회원가입 수정 다이얼로그를 표시하는 메서드
     private fun updateSuccessDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("회원 정보 수정 완료")
-            .setMessage("회원 정보 수정이 성공적으로 완료되었습니다.")
-            .setPositiveButton("확인") { dialog, _ ->
-                // 확인 버튼 클릭 시 로그인 화면으로 이동
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish() // 현재 액티비티 종료
-            }
-            .show()
+        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
+        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
+        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
+
+        confirmTextView.text = "회원 정보 수정이 성공적으로 완료되었습니다. "
+
+        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        yesButton.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        dialog.show()
     }
 }

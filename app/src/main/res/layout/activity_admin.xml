@@ -44,7 +44,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/bg_round_box_radius_10"
             android:fontFamily="@font/happiness_sans_title"
             android:text="등록"
             android:textColor="@android:color/white"
@@ -53,7 +53,8 @@
             app:layout_constraintEnd_toStartOf="@id/editButton"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:stateListAnimator="@null" />
 
         <!-- 수정 버튼 -->
         <Button
@@ -61,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/bg_round_box_radius_10"
             android:fontFamily="@font/happiness_sans_title"
             android:text="수정"
             android:textColor="@android:color/white"
@@ -70,7 +71,8 @@
             app:layout_constraintEnd_toStartOf="@id/deleteButton"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"/>
+            android:layout_marginRight="20dp"
+            android:stateListAnimator="@null" />
 
         <!-- 삭제 버튼 -->
         <Button
@@ -78,7 +80,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/bg_round_box_radius_10"
             android:fontFamily="@font/happiness_sans_title"
             android:text="삭제"
             android:textColor="@android:color/white"
@@ -87,6 +89,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginRight="20dp"
+            android:stateListAnimator="@null" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
