@@ -4,12 +4,14 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Base64
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityLoginBinding
 import com.sbsj.dreamwing.user.model.dto.LoginRequestDTO
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -105,10 +107,10 @@ class LoginActivity : AppCompatActivity() {
                     // Authorization 헤더에서 JWT 토큰 추출
                     val token = response.headers()["Authorization"]
                     if (token != null) {
-                        // 로그인 성공 다이얼로그 표시
-                        showLoginSuccessDialog()
                         // 토큰 저장 (추후 사용 가능)
                         SharedPreferencesUtil.saveToken(this@LoginActivity, token)
+                        // 로그인 성공 다이얼로그 표시
+                        showLoginSuccessDialog(token)
                     } else {
                         // 토큰을 가져오지 못한 경우 사용자에게 알림
                         showNetworkFailDialog()
@@ -140,15 +142,24 @@ class LoginActivity : AppCompatActivity() {
     /**
      * 로그인 성공 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
      */
-    private fun showLoginSuccessDialog() {
+    private fun showLoginSuccessDialog(token : String) {
         AlertDialog.Builder(this)
             .setTitle("로그인 성공")
             .setMessage("로그인이 성공적으로 완료되었습니다.")
             .setPositiveButton("확인") { dialog, _ ->
-                // MainActivity로 이동
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish() // 현재 액티비티 종료
+
+                val roles = getRolesFromToken(token)
+
+                if ("USER" in roles) {
+                    // MainActivity로 이동
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish() // 현재 액티비티 종료
+                } else if ("ADMIN" in roles) {
+//                    val intent = Intent(this, AdminPageActivity::class.java)
+                    startActivity(intent)
+                }
+
             }
             .show()
     }
@@ -173,5 +184,26 @@ class LoginActivity : AppCompatActivity() {
             .setMessage("나중에 다시 시도해주세요.")
             .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }
             .show()
+    }
+
+    // JWT 토큰의 payload 부분을 디코딩하여 JSONObject로 변환하는 함수
+    private fun decodeJwt(token: String): JSONObject {
+        val parts = token.split(".")
+        if (parts.size != 3) {
+            throw IllegalArgumentException("Invalid JWT token")
+        }
+        val payload = String(Base64.decode(parts[1], Base64.DEFAULT))
+        return JSONObject(payload)
+    }
+
+    // JWT 토큰에서 roles 정보를 추출하는 함수
+    private fun getRolesFromToken(token: String): List<String> {
+        val payload = decodeJwt(token)
+        val roles = payload.getJSONArray("roles")
+        val roleList = mutableListOf<String>()
+        for (i in 0 until roles.length()) {
+            roleList.add(roles.getString(i))
+        }
+        return roleList
     }
 }
