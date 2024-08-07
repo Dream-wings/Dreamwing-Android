@@ -67,10 +67,10 @@ class MyVolunteerAdapter : RecyclerView.Adapter<MyVolunteerAdapter.VolunteerView
                 verifiedButton.setOnClickListener {
                     val context = itemView.context
                     val volunteerId = myVolunteerVO.volunteerId
-                    val title = myVolunteerVO.title
+                    val volunteerTitle = myVolunteerVO.title
                     val intent = Intent(context, VolunteerCertificationActivity::class.java).apply {
                         putExtra("volunteerId", volunteerId)
-                        putExtra("title", title)
+                        putExtra("volunteerTitle", volunteerTitle)
                     }
                     context.startActivity(intent)
                 }
