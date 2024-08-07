@@ -57,7 +57,7 @@ class AdminActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         binding.adminToolbar.toolbar.title = "봉사활동 게시판 관리"
-        //binding.headerTable.column4.text = "인원"
+        binding.headerTable.column4.text = "인원"
         // RecyclerView 초기화
         setupRecyclerView()
 

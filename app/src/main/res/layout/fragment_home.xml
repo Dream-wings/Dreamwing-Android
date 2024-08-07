@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollbars="vertical"
-    android:layout_margin="16dp"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,8 +52,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp">
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
 
             <TextView
                 android:id="@+id/comment_1"
@@ -160,8 +160,8 @@
             android:id="@+id/inner_box_center"
             android:layout_width="0dp"
             android:layout_height="200dp"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/box">
@@ -269,10 +269,11 @@
                 android:textAppearance="@style/title"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"/>
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"/>
 
             <TextView
+                android:layout_marginRight="16dp"
                 android:id="@+id/view_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -288,6 +289,9 @@
                 app:layout_constraintEnd_toEndOf="parent"/>
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
                 android:id="@+id/recyclerView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
