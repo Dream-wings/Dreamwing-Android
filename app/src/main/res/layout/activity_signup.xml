@@ -9,6 +9,17 @@
     android:gravity="center_horizontal"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -286,5 +297,5 @@
             android:fontFamily="@font/happiness_sans_regular"
             android:background="@drawable/button_login"/>
     </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>
