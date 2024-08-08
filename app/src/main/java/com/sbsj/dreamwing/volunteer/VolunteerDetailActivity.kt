@@ -356,7 +356,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
                             Log.d("VolunteerDetailActivity", "Application successful")
                             isApplied = true
                             updateButtonState()
-                            showSuccessDialog("신청이 완료되었습니다.")
+                            showSuccessDialog("관리자 승인 후 신청이 확정됩니다")
                         } else {
                             Log.e("VolunteerDetailActivity", "Application failed: ${apiResponse?.message}")
                             showErrorDialog("신청 실패: ${apiResponse?.message}")
