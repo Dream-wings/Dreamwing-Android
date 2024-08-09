@@ -9,7 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.common.model.ErrorResponse
@@ -18,7 +17,7 @@ import com.sbsj.dreamwing.databinding.ActivityQuizBinding
 import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
 import com.sbsj.dreamwing.mission.model.response.QuizResponse
-import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.ResponseBody
 import retrofit2.Call

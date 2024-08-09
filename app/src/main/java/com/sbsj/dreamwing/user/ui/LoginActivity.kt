@@ -1,15 +1,12 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.ui.AdminActivity
@@ -23,17 +20,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * 로그인 액티비티
- * 사용자 로그인 요청을 처리하고 JWT 토큰을 저장합니다.
+ * 로그인하는 액티비티
  * @author 정은찬
  * @since 2024.08.02
  * @version 1.0
  *
+ * <pre>
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.02   정은찬        최초 생성
  * 2024.08.03   정은찬        Retrofit을 통해 로그인 정보 보내기 및 JWT 토큰 헤더에서 받기
  * 2024.08.03   정은찬        뒤로가기 툴바 적용
+ * </pre>
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -41,9 +39,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     /**
-     * 액티비티가 생성될 때 호출됩니다.
-     * 화면에 뷰를 설정하고, 액티비티의 초기화 작업을 수행합니다.
-     * @param savedInstanceState 액티비티의 상태를 저장한 번들 객체
+     * 액티비티 생성 호출
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,9 +93,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 사용자의 로그인 요청을 처리합니다.
-     * @param loginId 사용자 아이디
-     * @param password 사용자 비밀번호
+     * 로그인 요청하는 메서드 
      */
     private fun login(loginId: String, password: String) {
         // 로그인 요청 DTO 생성
@@ -135,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 정보를 입력하지 않았을 때 오류 다이얼로그를 표시합니다.
+     * 로그인 정보를 입력하지 않았을 때 오류 다이얼로그 표시하는 메서드
      */
     private fun showErrorDialog() {
         AlertDialog.Builder(this)
@@ -146,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     * 로그인아웃 시 성공 다이얼로그 표시하는 메서드
      */
     private fun showLogoutSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
@@ -168,7 +162,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 성공 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     * 로그인 성공 시 성공 다이얼로그를 표시하는 메서드
      */
     private fun showLoginSuccessDialog(token : String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
@@ -193,27 +187,10 @@ class LoginActivity : AppCompatActivity() {
         }
 
         dialog.show()
-
-//        AlertDialog.Builder(this)
-//            .setTitle("로그인 성공")
-//            .setMessage("로그인이 성공적으로 완료되었습니다.")
-//            .setPositiveButton("확인") { dialog, _ ->
-//                Log.d("Loginactiviy", "$token")
-//                val roles = getRolesFromToken(token)
-//
-//                if ("ROLE_USER" in roles) {
-//                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                    startActivity(intent)
-//                } else if ("ROLE_ADMIN" in roles) {
-//                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
-//                    startActivity(intent)
-//                }
-//            }
-//            .show()
     }
 
     /**
-     * 로그인 실패 시 실패 다이얼로그를 표시합니다.
+     * 로그인 실패 시 실패 다이얼로그 표시하는 메서드
      */
     private fun showLoginFailDialog() {
         AlertDialog.Builder(this)
@@ -224,7 +201,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 네트워크 오류 다이얼로그를 표시합니다.
+     * 네트워크 오류 다이얼로그 표시하는 메서드
      */
     private fun showNetworkFailDialog() {
         AlertDialog.Builder(this)
@@ -244,7 +221,7 @@ class LoginActivity : AppCompatActivity() {
         return JSONObject(payload)
     }
 
-    // JWT 토큰에서 roles 정보를 추출하는 함수
+    // JWT 토큰에서 roles 정보를 추출 메서드
     private fun getRolesFromToken(token: String): List<String> {
         val payload = decodeJwt(token)
         val roles = payload.getJSONArray("roles")

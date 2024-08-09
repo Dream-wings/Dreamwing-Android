@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +15,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * 회원의 포인트 내역을 보여주는 액티비티
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일             수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MyPointDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPointDetailBinding
@@ -23,6 +34,9 @@ class MyPointDetailActivity : AppCompatActivity() {
     private val pageSize = 20
     private var isLoading = false
 
+    /**
+     * 액티비티 생성 호출
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -69,6 +83,9 @@ class MyPointDetailActivity : AppCompatActivity() {
         loadPoints()
     }
 
+    /*
+     * 포인트 데이터를 서버에서 로드하는 메서드
+     */
     private fun loadPoints() {
         // SharedPreferencesUtil을 사용하여 JWT 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)

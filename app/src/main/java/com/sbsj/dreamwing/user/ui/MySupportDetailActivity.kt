@@ -1,11 +1,10 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityMySupportDetailBinding
@@ -15,6 +14,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * 회원의 후원 내역을 보여주는 액티비티
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일             수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MySupportDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMySupportDetailBinding
     private lateinit var mySupportAdapter: MySupportAdapter
@@ -68,6 +78,9 @@ class MySupportDetailActivity : AppCompatActivity() {
         loadSupports()
     }
 
+    /*
+     * 후원 데이터를 서버에서 로드하는 메서드
+     */
     private fun loadSupports() {
         // SharedPreferencesUtil을 사용하여 JWT 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)

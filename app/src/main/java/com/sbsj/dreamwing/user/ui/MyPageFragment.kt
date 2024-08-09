@@ -15,14 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
-import com.sbsj.dreamwing.user.UpdateUserActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentMypageBinding
-import com.sbsj.dreamwing.user.LoginActivity
-import com.sbsj.dreamwing.user.MyPointDetailActivity
-import com.sbsj.dreamwing.user.MySupportDetailActivity
-import com.sbsj.dreamwing.user.MyVolunteerDetailActivity
 import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso
@@ -53,10 +48,6 @@ class MyPageFragment : Fragment() {
 
     /**
      * 프래그먼트의 뷰를 생성하는 메서드
-     * @param inflater 레이아웃 인플레이터
-     * @param container 컨테이너 뷰 그룹
-     * @param savedInstanceState 저장된 인스턴스 상태
-     * @return 생성된 뷰
      */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -67,9 +58,7 @@ class MyPageFragment : Fragment() {
     }
 
     /**
-     * 뷰가 생성된 후 호출되는 메서드
-     * @param view 생성된 뷰
-     * @param savedInstanceState 저장된 인스턴스 상태
+     * 뷰가 생성된 후 호출
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -150,7 +139,6 @@ class MyPageFragment : Fragment() {
 
     /**
      * 사용자가 로그인되어 있는지 확인하는 메서드
-     * @return 로그인 여부
      */
     private fun checkUserLoggedIn(): Boolean {
         val jwtToken = SharedPreferencesUtil.getToken(requireContext())
@@ -203,7 +191,6 @@ class MyPageFragment : Fragment() {
 
     /**
      * 사용자 정보를 UI에 업데이트하는 메서드
-     * @param myPageDTO 사용자 정보 데이터 전송 객체
      */
     private fun updateUI(myPageDTO: MyPageDTO) {
         binding.name.text = myPageDTO.name
@@ -217,8 +204,6 @@ class MyPageFragment : Fragment() {
 
     /**
      * 세부 내역을 컨테이너에 추가하는 메서드
-     * @param container 내역을 추가할 컨테이너
-     * @param details 내역 리스트
      */
     private fun addDetailsToContainer(container: LinearLayout, details: List<String>) {
         container.removeAllViews()
@@ -234,8 +219,6 @@ class MyPageFragment : Fragment() {
 
     /**
      * 세부 내역 텍스트뷰를 생성하는 메서드
-     * @param detail 내역 문자열
-     * @return 생성된 텍스트뷰
      */
     private fun createDetailTextView(detail: String): TextView {
         val textView = TextView(context)
@@ -277,7 +260,7 @@ class MyPageFragment : Fragment() {
     }
 
     /**
-     * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     * 로그인아웃 시 성공 다이얼로그 표시하는 메서드
      */
     private fun showLogoutSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
@@ -300,7 +283,7 @@ class MyPageFragment : Fragment() {
     }
 
     /**
-     * 로그아웃 실패 시 실패 다이얼로그를 표시합니다.
+     * 로그아웃 실패 시 실패 다이얼로그 표시하는 메서드
      */
     private fun showLogoutFailDialog() {
         AlertDialog.Builder(requireContext())

@@ -11,10 +11,9 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.databinding.FragmentMissionBinding
-import com.sbsj.dreamwing.user.LoginActivity
-import com.sbsj.dreamwing.user.MyVolunteerDetailActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
+import com.sbsj.dreamwing.user.ui.MyVolunteerDetailActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
-import com.sbsj.dreamwing.volunteer.ui.VolunteerCertificationActivity
 
 /**
  * 미션 목록 화면

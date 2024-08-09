@@ -9,9 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
-import org.w3c.dom.Text
 
 /**
  * 메인 화면

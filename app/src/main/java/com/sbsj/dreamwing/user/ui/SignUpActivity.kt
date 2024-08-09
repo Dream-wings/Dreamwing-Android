@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textfield.TextInputLayout
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
@@ -33,16 +32,18 @@ import java.io.IOException
 import java.io.InputStream
 
 /**
- *
+ * 회원가입 액티비티
  * @author 정은찬
  * @since 2024.08.01
  * @version 1.0
  *
- * 수정일        	수정자        수정내용
+ * <pre>
+ * 수정일        수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.01   정은찬        최초 생성
  * 2024.08.02   정은찬        회원가입 정보 retrofit 통신
  * 2024.08.02   정은찬        회원가입시 아이디 중복, 비밀번호 일치, 정보 입력 여부 확인
+ * </pre>
  */
 class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수
@@ -69,6 +70,9 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 액티비티 생성 호출
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
@@ -149,7 +153,9 @@ class SignUpActivity : AppCompatActivity() {
         setPasswordMatchListener(password, passwordConfirm)
     }
 
-    // EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
+    /*
+     * EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
+     */
     private fun setEditTextListeners(editText: EditText, underline: View) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -176,7 +182,9 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // 비밀번호와 비밀번호 확인란이 일치하는지 확인하는 TextWatcher를 설정하는 메서드
+    /*
+     * 비밀번호와 비밀번호 확인란이 일치하는지 확인하는 TextWatcher를 설정하는 메서드
+     */
     private fun setPasswordMatchListener(password: EditText, passwordConfirm: EditText) {
         val passwordTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -192,7 +200,9 @@ class SignUpActivity : AppCompatActivity() {
         passwordConfirm.addTextChangedListener(passwordTextWatcher)
     }
 
-    // 비밀번호와 비밀번호 확인란의 일치 여부를 검증하고 메시지를 업데이트하는 메서드
+    /*
+     * 비밀번호와 비밀번호 확인란의 일치 여부를 검증하고 메시지를 업데이트하는 메서드
+     */
     private fun validatePasswordMatch(password: EditText, passwordConfirm: EditText) {
         val passwordText = password.text.toString()
         val confirmText = passwordConfirm.text.toString()
@@ -216,7 +226,9 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // 이미지 URI로부터 파일을 생성하는 메서드
+    /*
+     * 이미지 URI로부터 파일을 생성하는 메서드
+     */
     private fun createImageFile(uri: Uri): File {
         val inputStream: InputStream? = contentResolver.openInputStream(uri)
         val file = File(cacheDir, "profile_image_${System.currentTimeMillis()}.png")
@@ -230,7 +242,9 @@ class SignUpActivity : AppCompatActivity() {
         return file
     }
 
-    // 아이디 중복 확인을 위한 네트워크 요청 메서드
+    /*
+     * 아이디 중복 확인을 위한 네트워크 요청 메서드
+     */
     private fun checkExistLoginId(loginId: String) {
         RetrofitClient.userService.checkExistLoginId(loginId).enqueue(object : Callback<CheckExistIdResponse> {
             override fun onResponse(call: Call<CheckExistIdResponse>, response: Response<CheckExistIdResponse>) {
@@ -263,7 +277,9 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
-    // 회원가입 요청을 서버로 보내는 메서드
+    /*
+     * 회원가입 요청을 서버로 보내는 메서드
+     */
     private fun signUp(
         loginId: RequestBody,
         password: RequestBody,
@@ -296,7 +312,9 @@ class SignUpActivity : AppCompatActivity() {
         })
     }
 
-    // 아이디 중복 확인 다이얼로그를 띄우는 메서드
+    /*
+     * 아이디 중복 확인 다이얼로그를 띄우는 메서드
+     */
     private fun showIdCheckDialog(id: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
@@ -315,7 +333,9 @@ class SignUpActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // 오류 다이얼로그를 표시하는 메서드
+    /*
+     *오류 다이얼로그를 표시하는 메서드
+     */
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(this)
             .setTitle("오류")
@@ -324,7 +344,9 @@ class SignUpActivity : AppCompatActivity() {
             .show()
     }
     
-    // 회원가입 완료 다이얼로그를 표시하는 메서드
+    /*
+     * 회원가입 완료 다이얼로그를 표시하는 메서드
+     */
     private fun showSignUpSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
@@ -343,15 +365,5 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         dialog.show()
-//        AlertDialog.Builder(this)
-//            .setTitle("회원가입 성공")
-//            .setMessage("회원가입이 성공적으로 완료되었습니다.")
-//            .setPositiveButton("확인") { dialog, _ ->
-//                // 확인 버튼 클릭 시 로그인 화면으로 이동
-//                val intent = Intent(this, LoginActivity::class.java)
-//                startActivity(intent)
-//                finish() // 현재 액티비티 종료
-//            }
-//            .show()
     }
 }

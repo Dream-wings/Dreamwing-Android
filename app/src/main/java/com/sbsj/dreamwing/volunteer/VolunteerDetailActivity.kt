@@ -18,7 +18,7 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityVolunteerDetailBinding
-import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.model.PostApplyVolunteerRequestDTO
 import com.sbsj.dreamwing.volunteer.model.VolunteerDetailDTO
