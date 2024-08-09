@@ -32,8 +32,6 @@
     <string name="walk_10000">10,000</string>
     <string name="certificate_guide">• 활동 이미지를 업로드해 주세요. \n• 관리자 검토 후 5,000윙이 지급돼요.</string>
     <string name="update">회원 정보 수정</string>
-    <color name="sub_lightGray1">#F1EFE6</color>
-    <color name="sub_lightGray2">#E7E9EA</color>
     <string name="pwd_no_match">비밀번호가 일치하지 않습니다.</string>
     <string name="need_login">로그인이 필요합니다.</string>
     <string name="profile_update">프로필 수정</string>
