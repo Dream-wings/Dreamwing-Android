@@ -31,9 +31,15 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+/**
+ * 봉사활동 상세 정보 화면
+ * @author 임재성
+ * @since 2024.08.01
+ * @version 1.0
+ */
 class VolunteerDetailActivity : AppCompatActivity() {
 
+    // 뷰 바인딩 객체 선언
     private lateinit var binding: ActivityVolunteerDetailBinding
     private var kakaoMap: KakaoMap? = null
     private lateinit var volunteerDetailDTO: VolunteerDetailDTO
@@ -51,10 +57,9 @@ class VolunteerDetailActivity : AppCompatActivity() {
         "Sat" to "토"
     )
 
-//    private var userId: Long = 2L // Replace with method to get the actual user ID
     private var isApplied = false
     private var isVerified = false // Variable for verification status
-
+    // 액티비티 생성 시 호출
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityVolunteerDetailBinding.inflate(layoutInflater)
@@ -63,7 +68,6 @@ class VolunteerDetailActivity : AppCompatActivity() {
         val volunteerId = intent.getLongExtra("volunteerId", -1)
         val volunteerTitle = intent.getStringExtra("volunteerTitle") // Get volunteer title from intent
 
-        //userId = intent.getLongExtra("userId", 2L) // Fetch userId from Intent
 
 
         binding.backButton.setOnClickListener {
@@ -101,7 +105,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         }
 
     }
-
+    // 인증 다이얼로그 호출
     private fun showCertificateDialog(volunteerTitle: String?) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
@@ -131,9 +135,9 @@ class VolunteerDetailActivity : AppCompatActivity() {
     }
 
 
-    /**
-     * 로그인 여부 확인 메서드
-     */
+
+
+    //로그인 여부 확인 메서드
     private fun checkUserLoggedIn(): Boolean {
         // 전역 저장소에서 jwt 토큰을 가져옴
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -144,7 +148,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         }
         return true
     }
-
+    //로그인 요청 다이얼로그
     private fun showLoginRequestDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val message = dialogView.findViewById<TextView>(R.id.message)
@@ -166,6 +170,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    //봉사활동 상세 정보 로드
     private fun loadVolunteerDetails(volunteerId: Long) {
         val jwtToken = SharedPreferencesUtil.getToken(this)
         val authHeader = "$jwtToken" // 헤더에 넣을 변수
@@ -228,16 +233,16 @@ class VolunteerDetailActivity : AppCompatActivity() {
                 }
             })
     }
+        //지도 뷰 초기화
+        private fun initializeMapView() {
+            binding.mapView.start(object : MapLifeCycleCallback() {
+                override fun onMapDestroy() {
+                    Log.e("VolunteerDetailActivity", "onMapDestroy")
+                }
 
-    private fun initializeMapView() {
-        binding.mapView.start(object : MapLifeCycleCallback() {
-            override fun onMapDestroy() {
-                Log.e("VolunteerDetailActivity", "onMapDestroy")
-            }
-
-            override fun onMapError(error: Exception?) {
-                Log.e("VolunteerDetailActivity", "onMapError", error)
-            }
+                override fun onMapError(error: Exception?) {
+                    Log.e("VolunteerDetailActivity", "onMapError", error)
+                }
         }, object : KakaoMapReadyCallback() {
             override fun onMapReady(kakaoMap: KakaoMap) {
                 Log.e("VolunteerDetailActivity", "onMapReady")
@@ -264,7 +269,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
             }
         })
     }
-
+    //날짜 포맷 변환
     private fun formatDate(dateString: String?): String {
         return try {
             Log.d("VolunteerDetailActivity", "Original date string: $dateString")
@@ -275,14 +280,14 @@ class VolunteerDetailActivity : AppCompatActivity() {
             "N/A"
         }
     }
-
+    //요일 포맷 한글 변환
     private fun formatDateWithKoreanWeekday(date: Date): String {
         val formattedDate = outputDateFormat.format(date)
         val weekday = SimpleDateFormat("EEE", Locale.ENGLISH).format(date)
         val koreanWeekday = dayOfWeekMap[weekday] ?: "N/A"
         return formattedDate.replace(weekday, koreanWeekday)
     }
-
+    // 신청 확인 다이얼로그
     private fun showConfirmationDialog() {
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
@@ -314,7 +319,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         dialog.show()
 
     }
-
+    // 신청 취소 다이얼로그
     private fun showCancelApplicationDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_confirm, null)
         val message = dialogView.findViewById<TextView>(R.id.message)
@@ -338,7 +343,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
+    //봉사 신청
     private fun applyForVolunteer(request: PostApplyVolunteerRequestDTO) {
         // 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -373,7 +378,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
                 }
             })
     }
-
+    //봉사 신청 취소
     private fun cancelApplication() {
         val requestDTO = PostApplyVolunteerRequestDTO(
             volunteerId = volunteerDetailDTO.volunteerId
@@ -411,8 +416,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
                 }
             })
     }
-
-    // Method to check if the user has applied
+    //봉사 신청 상태 확인
     private fun checkApplicationStatus(volunteerId: Long) {
 
         // 토큰 가져오기
@@ -448,7 +452,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         })
     }
 
-    // Method to fetch application approval status from server
+    //봉사 신청 승인 상태 확인
     private fun checkStatus(volunteerId: Long) {
         // 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -478,14 +482,14 @@ class VolunteerDetailActivity : AppCompatActivity() {
             })
     }
 
-    // Update the UI based on approval status
+    // 상태에 따른 버튼 UI 업데이트
     private fun updateUIBasedOnStatus(status: Int) {
         if (status == 1) { // If status is approved
             isVerified = true
         }
         updateButtonState()
     }
-
+    // 버튼 상태 업데이트
     private fun updateButtonState() {
         when {
             isVerified -> {
@@ -506,7 +510,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
             }
         }
     }
-
+    // 성공 다이얼로그
     private fun showSuccessDialog(message: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val messageView = dialogView.findViewById<TextView>(R.id.message)
@@ -525,6 +529,7 @@ class VolunteerDetailActivity : AppCompatActivity() {
         dialog.show()
     }
 
+    //실패 다이얼로그
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(this)
             .setTitle("오류")
