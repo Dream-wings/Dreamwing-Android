@@ -74,6 +74,9 @@ class SupportRecyclerViewAdapter(
             }
         }
 
+        /**
+         *  남은 시간 계산 반환 메서드
+         */
         private fun calculateTimeRemaining(dDay: String): String {
             val trimmedDay = dDay.trimStart('-')
             val parts = trimmedDay.split(" ")
@@ -84,6 +87,9 @@ class SupportRecyclerViewAdapter(
             return days+"일 "+hours+"시간"
         }
 
+        /**
+         * 퍼센트 계산 메서드
+         */
         private fun calculateProgressPercentage(goalPoint: Int, currentPoint: Int): Int {
             return if (goalPoint == 0) {
                 0

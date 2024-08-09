@@ -25,6 +25,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * 미션 인증 상세 화면
+ * @author 정은지
+ * @since 2024.08.05
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.05  	정은지       최초 생성
+ * </pre>
+ */
 class VolunteerCertificationDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityVolunteerCertificationDetailBinding

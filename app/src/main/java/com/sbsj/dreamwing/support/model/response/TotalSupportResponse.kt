@@ -1,7 +1,7 @@
 package com.sbsj.dreamwing.support.model.response
 
 /**
- * 스플래시 스크린
+ * 총 후원 횟수, 금액 응답 모델
  * @author 정은지
  * @since 2024.07.31
  * @version 1.0

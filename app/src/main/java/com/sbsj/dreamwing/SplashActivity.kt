@@ -63,6 +63,9 @@ class SplashActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * 애니메이션 시작 메서드
+     */
     private fun startAnimation(endValue: Int) {
         val animator = ValueAnimator.ofInt(0, endValue)
         animator.duration = 3000

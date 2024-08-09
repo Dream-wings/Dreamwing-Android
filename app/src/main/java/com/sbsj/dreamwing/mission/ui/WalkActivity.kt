@@ -55,7 +55,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
     private var stepCountSensor: Sensor? = null
     private lateinit var tvStepCount: TextView
     private var totalSteps = 0f
-    private var currentSteps = 0f
     private var previousTotalSteps = 0f
     private lateinit var walk4000Button: Button
     private lateinit var walk7000Button: Button
@@ -88,7 +87,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         stepCountSensor = sensorManager.getDefaultSensor(TYPE)
 
         loadPreviousTotalSteps()
-//        setStepCountReset()
 
         updateButtonState(previousTotalSteps)
 
@@ -142,6 +140,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         return true
     }
 
+    /**
+     * 로그인 요청 다이얼로그
+     */
     private fun showLoginRequestDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
@@ -163,7 +164,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         dialog.show()
     }
 
-    // 툴바 뒤로가기 버튼
+    /**
+     * 툴바 뒤로가기
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -201,7 +204,6 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
             Log.d(TAG, "currentSteps: ${currentSteps}" )
 
             val decimalFormat = DecimalFormat("#,###")
-//            val formattedStepCount: String = decimalFormat.format(currentSteps.toInt())
             val formattedStepCount: String = decimalFormat.format(totalSteps.toInt())
 
             tvStepCount.text = formattedStepCount
@@ -209,7 +211,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    // 버튼 활성화 처리
+    /**
+     * 각 걸음 달성 시 버튼 활성화
+     */
     private fun updateButtonState(steps: Float) {
         if (steps >= 10000.0) {
             Log.d("WalkActivity", "walk10000Button 활성화")
@@ -227,6 +231,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
+    /**
+     * 4,000 걸음 버튼 클릭 시
+     */
     private fun onWalk4000ButtonClick() {
         walk4000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
@@ -241,6 +248,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
 
     }
 
+    /**
+     * 7,000 걸음 버튼 클릭 시
+     */
     private fun onWalk7000ButtonClick() {
         walk7000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk4000Button.setBackgroundResource(R.drawable.selector_walk_button)
@@ -254,6 +264,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         )
     }
 
+    /**
+     * 10,000 걸음 버튼 클릭 시
+     */
     private fun onWalk10000ButtonClick() {
         walk10000Button.setBackgroundResource(R.drawable.bg_round_box_radius_10)
         walk7000Button.setBackgroundResource(R.drawable.selector_walk_button)
@@ -305,6 +318,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
+    /**
+     * 포인트 지급 처리
+     */
     private fun awardPoints(request: AwardPointRequest) {
         if (checkUserLoggedIn()) {
             // 토큰 가져오기
@@ -351,7 +367,9 @@ class WalkActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
-    // 에러메세지
+    /**
+     * 에러 메세지
+     */
     private fun convertErrorBody(response: Response<*>): ErrorResponse? {
         return try {
             response.errorBody()?.let {
