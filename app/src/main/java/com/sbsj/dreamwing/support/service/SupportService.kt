@@ -20,6 +20,9 @@ import retrofit2.http.Query
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.07.31   정은지        최초 생성
+ * 2024.08.04   임재성        후원 리스트 조회 (페이징, 무한스크롤) 기능 추가
+ * 2024.08.04   임재성        후원 상세 페이지 조회
+ * 2024.08.04   임재성        후원 하기 요청 기능 추가
  */
 interface SupportService {
 
@@ -41,6 +44,12 @@ interface SupportService {
     @GET("/support/list/5")
     fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 
+    /**
+     * 후원 리스트 조회 (페이징 처리, 무한 스크롤)
+     * @author 임재성
+     * @since 2024.08.04
+     * @version 1.0
+     */
     @GET("/support/list")
     fun getSupportList(
         @Query("page") page: Int,
@@ -49,9 +58,21 @@ interface SupportService {
         @Query("category") category: Int  // 1 for 교육, 2 for 물품, etc.
     ): Call<GetSupportListResponse> // Ensure the correct return type
 
+    /**
+     * 후원 상세 페이지 조회
+     * @author 임재성
+     * @since 2024.08.04
+     * @version 1.0
+     */
     @GET("/support/detail")
     fun getSupportDetail(@Query("supportId") supportId: Long): Call<SupportDetailResponse>
 
+    /**
+     * 후원 하기 요청
+     * @author 임재성
+     * @since 2024.08.04
+     * @version 1.0
+     */
     @POST("/support/donate")
     fun donateForSupport(
         @Header("Authorization") authHeader: String,

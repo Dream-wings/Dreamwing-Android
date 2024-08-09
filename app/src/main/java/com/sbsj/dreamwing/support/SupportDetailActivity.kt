@@ -26,7 +26,19 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-
+/**
+ * 후원 상세 정보를 표시하는 액티비티
+ * 사용자는 이 액티비티에서 후원에 대한 상세 정보를 확인하고, 후원에 참여할 수 있다.
+ * @author 임재성
+ * @since 2024.08.04
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.04   임재성        최초 생성
+ * 2024.08.04   임재성        로그인 확인 여부 기능 추가
+ * 2024.08.04   임재성        후원 하기 기능 추가
+ */
 class SupportDetailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySupportDetailBinding
@@ -98,7 +110,7 @@ class SupportDetailActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
+    //후원 상세 정보를 서버에서 로드하여 화면에 표시하는 메서드
     private fun loadSupportDetails(supportId: Long) {
         RetrofitClient.supportService.getSupportDetail(supportId)
             .enqueue(object : Callback<SupportDetailResponse> {
@@ -144,7 +156,7 @@ class SupportDetailActivity : AppCompatActivity() {
                 }
             })
     }
-
+    //후원 목표 대비 현재 달성률을 계산하는 메서드
     private fun calculateProgressPercentage(goalPoint: Int, currentPoint: Int): Int {
         return if (goalPoint == 0) {
             0
@@ -152,7 +164,7 @@ class SupportDetailActivity : AppCompatActivity() {
             (currentPoint * 100) / goalPoint
         }
     }
-
+    //날짜 문자열을 원하는 형식으로 변환하는 메서드
     private fun formatDate(dateString: String?): String {
         return try {
             Log.d("SupportDetailActivity", "Original date string: $dateString")
@@ -163,7 +175,7 @@ class SupportDetailActivity : AppCompatActivity() {
             "N/A"
         }
     }
-
+    //기부 다이얼로그를 표시하는 메서드
     private fun showDonationDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_text, null)
         val message = dialogView.findViewById<TextView>(R.id.message)
@@ -197,7 +209,7 @@ class SupportDetailActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
+    //서버에 기부 요청을 보내는 메서드
     private fun donateToSupport(amount: Int) {
         val supportId = supportDetailDTO.supportId
         val activityTitle = supportDetailDTO.title
@@ -227,7 +239,7 @@ class SupportDetailActivity : AppCompatActivity() {
                 })
         }
     }
-
+    //오류 메시지를 표시하는 다이얼로그를 보여주는 메서드
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(this)
             .setTitle("오류")
