@@ -1,7 +1,7 @@
 package com.sbsj.dreamwing.mission.model
 
 /**
- * ActivityType
+ * ActivityType Enum 
  * @author 정은지
  * @since 2024.08.04
  * @version 1.0

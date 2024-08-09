@@ -23,9 +23,21 @@ import retrofit2.http.Query
  */
 interface SupportService {
 
+    /**
+     * 총 후원 횟수, 금액 조회
+     * @author 정은지
+     * @since 2024.07.31
+     * @version 1.0
+     */
     @GET("/support/total")
     fun getTotalSupport(): Call<ApiResponse<TotalSupportResponse>>
 
+    /**
+     * 후원 리스트 조회
+     * @author 정은지
+     * @since 2024.07.31
+     * @version 1.0
+     */
     @GET("/support/list/5")
     fun getSupportList(): Call<ApiResponse<List<SupportListResponse>>>
 

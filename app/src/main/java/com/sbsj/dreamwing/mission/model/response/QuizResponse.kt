@@ -3,7 +3,7 @@ package com.sbsj.dreamwing.mission.model.response
 import java.util.Date
 
 /**
- * 데일리 퀴즈 응답 데이터 클래스
+ * 데일리 퀴즈 응답 DTO
  * @author 정은지
  * @since 2024.08.02
  * @version 1.0

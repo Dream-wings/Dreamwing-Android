@@ -122,7 +122,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_margin="20dp"
-        android:text="윙 받기"
+        android:text="인증하기"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@drawable/bg_round_box_radius_10"
         android:stateListAnimator="@null"

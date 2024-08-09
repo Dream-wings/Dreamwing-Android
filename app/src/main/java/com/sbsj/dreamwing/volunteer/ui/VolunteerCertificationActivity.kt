@@ -142,7 +142,7 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         val imagePart = MultipartBody.Part.createFormData("imageFile", file.name, requestFile)
 
         val requestDTO = CertificationVolunteerRequest(
-            volunteerId = volunteerId,
+            volunteerId = 7,
             imageUrl = null,
             imageFile = null
         )
