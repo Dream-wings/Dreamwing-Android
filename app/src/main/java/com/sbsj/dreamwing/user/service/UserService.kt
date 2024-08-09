@@ -6,7 +6,6 @@ import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.SignUpResponse
 import com.sbsj.dreamwing.user.model.response.UpdateResponse
-import com.sbsj.dreamwing.user.model.response.UserInfoResponse
 import com.sbsj.dreamwing.user.model.vo.MyPointVO
 import com.sbsj.dreamwing.user.model.vo.MySupportVO
 import com.sbsj.dreamwing.user.model.vo.MyVolunteerVO

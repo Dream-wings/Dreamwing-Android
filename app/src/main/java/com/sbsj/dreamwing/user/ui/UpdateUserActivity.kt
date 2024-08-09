@@ -70,6 +70,9 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 액티비티 생성 호출
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_update_user)
@@ -148,7 +151,9 @@ class UpdateUserActivity : AppCompatActivity() {
         setPasswordMatchListener(password, passwordConfirm)
     }
 
-    // EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
+    /*
+     * EditText에 TextWatcher와 OnFocusChangeListener를 설정하는 메서드
+     */
     private fun setEditTextListeners(editText: EditText, underline: View) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -175,7 +180,9 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
-    // 비밀번호와 비밀번호 확인란이 일치하는지 확인하는 TextWatcher를 설정하는 메서드
+    /*
+     * 비밀번호와 비밀번호 확인란이 일치하는지 확인하는 TextWatcher를 설정하는 메서드
+     */
     private fun setPasswordMatchListener(password: EditText, passwordConfirm: EditText) {
         val passwordTextWatcher = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
@@ -191,7 +198,9 @@ class UpdateUserActivity : AppCompatActivity() {
         passwordConfirm.addTextChangedListener(passwordTextWatcher)
     }
 
-    // 비밀번호와 비밀번호 확인란의 일치 여부를 검증하고 메시지를 업데이트하는 메서드
+    /*
+     * 비밀번호와 비밀번호 확인란의 일치 여부를 검증하고 메시지를 업데이트하는 메서드
+     */
     private fun validatePasswordMatch(password: EditText, passwordConfirm: EditText) {
         val passwordText = password.text.toString()
         val confirmText = passwordConfirm.text.toString()
@@ -215,7 +224,9 @@ class UpdateUserActivity : AppCompatActivity() {
         }
     }
 
-    // 이미지 URI로부터 파일을 생성하는 메서드
+    /*
+     * 이미지 URI로부터 파일을 생성하는 메서드
+     */
     private fun createImageFile(uri: Uri): File {
         val inputStream: InputStream? = contentResolver.openInputStream(uri)
         val file = File(cacheDir, "profile_image_${System.currentTimeMillis()}.png")
@@ -229,7 +240,9 @@ class UpdateUserActivity : AppCompatActivity() {
         return file
     }
 
-    // 회원가입 요청을 서버로 보내는 메서드
+    /*
+     * 회원가입 요청을 서버로 보내는 메서드
+     */
     private fun update(
         loginId: RequestBody?,
         password: RequestBody,
@@ -273,7 +286,9 @@ class UpdateUserActivity : AppCompatActivity() {
         })
     }
 
-    // 오류 다이얼로그를 표시하는 메서드
+    /*
+     * 오류 다이얼로그를 표시하는 메서드
+     */
     private fun showErrorDialog(message: String) {
         AlertDialog.Builder(this)
             .setTitle("오류")
@@ -282,7 +297,9 @@ class UpdateUserActivity : AppCompatActivity() {
             .show()
     }
 
-    // 회원가입 수정 다이얼로그를 표시하는 메서드
+    /*
+     * 회원가입 수정 다이얼로그를 표시하는 메서드
+     */
     private fun updateSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)

@@ -26,20 +26,26 @@ class MyVolunteerAdapter : RecyclerView.Adapter<MyVolunteerAdapter.VolunteerView
     // 봉사 활동 데이터 리스트
     private val volunteers = mutableListOf<MyVolunteerVO>()
 
-    // 새로운 봉사 활동 데이터를 추가하는 함수
+    /*
+     * 데이터를 추가하고 RecyclerView를 갱신하는 메서드
+     */
     fun addVolunteers(newVolunteers: List<MyVolunteerVO>) {
         volunteers.addAll(newVolunteers)
         notifyDataSetChanged() // 데이터가 변경되었음을 알림
     }
 
-    // ViewHolder를 생성하는 함수
+    /*
+     * VolunteerViewHolder 생성하고 초기화하는 메서드
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VolunteerViewHolder {
         // 레이아웃을 인플레이트하여 View를 생성
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_my_volunteer, parent, false)
         return VolunteerViewHolder(view)
     }
 
-    // ViewHolder와 데이터를 바인딩하는 함수
+    /*
+    *  VolunteerViewHolder와 데이터를 바인딩하는 메서드
+    */
     override fun onBindViewHolder(holder: VolunteerViewHolder, position: Int) {
         holder.bind(volunteers[position])
     }
@@ -47,7 +53,9 @@ class MyVolunteerAdapter : RecyclerView.Adapter<MyVolunteerAdapter.VolunteerView
     // 아이템 개수를 반환하는 함수
     override fun getItemCount(): Int = volunteers.size
 
-    // ViewHolder 클래스
+    /*
+     * RecyclerView의 각 아이템을 나타내는 뷰 홀더 클래스
+     */
     inner class VolunteerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         // 레이아웃의 뷰들을 바인딩
         private val title: TextView = itemView.findViewById(R.id.title)

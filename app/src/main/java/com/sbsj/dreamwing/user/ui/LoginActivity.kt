@@ -39,9 +39,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
 
     /**
-     * 액티비티가 생성될 때 호출됩니다.
-     * 화면에 뷰를 설정하고, 액티비티의 초기화 작업을 수행합니다.
-     * @param savedInstanceState 액티비티의 상태를 저장한 번들 객체
+     * 액티비티 생성 호출
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,9 +93,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 사용자의 로그인 요청을 처리합니다.
-     * @param loginId 사용자 아이디
-     * @param password 사용자 비밀번호
+     * 로그인 요청하는 메서드 
      */
     private fun login(loginId: String, password: String) {
         // 로그인 요청 DTO 생성
@@ -133,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 정보를 입력하지 않았을 때 오류 다이얼로그를 표시합니다.
+     * 로그인 정보를 입력하지 않았을 때 오류 다이얼로그 표시하는 메서드
      */
     private fun showErrorDialog() {
         AlertDialog.Builder(this)
@@ -144,7 +140,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인아웃 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     * 로그인아웃 시 성공 다이얼로그 표시하는 메서드
      */
     private fun showLogoutSuccessDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
@@ -166,7 +162,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 성공 시 성공 다이얼로그를 표시하고, MainActivity로 이동합니다.
+     * 로그인 성공 시 성공 다이얼로그를 표시하는 메서드
      */
     private fun showLoginSuccessDialog(token : String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
@@ -194,7 +190,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 실패 시 실패 다이얼로그를 표시합니다.
+     * 로그인 실패 시 실패 다이얼로그 표시하는 메서드
      */
     private fun showLoginFailDialog() {
         AlertDialog.Builder(this)
@@ -205,7 +201,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     /**
-     * 네트워크 오류 다이얼로그를 표시합니다.
+     * 네트워크 오류 다이얼로그 표시하는 메서드
      */
     private fun showNetworkFailDialog() {
         AlertDialog.Builder(this)
@@ -225,7 +221,7 @@ class LoginActivity : AppCompatActivity() {
         return JSONObject(payload)
     }
 
-    // JWT 토큰에서 roles 정보를 추출하는 함수
+    // JWT 토큰에서 roles 정보를 추출 메서드
     private fun getRolesFromToken(token: String): List<String> {
         val payload = decodeJwt(token)
         val roles = payload.getJSONArray("roles")

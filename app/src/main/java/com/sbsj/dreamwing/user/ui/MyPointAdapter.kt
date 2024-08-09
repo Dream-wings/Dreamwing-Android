@@ -21,25 +21,37 @@ import androidx.recyclerview.widget.RecyclerView
  * </pre>
  */
 class MyPointAdapter : RecyclerView.Adapter<MyPointAdapter.PointViewHolder>() {
-
+    // 포인트 데이터 리스트
     private val points = mutableListOf<MyPointVO>()
 
+    /*
+     * 데이터를 추가하고 RecyclerView를 갱신하는 메서드
+     */
     fun addPoints(newPoints: List<MyPointVO>) {
         points.addAll(newPoints)
         notifyDataSetChanged()
     }
 
+    /*
+     * PointViewHolder를 생성하고 초기화하는 메서드
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PointViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_point, parent, false)
         return PointViewHolder(view)
     }
 
+    /*
+     *  PointViewHolder와 데이터를 바인딩하는 메서드
+     */
     override fun onBindViewHolder(holder: PointViewHolder, position: Int) {
         holder.bind(points[position])
     }
 
     override fun getItemCount(): Int = points.size
 
+    /*
+     * RecyclerView의 각 아이템을 나타내는 뷰 홀더 클래스
+     */
     class PointViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val activityTitle: TextView = itemView.findViewById(R.id.activityTitle)
         private val point: TextView = itemView.findViewById(R.id.point)

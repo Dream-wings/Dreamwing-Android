@@ -78,6 +78,9 @@ class MyVolunteerDetailActivity : AppCompatActivity() {
         loadVolunteers()
     }
 
+    /*
+     * 봉사 데이터를 서버에서 로드하는 메서드
+     */
     private fun loadVolunteers() {
         // SharedPreferencesUtil을 사용하여 JWT 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)

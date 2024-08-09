@@ -34,6 +34,9 @@ class MyPointDetailActivity : AppCompatActivity() {
     private val pageSize = 20
     private var isLoading = false
 
+    /**
+     * 액티비티 생성 호출
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -80,6 +83,9 @@ class MyPointDetailActivity : AppCompatActivity() {
         loadPoints()
     }
 
+    /*
+     * 포인트 데이터를 서버에서 로드하는 메서드
+     */
     private fun loadPoints() {
         // SharedPreferencesUtil을 사용하여 JWT 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)
