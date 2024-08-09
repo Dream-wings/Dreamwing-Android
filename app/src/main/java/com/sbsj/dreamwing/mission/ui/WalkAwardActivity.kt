@@ -5,6 +5,16 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.sbsj.dreamwing.databinding.ActivityWalkAwardBinding
 
+/**
+ * 드림워크 포인트 지급 화면
+ * author 정은지
+ * since 2024.08.04
+ * version 1.0
+ *
+ * 수정일            수정자         수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.04   정은지        최초 생성
+ */
 class WalkAwardActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityWalkAwardBinding
@@ -28,7 +38,6 @@ class WalkAwardActivity : AppCompatActivity() {
 
     }
 
-    // 툴바 뒤로가기 버튼
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {

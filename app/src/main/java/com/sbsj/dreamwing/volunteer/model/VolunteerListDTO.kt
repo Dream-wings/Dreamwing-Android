@@ -1,7 +1,16 @@
 package com.sbsj.dreamwing.volunteer.model
 
 import com.google.gson.annotations.SerializedName
-
+/**
+ * 봉사활동 리스트 조회 요청 데이터 클래스
+ * @author 임재성
+ * @since 2024.08.03
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.07.31   임재성        최초 생성
+ */
 data class VolunteerListDTO(
 
     @SerializedName("volunteerId") val volunteerId: Long,

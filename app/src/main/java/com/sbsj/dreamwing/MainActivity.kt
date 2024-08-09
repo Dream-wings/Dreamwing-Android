@@ -12,6 +12,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 
+/**
+ * 메인 화면
+ * @author 정은지
+ * @since 2024.07.31
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.07.31  	정은지       최초 생성
+ * </pre>
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +56,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
-     * 로그인 여부 확인 메서드
+     * 로그인 여부 확인
      */
     private fun checkUserLoggedIn(): Boolean {
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -54,6 +66,9 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    /**
+     * 로그인 요청 다이얼로그
+     */
     private fun showLoginRequestDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)

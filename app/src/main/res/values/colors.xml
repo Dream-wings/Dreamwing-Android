@@ -20,4 +20,7 @@
     <color name="sub_blue">#68BFFF</color>
     <color name="sub_blue2">#56CCFF</color>
     <color name="sub_blue3">#7BD7FF</color>
+    <color name="sub_blue4">#4D7BD7FF</color>
+    <color name="sub_lightGray1">#F1EFE6</color>
+    <color name="sub_lightGray2">#E7E9EA</color>
 </resources>

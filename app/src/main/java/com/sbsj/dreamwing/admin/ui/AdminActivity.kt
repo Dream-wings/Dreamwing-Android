@@ -33,11 +33,26 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+/**
+ * 관리자 페이지에서 봉사활동을 관리하는 액티비티
+ * @author 임재성
+ * @since 2024.08.05
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.05   임재성        최초 생성
+ * 2024.08.05   임재성        관리자 페이지 봉사활동 리스트 조회 기능 추가
+ * 2024.08.05   임재성        관리자 페이지 봉사활동 수정 기능 추가
+ * 2024.08.05   임재성        관리자 페이지 봉사활동 취소 기능 추가
+ */
 
 class AdminActivity : AppCompatActivity() {
 
+    // ActivityAdminBinding 객체를 통해 레이아웃의 뷰에 접근
     private lateinit var binding: ActivityAdminBinding
 
+    // 봉사 목록을 보여줄 어댑터와 데이터를 관리할 리스트
     private lateinit var volunteerAdapter: AdminItemAdapter
     private val volunteerList: MutableList<VolunteerAdminListDTO> = mutableListOf()
     private var volunteerPage = 0
@@ -47,6 +62,7 @@ class AdminActivity : AppCompatActivity() {
     private var selectedImageUri: Uri? = null
     private lateinit var dialogView: View
 
+    // 액티비티가 생성될 때 호출되는 메서드
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -88,11 +104,12 @@ class AdminActivity : AppCompatActivity() {
         }
     }
 
+    // 옵션 메뉴를 생성하는 메서드
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.admin_menu, menu)
         return true
     }
-
+    // 옵션 메뉴 항목을 선택했을 때 동작을 정의하는 메서드
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.volunteer_board -> {
@@ -111,7 +128,7 @@ class AdminActivity : AppCompatActivity() {
         }
     }
 
-
+    // RecyclerView를 초기화하고 설정하는 메서드
     private fun setupRecyclerView() {
         volunteerAdapter = AdminItemAdapter(volunteerList) { volunteerId ->
             selectedVolunteerId = volunteerId
@@ -129,7 +146,7 @@ class AdminActivity : AppCompatActivity() {
             }
         })
     }
-
+    // 더 많은 봉사 목록을 로드하는 메서드
     private fun loadMoreVolunteers() {
         RetrofitClient.volunteerService.getVolunteerList(volunteerPage, pageSize)
             .enqueue(object : Callback<VolunteerAdminListResponse> {
@@ -155,13 +172,13 @@ class AdminActivity : AppCompatActivity() {
                 }
             })
     }
-
+    // 봉사 목록을 새로고침하는 메서드
     private fun refreshVolunteerList() {
         volunteerPage = 0
         volunteerList.clear()
         loadMoreVolunteers()
     }
-
+    // 봉사 등록 다이얼로그를 표시하는 메서드
     private fun showAddVolunteerDialog() {
         dialogView = layoutInflater.inflate(R.layout.dialog_add_volunteer, null)
         val builder = AlertDialog.Builder(this)
@@ -251,7 +268,7 @@ class AdminActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
+    // 봉사를 생성하는 메서드
     private fun createVolunteer(volunteer: AdminVolunteerDTO, dialog: AlertDialog) {
         RetrofitClient.volunteerService.createVolunteer(volunteer)
             .enqueue(object : Callback<ApiResponse<Void>> {
@@ -270,7 +287,7 @@ class AdminActivity : AppCompatActivity() {
                 }
             })
     }
-
+    // 봉사 상세 정보를 로드하는 메서드
     private fun loadVolunteerDetail(volunteerId: Long) {
         // 토큰 가져오기
         val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -293,7 +310,7 @@ class AdminActivity : AppCompatActivity() {
                 }
             })
     }
-
+    // 봉사 수정 다이얼로그를 표시하는 메서드
     private fun showEditVolunteerDialog(volunteer: VolunteerDetailDTO) {
         dialogView = layoutInflater.inflate(R.layout.dialog_add_volunteer, null)
         val builder = AlertDialog.Builder(this)
@@ -397,7 +414,7 @@ class AdminActivity : AppCompatActivity() {
 
         dialog.show()
     }
-
+    // 봉사 정보를 업데이트하는 메서드
     private fun updateVolunteer(volunteer: VolunteerDetailDTO, dialog: AlertDialog) {
         RetrofitClient.volunteerService.updateVolunteer(volunteer.volunteerId, volunteer)
             .enqueue(object : Callback<ApiResponse<Void>> {
@@ -416,7 +433,7 @@ class AdminActivity : AppCompatActivity() {
                 }
             })
     }
-
+    // 봉사 삭제 확인 다이얼로그를 표시하는 메서드
     private fun showDeleteConfirmationDialog(volunteerId: Long) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("봉사 삭제")
@@ -430,7 +447,7 @@ class AdminActivity : AppCompatActivity() {
         }
         builder.show()
     }
-
+    // 봉사를 삭제하는 메서드
     private fun deleteVolunteer(volunteerId: Long) {
         RetrofitClient.volunteerService.deleteVolunteer(volunteerId)
             .enqueue(object : Callback<ApiResponse<Void>> {
@@ -448,12 +465,12 @@ class AdminActivity : AppCompatActivity() {
                 }
             })
     }
-
+    // 이미지 선택기를 여는 메서드
     private fun openImagePicker() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
-
+    // 이미지 선택 결과를 처리하는 메서드
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_PICK && resultCode == Activity.RESULT_OK) {

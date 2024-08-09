@@ -42,7 +42,6 @@ class QuizActivity : AppCompatActivity() {
     private lateinit var binding : ActivityQuizBinding
     private var correctAnswer: Int? = null
     private var selectedAnswer: Int? = null
-    private var responseMessage: String? = null
     private var isLoading = false
     private lateinit var authHeader : String
 
@@ -102,7 +101,9 @@ class QuizActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    // 툴바 뒤로가기 버튼
+    /**
+     * 툴바 뒤로 가기
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -113,6 +114,9 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 데일리 퀴즈 가져오기
+     */
     private fun getDailyQuiz() {
         RetrofitClient.missionService.getDailyQuiz().enqueue(object :
             Callback<ApiResponse<QuizResponse>> {
@@ -143,6 +147,9 @@ class QuizActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * 선지 선택 메서드
+     */
     private fun setupOptionClickListeners() {
         val options = listOf(binding.option1, binding.option2, binding.option3, binding.option4)
 
@@ -158,6 +165,9 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 정답 제출 메서드
+     */
     private fun submitAnswer() {
         if (checkUserLoggedIn()) {
             val jwtToken = SharedPreferencesUtil.getToken(this)
@@ -177,6 +187,9 @@ class QuizActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 포인트 지급 메서드
+     */
     private fun awardPoints() {
         val request = AwardPointRequest(
             activityType = ActivityType.QUIZ.type,
@@ -206,11 +219,14 @@ class QuizActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     *  퀴즈 선지에서 선택된 답변 번호를 추출 메서드
+     */
     private fun extractAnswerFromText(text: String): Int? {
         return text.substringBefore('.').toIntOrNull()
     }
 
-    // 에러메세지
+    // 서버 응답의 에러 메시지를 변환하는 메서드
     private fun convertErrorBody(response: Response<*>): ErrorResponse? {
         return try {
             response.errorBody()?.let {

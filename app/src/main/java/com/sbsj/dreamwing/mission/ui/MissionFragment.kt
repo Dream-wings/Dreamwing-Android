@@ -16,7 +16,7 @@ import com.sbsj.dreamwing.user.ui.MyVolunteerDetailActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 
 /**
- * 미션 프래그먼트
+ * 미션 목록 화면
  * @author 정은지
  * @since 2024.08.01
  * @version 1.0
@@ -52,6 +52,9 @@ class MissionFragment : Fragment() {
         return true
     }
 
+    /**
+     * 로그인 요청 다이얼로그
+     */
     private fun showLoginRequestDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
         val confirmTextView = dialogView.findViewById<TextView>(R.id.message)

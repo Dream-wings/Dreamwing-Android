@@ -25,9 +25,21 @@ import retrofit2.http.POST
  */
 interface MissionService {
 
+    /**
+     * 데일리 퀴즈 퀴즈 조회
+     * @author 정은지
+     * @since 2024.08.02
+     * @version 1.0
+     */
     @GET("/mission/quiz")
     fun getDailyQuiz(): Call<ApiResponse<QuizResponse>>
 
+    /**
+     * 포인트 지급
+     * @author 정은지
+     * @since 2024.08.02
+     * @version 1.0
+     */
     @POST("/mission/point")
     fun awardPoints(@Header("Authorization") authHeader: String,
                     @Body request : AwardPointRequest): Call<ApiResponse<Any>>

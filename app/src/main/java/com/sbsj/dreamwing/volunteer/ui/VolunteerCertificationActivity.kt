@@ -17,7 +17,6 @@ import com.google.gson.Gson
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient.volunteerService
 import com.sbsj.dreamwing.databinding.ActivityVolunteerCertificationBinding
-import com.sbsj.dreamwing.mission.ui.QuizCorrectActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.sbsj.dreamwing.volunteer.model.request.CertificationVolunteerRequest
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -54,14 +53,14 @@ class VolunteerCertificationActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar.root)
         supportActionBar?.title = "봉사활동 인증"
-        val volunteerTitle = intent.getStringExtra("volunteerTitle")
+//        val volunteerTitle = intent.getStringExtra("volunteerTitle")
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val volunteerId = intent.getLongExtra("volunteerId", 0L)
-        val title = intent.getStringExtra("title")
+        val title = intent.getStringExtra("volunteerTitle")
 
-        binding.volunteerTitle.text = volunteerTitle
+        binding.volunteerTitle.text = title
 
         // 권한 요청
         requestPermission()
@@ -78,7 +77,9 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         }
     }
 
-    // 툴바 뒤로가기 버튼
+    /**
+     * 툴바 뒤로가기
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
@@ -89,6 +90,9 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 카메라 및 갤러리 권한 요청
+     */
     private fun requestPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED &&
@@ -105,6 +109,9 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 갤러리에서 이미지 선택
+     */
     private val getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val data: Intent? = result.data
@@ -119,11 +126,17 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * 이미지 선택
+     */
     private fun selectImageFromGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         getContent.launch(intent)
     }
 
+    /**
+     * 이미지 업로드
+     */
     private fun createImageFile(uri: Uri): File {
         val inputStream: InputStream? = contentResolver.openInputStream(uri)
         val file = File(cacheDir, "img_${System.currentTimeMillis()}.png")
@@ -137,12 +150,15 @@ class VolunteerCertificationActivity : AppCompatActivity() {
         return file
     }
 
+    /**
+     * 서버에 이미지 파일 업로드
+     */
     private fun uploadImage(volunteerId: Long, file: File) {
         val requestFile = file.asRequestBody("image/png".toMediaTypeOrNull())
         val imagePart = MultipartBody.Part.createFormData("imageFile", file.name, requestFile)
 
         val requestDTO = CertificationVolunteerRequest(
-            volunteerId = volunteerId,
+            volunteerId = 7,
             imageUrl = null,
             imageFile = null
         )

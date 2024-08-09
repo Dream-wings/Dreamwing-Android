@@ -1,20 +1,20 @@
 package com.sbsj.dreamwing.mission.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.sbsj.dreamwing.common.model.ApiResponse
-import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.databinding.ActivityQuizBinding
 import com.sbsj.dreamwing.databinding.ActivityQuizCorrectBinding
-import com.sbsj.dreamwing.mission.model.ActivityType
-import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
+/**
+ * 데일리 퀴즈 정답 시 화면
+ * @author 정은지
+ * @since 2024.08.02
+ * @version 1.0
+ *
+ * 수정일        	수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.02   정은지        최초 생성
+ */
 class QuizCorrectActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityQuizCorrectBinding
@@ -30,7 +30,9 @@ class QuizCorrectActivity : AppCompatActivity() {
 
     }
 
-    // 툴바 뒤로가기 버튼
+    /**
+     * 툴바 뒤로가기
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
