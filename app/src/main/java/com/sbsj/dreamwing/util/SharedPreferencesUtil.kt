@@ -5,7 +5,13 @@ import android.content.SharedPreferences
 
 /**
  * SharedPreferences 유틸리티 클래스
- * JWT 토큰을 저장, 삭제 가져오는 기능을 제공
+ * @author 정은찬
+ * @since 2024.08.04
+ * @version 1.0
+ *
+ * 수정일        수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.04   정은찬        최초 생성
  */
 object SharedPreferencesUtil {
     private const val PREFS_NAME = "app_prefs"

@@ -1,15 +1,12 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Base64
-import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.admin.ui.AdminActivity
@@ -23,17 +20,18 @@ import retrofit2.Callback
 import retrofit2.Response
 
 /**
- * 로그인 액티비티
- * 사용자 로그인 요청을 처리하고 JWT 토큰을 저장합니다.
+ * 로그인하는 액티비티
  * @author 정은찬
  * @since 2024.08.02
  * @version 1.0
  *
+ * <pre>
  * 수정일        	수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.02   정은찬        최초 생성
  * 2024.08.03   정은찬        Retrofit을 통해 로그인 정보 보내기 및 JWT 토큰 헤더에서 받기
  * 2024.08.03   정은찬        뒤로가기 툴바 적용
+ * </pre>
  */
 class LoginActivity : AppCompatActivity() {
 
@@ -193,23 +191,6 @@ class LoginActivity : AppCompatActivity() {
         }
 
         dialog.show()
-
-//        AlertDialog.Builder(this)
-//            .setTitle("로그인 성공")
-//            .setMessage("로그인이 성공적으로 완료되었습니다.")
-//            .setPositiveButton("확인") { dialog, _ ->
-//                Log.d("Loginactiviy", "$token")
-//                val roles = getRolesFromToken(token)
-//
-//                if ("ROLE_USER" in roles) {
-//                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-//                    startActivity(intent)
-//                } else if ("ROLE_ADMIN" in roles) {
-//                    val intent = Intent(this@LoginActivity, AdminActivity::class.java)
-//                    startActivity(intent)
-//                }
-//            }
-//            .show()
     }
 
     /**

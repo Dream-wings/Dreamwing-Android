@@ -1,26 +1,30 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.os.Bundle
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.databinding.ActivityMySupportDetailBinding
 import com.sbsj.dreamwing.databinding.ActivityMyVolunteerDetailBinding
-import com.sbsj.dreamwing.databinding.ActivityVolunteerDetailBinding
-import com.sbsj.dreamwing.user.model.vo.MySupportVO
 import com.sbsj.dreamwing.user.model.vo.MyVolunteerVO
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * 회원의 봉사 활동 내역을 보여주는 액티비티
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일             수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MyVolunteerDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMyVolunteerDetailBinding
     private lateinit var myVolunteerAdapter: MyVolunteerAdapter

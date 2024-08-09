@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -15,7 +15,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.textfield.TextInputLayout
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
@@ -33,16 +32,18 @@ import java.io.IOException
 import java.io.InputStream
 
 /**
- *
+ * 회원가입 액티비티
  * @author 정은찬
  * @since 2024.08.01
  * @version 1.0
  *
- * 수정일        	수정자        수정내용
+ * <pre>
+ * 수정일        수정자        수정내용
  * ----------  --------    ---------------------------
  * 2024.08.01   정은찬        최초 생성
  * 2024.08.02   정은찬        회원가입 정보 retrofit 통신
  * 2024.08.02   정은찬        회원가입시 아이디 중복, 비밀번호 일치, 정보 입력 여부 확인
+ * </pre>
  */
 class SignUpActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수

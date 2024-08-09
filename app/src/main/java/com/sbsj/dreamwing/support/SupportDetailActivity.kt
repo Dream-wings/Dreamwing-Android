@@ -17,14 +17,13 @@ import com.sbsj.dreamwing.databinding.ActivitySupportDetailBinding
 import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.support.model.SupportDetailDTO
 import com.sbsj.dreamwing.support.model.response.SupportDetailResponse
-import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 class SupportDetailActivity : AppCompatActivity() {

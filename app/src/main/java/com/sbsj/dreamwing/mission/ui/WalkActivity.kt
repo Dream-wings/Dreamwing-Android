@@ -19,7 +19,6 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.common.model.ApiResponse
@@ -28,7 +27,7 @@ import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.ActivityWalkBinding
 import com.sbsj.dreamwing.mission.model.ActivityType
 import com.sbsj.dreamwing.mission.model.request.AwardPointRequest
-import com.sbsj.dreamwing.user.LoginActivity
+import com.sbsj.dreamwing.user.ui.LoginActivity
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.ResponseBody
 import retrofit2.Call

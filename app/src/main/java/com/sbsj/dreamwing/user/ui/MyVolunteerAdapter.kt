@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.content.Intent
 import android.view.LayoutInflater
@@ -10,6 +10,17 @@ import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.user.model.vo.MyVolunteerVO
 import com.sbsj.dreamwing.volunteer.ui.VolunteerCertificationActivity
 
+/**
+ * 회원의 봉사 활동 내역을 RecyclerView에 표시하기 위한 어댑터 클래스
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일        	수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MyVolunteerAdapter : RecyclerView.Adapter<MyVolunteerAdapter.VolunteerViewHolder>() {
 
     // 봉사 활동 데이터 리스트

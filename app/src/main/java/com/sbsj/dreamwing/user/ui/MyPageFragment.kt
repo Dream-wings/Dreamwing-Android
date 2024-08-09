@@ -15,14 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
-import com.sbsj.dreamwing.user.UpdateUserActivity
 import com.sbsj.dreamwing.common.model.ApiResponse
 import com.sbsj.dreamwing.data.api.RetrofitClient
 import com.sbsj.dreamwing.databinding.FragmentMypageBinding
-import com.sbsj.dreamwing.user.LoginActivity
-import com.sbsj.dreamwing.user.MyPointDetailActivity
-import com.sbsj.dreamwing.user.MySupportDetailActivity
-import com.sbsj.dreamwing.user.MyVolunteerDetailActivity
 import com.sbsj.dreamwing.user.model.dto.MyPageDTO
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import com.squareup.picasso.Picasso

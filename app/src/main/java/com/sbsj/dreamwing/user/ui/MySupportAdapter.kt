@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.view.LayoutInflater
 import com.sbsj.dreamwing.R
@@ -8,6 +8,17 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sbsj.dreamwing.user.model.vo.MySupportVO
 
+/**
+ * 회원의 후원 내역을 RecyclerView에 표시하기 위한 어댑터 클래스
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일        	수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MySupportAdapter : RecyclerView.Adapter<MySupportAdapter.SupportViewHolder>() {
 
     private val supports = mutableListOf<MySupportVO>()

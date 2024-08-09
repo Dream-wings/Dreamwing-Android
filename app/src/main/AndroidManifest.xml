@@ -26,7 +26,7 @@
         tools:targetApi="31">
 
         <activity
-            android:name=".user.MyVolunteerDetailActivity"
+            android:name=".user.ui.MyVolunteerDetailActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ui.VolunteerCertificationListActivity"
@@ -38,7 +38,7 @@
             android:name=".admin.ui.AdminActivity"
             android:exported="true" />
         <activity
-            android:name=".user.UpdateUserActivity"
+            android:name=".user.ui.UpdateUserActivity"
             android:exported="false" />
         <activity
             android:name=".admin.ui.VolunteerCertificationDetailActivity"
@@ -47,10 +47,10 @@
             android:name=".admin.ui.VolunteerRequestDetailActivity"
             android:exported="true" />
         <activity
-            android:name=".user.MySupportDetailActivity"
+            android:name=".user.ui.MySupportDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".user.MyPointDetailActivity"
+            android:name=".user.ui.MyPointDetailActivity"
             android:exported="false" />
         <activity
             android:name=".mission.ui.WalkAwardActivity"
@@ -62,7 +62,7 @@
             android:name=".volunteer.ui.VolunteerCertificationActivity"
             android:exported="true" />
         <activity
-            android:name=".user.LoginActivity"
+            android:name=".user.ui.LoginActivity"
             android:exported="true" />
         <activity
             android:name=".SplashActivity"
@@ -84,7 +84,7 @@
             android:value="${KAKAO_API_KEY}" /> <!-- 여기서 KAKAO_API_KEY가 잘 치환되도록 설정 -->
 
         <activity
-            android:name=".user.SignUpActivity"
+            android:name=".user.ui.SignUpActivity"
             android:exported="true"
             android:label="@string/app_name" />
         <activity

@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.view.LayoutInflater
 import com.sbsj.dreamwing.R
@@ -9,6 +9,17 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * 회원의 포인트 내역을 RecyclerView에 표시하기 위한 어댑터 클래스
+ * @author 정은찬
+ * @since 2024.08.04
+ *
+ * <pre>
+ * 수정일        	수정자       				    수정내용
+ * ----------  ----------------    --------------------------------------------------------------------------
+ *  2024.08.04     	정은찬        		        최초 생성
+ * </pre>
+ */
 class MyPointAdapter : RecyclerView.Adapter<MyPointAdapter.PointViewHolder>() {
 
     private val points = mutableListOf<MyPointVO>()

@@ -1,4 +1,4 @@
-package com.sbsj.dreamwing.user
+package com.sbsj.dreamwing.user.ui
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -18,7 +18,6 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.sbsj.dreamwing.MainActivity
 import com.sbsj.dreamwing.R
 import com.sbsj.dreamwing.data.api.RetrofitClient
-import com.sbsj.dreamwing.user.model.response.CheckExistIdResponse
 import com.sbsj.dreamwing.user.model.response.UpdateResponse
 import com.sbsj.dreamwing.util.SharedPreferencesUtil
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -34,6 +33,18 @@ import java.io.IOException
 import java.io.InputStream
 import androidx.appcompat.widget.Toolbar
 
+/**
+ * 회원 정보를 수정할 수 있는 액티비티
+ * @author 정은찬
+ * @since 2024.08.05
+ * @version 1.0
+ *
+ * <pre>
+ * 수정일        수정자        수정내용
+ * ----------  --------    ---------------------------
+ * 2024.08.05   정은찬        최초 생성
+ * </pre>
+ */
 class UpdateUserActivity : AppCompatActivity() {
     private var imageUri: Uri? = null // 이미지를 선택한 후의 URI를 저장하는 변수
     private lateinit var idCheckMessage: TextView // 아이디 중복 확인 메시지를 표시하는 TextView
@@ -78,19 +89,15 @@ class UpdateUserActivity : AppCompatActivity() {
 
 
         // UI 요소 초기화
-//        val loginId = findViewById<EditText>(R.id.editID)
         val password = findViewById<EditText>(R.id.editPWD)
         val passwordConfirm = findViewById<EditText>(R.id.editPWDConfirm)
         val name = findViewById<EditText>(R.id.editName)
         val phone = findViewById<EditText>(R.id.editPhone)
-//        val checkExistIDButton = findViewById<Button>(R.id.btnCheckExistID)
         val updateButton = findViewById<Button>(R.id.btnDone)
         val profile = findViewById<ShapeableImageView>(R.id.registration_iv)
-//        idCheckMessage = findViewById(R.id.idCheckMessage) // 아이디 중복 확인 메시지를 표시하는 TextView
         passwordMatchMessage = findViewById(R.id.passwordMatchMessage) // 비밀번호 일치 여부 메시지를 표시하는 TextView
 
         // 밑줄 View 초기화
-//        underlineID = findViewById(R.id.underlineID)
         underlinePWD = findViewById(R.id.underlinePWD)
         underlinePWDConfirm = findViewById(R.id.underlinePWDConfirm)
         underlineName = findViewById(R.id.underlineName)
@@ -103,27 +110,12 @@ class UpdateUserActivity : AppCompatActivity() {
             getContent.launch(intentImage)
         }
 
-//        // 중복 확인 버튼 클릭 시 실행되는 코드
-//        checkExistIDButton.setOnClickListener {
-//            val idText = loginId.text.toString()
-//            checkExistLoginId(idText) // 아이디 중복 확인 요청
-//        }
-
         // 회원가입 버튼 클릭 시 실행되는 코드
         updateButton.setOnClickListener {
-//            val idText = loginId.text.toString()
             val passwordText = password.text.toString()
             val nameText = name.text.toString()
             val phoneText = phone.text.toString()
 
-//            // 입력된 값이 비어있는지 확인
-//            if (idText.isEmpty() || passwordText.isEmpty() || nameText.isEmpty() || phoneText.isEmpty()) {
-//                showErrorDialog("빈 입력칸이 있습니다.")
-//            } else
-//            if (!idCheckStatus) {
-//                // 중복 확인이 안 되어 있으면 다이얼로그 표시
-//                showIdCheckDialog(idText)
-//            } else
             if (!passwordMatchStatus) {
                 showErrorDialog("비밀번호가 일치하지 않습니다.")
             } else {
@@ -131,9 +123,6 @@ class UpdateUserActivity : AppCompatActivity() {
 
                 val requestFile = imageFile?.asRequestBody("image/png".toMediaTypeOrNull())
                 val imagePart = requestFile?.let { MultipartBody.Part.createFormData("imageFile", imageFile.name, it) }
-
-                // 입력된 값을 RequestBody로 변환
-//                val loginIdRequestBody = idText.toRequestBody("text/plain".toMediaTypeOrNull())
 
                 var idText: String? = null
                 val loginIdRequestBody: RequestBody? = idText?.let {
@@ -150,7 +139,6 @@ class UpdateUserActivity : AppCompatActivity() {
         }
 
         // EditText에 TextWatcher 및 OnFocusChangeListener 설정
-//        setEditTextListeners(loginId, underlineID)
         setEditTextListeners(password, underlinePWD)
         setEditTextListeners(passwordConfirm, underlinePWDConfirm)
         setEditTextListeners(name, underlineName)
@@ -241,40 +229,6 @@ class UpdateUserActivity : AppCompatActivity() {
         return file
     }
 
-//    // 아이디 중복 확인을 위한 네트워크 요청 메서드
-//    private fun checkExistLoginId(loginId: String) {
-//        RetrofitClient.userService.checkExistLoginId(loginId).enqueue(object :
-//            Callback<CheckExistIdResponse> {
-//            override fun onResponse(call: Call<CheckExistIdResponse>, response: Response<CheckExistIdResponse>) {
-//                if (response.isSuccessful) {
-//                    val checkExistIdResponse = response.body()
-//                    if (checkExistIdResponse != null) {
-//                        if (checkExistIdResponse.data) {
-//                            // 아이디 사용 가능
-//                            idCheckMessage.text = "사용 가능한 아이디입니다."
-//                            idCheckMessage.setTextColor(getColor(R.color.green))
-//                            idCheckStatus = true // 아이디 중복이 아님
-//                        } else {
-//                            // 아이디 사용 불가능
-//                            idCheckMessage.text = "사용할 수 없는 아이디입니다."
-//                            idCheckMessage.setTextColor(getColor(R.color.red))
-//                            idCheckStatus = false // 아이디 중복
-//                        }
-//                        idCheckMessage.visibility = View.VISIBLE
-//                    } else {
-//                        Toast.makeText(this@UpdateUserActivity, "응답이 비어있습니다.", Toast.LENGTH_SHORT).show()
-//                    }
-//                } else {
-//                    Toast.makeText(this@UpdateUserActivity, "중복 확인 실패: ${response.message()}", Toast.LENGTH_SHORT).show()
-//                }
-//            }
-//
-//            override fun onFailure(call: Call<CheckExistIdResponse>, t: Throwable) {
-//                Toast.makeText(this@UpdateUserActivity, "중복 확인 실패: ${t.message}", Toast.LENGTH_SHORT).show()
-//            }
-//        })
-//    }
-
     // 회원가입 요청을 서버로 보내는 메서드
     private fun update(
         loginId: RequestBody?,
@@ -318,26 +272,6 @@ class UpdateUserActivity : AppCompatActivity() {
             }
         })
     }
-
-//    // 아이디 중복 확인 다이얼로그를 띄우는 메서드
-//    private fun showIdCheckDialog(id: String) {
-//        val dialogView = layoutInflater.inflate(R.layout.dialog_alert, null)
-//        val confirmTextView = dialogView.findViewById<TextView>(R.id.message)
-//        val yesButton = dialogView.findViewById<Button>(R.id.yesButton)
-//
-//        confirmTextView.text = "아이디 중복 확인이 필요합니다."
-//
-//        val dialog = androidx.appcompat.app.AlertDialog.Builder(this)
-//            .setView(dialogView)
-//            .create()
-//
-//        yesButton.setOnClickListener {
-//            dialog.dismiss()
-//        }
-//
-//        dialog.show()
-//    }
-
 
     // 오류 다이얼로그를 표시하는 메서드
     private fun showErrorDialog(message: String) {

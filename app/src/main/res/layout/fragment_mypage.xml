@@ -43,7 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:fontFamily="@font/happiness_sans_title"
-                    android:text="로그인이 필요합니다."
+                    android:text="@string/need_login"
                     android:textSize="20sp"
                     android:textColor="@color/black"
                     app:layout_constraintBottom_toBottomOf="@id/profileImage"
@@ -57,7 +57,7 @@
                     android:background="@drawable/button_update"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
-                    android:text="프로필 수정"
+                    android:text="@string/profile_update"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@id/profileImage"
                     app:layout_constraintBottom_toBottomOf="@id/profileImage"
@@ -127,7 +127,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="총 후원 WING"
+                            android:text="@string/user_total_support_wing"
                             android:textSize="13sp"
                             android:fontFamily="@font/happiness_sans_regular"
                             android:textColor="@color/black" />
@@ -146,7 +146,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="WING"
+                            android:text="@string/wing"
                             android:textSize="16sp"
                             android:fontFamily="@font/happiness_sans_bold"
                             android:textColor="@color/sub_blue" />
@@ -182,7 +182,7 @@
 
                 <TextView
                     android:id="@+id/pointDetail"
-                    android:text="포인트 내역"
+                    android:text="@string/check_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
@@ -194,7 +194,7 @@
 
                 <TextView
                     android:id="@+id/supportDetail"
-                    android:text="후원 내역"
+                    android:text="@string/my_support_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
@@ -206,7 +206,7 @@
 
                 <TextView
                     android:id="@+id/volunteerDetail"
-                    android:text="봉사활동 내역"
+                    android:text="@string/my_volunteer_details"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="30dp"
@@ -222,7 +222,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="로그아웃"
+                android:text="@string/logout"
                 android:stateListAnimator="@null"
                 style="@style/title"
                 android:textColor="@color/black"
